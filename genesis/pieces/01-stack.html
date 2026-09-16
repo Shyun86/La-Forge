@@ -1,0 +1,498 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Stack technique de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:56px 0 38px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.crumb b{color:var(--ember);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--crit);border:1px solid var(--crit);
+  padding:4px 10px;border-radius:4px;margin:0 0 20px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:58px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;margin:42px 0 8px;letter-spacing:-.01em;text-wrap:balance}
+h4{font-family:var(--f-display);font-weight:600;font-size:16.5px;margin:28px 0 6px}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+
+/* durabilité */
+.dur{display:inline-block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;border:1px solid currentColor;white-space:nowrap;vertical-align:1px}
+.d-struct{color:var(--ember)} .d-solide{color:var(--good)}
+.d-remp{color:var(--ink-3)} .d-revoir{color:var(--crit)}
+
+.durlegend{display:grid;gap:10px;margin:26px 0;padding:20px 22px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow)}
+@media(min-width:700px){.durlegend{grid-template-columns:150px 1fr;gap:10px 20px;align-items:baseline}}
+.durlegend p{margin:0;font-size:15.5px;color:var(--ink-2);line-height:1.5}
+
+.tablewrap{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:12px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+td.v{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+tr.grp td{background:var(--surface-2);font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);padding:8px 14px;font-weight:600}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.envs{display:grid;gap:14px;margin:26px 0}
+@media(min-width:760px){.envs{grid-template-columns:repeat(2,1fr)}}
+.env{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;box-shadow:var(--shadow)}
+.env h4{margin:0 0 3px;font-size:17px}
+.env .py{font-family:var(--f-mono);font-size:11.5px;color:var(--ember);margin:0 0 10px}
+.env p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.5}
+
+.dec{border-top:1px solid var(--rule-soft);padding:22px 0}
+.dec:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.dec h4{margin:0 0 8px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;font-size:18px}
+.dec p{margin:0 0 10px;font-size:16px;color:var(--ink-2)}
+.dec p:last-child{margin-bottom:0}
+.dec .alt{font-size:15px;color:var(--ink-3);border-left:2px solid var(--rule);padding-left:14px}
+
+.openq{border-top:1px solid var(--rule-soft);padding:18px 0}
+.openq:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.openq h4{margin:0 0 5px;font-size:17px}
+.openq p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.openq .to{font-family:var(--f-mono);font-size:11.5px;color:var(--ember)}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1000px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">01 — Stack technique</span>
+    <span class="spacer"></span>
+    <span class="pn"><a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6" title="Principes & règles">← 00</a><a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3" title="Architecture">02 →</a></span>
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a class="cur" href="#top"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · pièce <b>01</b> · fondations</p>
+    <p class="statusbadge">● Pièce corrigeable · révision attendue</p>
+    <h1>Stack <em>technique</em></h1>
+    <p class="standfirst">Les langages, les briques logicielles et les versions. Chaque décision porte son degré de durabilité, parce que le choix du langage et celui d'une bibliothèque ne se révisent pas au même rythme.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="statut">
+  <span class="sec-num">Statut</span>
+  <h2>Pourquoi cette pièce est marquée corrigeable</h2>
+  <div class="col">
+    <p class="lede">Une pièce du dossier est normalement fermée : les suivantes s'appuient dessus sans la rediscuter. Celle-ci fait exception, et c'est un choix délibéré.</p>
+    <p>La stack est la seule pièce dont le contenu dépend de l'état du monde extérieur à une date donnée. Un projet peut être archivé, une bibliothèque abandonnée, une spécification réécrite. Ce n'est pas une hypothèse : <strong>en écrivant cette pièce, on a découvert que la base de graphe recommandée trois documents plus tôt avait été archivée par son éditeur en octobre 2025.</strong> Le dossier de recherche disait vrai le jour où il a été écrit et ne l'était plus au moment de décider.</p>
+    <p>« Corrigeable » a un sens précis, différent de « provisoire » :</p>
+    <ul>
+      <li>Les décisions ci-dessous <strong>engagent</strong> — les pièces suivantes s'écrivent contre elles, on ne les rediscute pas en passant.</li>
+      <li>Mais elles sont <strong>datées</strong>, et une révision n'a pas besoin de la procédure d'amendement de la pièce 00. Corriger la stack est un geste normal, pas un aveu d'échec.</li>
+      <li>Chaque décision porte un <strong>degré de durabilité</strong>, qui dit ce que sa révision coûterait. C'est ce degré, pas le statut global de la pièce, qui gouverne la prudence à avoir.</li>
+      <li>Toute révision est inscrite dans le registre en fin de page, avec sa date et son motif.</li>
+    </ul>
+
+    <div class="durlegend">
+      <span class="dur d-struct">Structurant</span>
+      <p>Revenir dessus coûte des mois et touche presque tout le code. On ne révise pas, on recommence. Deux entrées seulement portent ce degré.</p>
+      <span class="dur d-solide">Solide</span>
+      <p>Revenir dessus coûte des jours et touche une couche identifiée. Le projet est mûr et largement adopté ; une révision est improbable mais survivable.</p>
+      <span class="dur d-remp">Remplaçable</span>
+      <p>Conçu pour être échangé. Le remplacement coûte des heures et l'architecture prévoit explicitement le point de substitution.</p>
+      <span class="dur d-revoir">À revoir</span>
+      <p>Choix pris sur un écosystème en mouvement, avec une date de réexamen. Ce n'est pas un doute sur la qualité du choix, c'est un doute sur sa durée de validité.</p>
+    </div>
+  </div>
+</section>
+
+<section id="langages">
+  <span class="sec-num">01</span>
+  <h2>Les langages</h2>
+  <div class="col">
+    <p class="lede">Sept langages, ce qui est normal pour un système de cette forme. Un seul est structurant.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Langage</th><th>Où</th><th>Part</th><th>Durabilité</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Python</td><td>Serveurs d'outils, recettes, worker GPU, API</td><td class="v">~80 % du code</td><td><span class="dur d-struct">Structurant</span></td></tr>
+        <tr><td class="name">SQL</td><td>Schéma, contraintes, fonctions de parcours, migrations</td><td class="v">~10 %</td><td><span class="dur d-struct">Structurant</span></td></tr>
+        <tr><td class="name">Jinja</td><td>Gabarits : prompts, codex généré, rapports</td><td class="v">~5 %</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Bash</td><td>Réveil des machines, sauvegardes, hooks de conteneurs</td><td class="v">petits scripts</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">YAML / TOML</td><td>Configuration : agents, routage des modèles, Compose, projet</td><td class="v">config, pas du code</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">Le langage de l'interface</td><td>Le tableau de bord</td><td class="v">indéterminé</td><td><span class="dur d-revoir">Décidé en pièce 18</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p><strong>Python est structurant</strong> pour une raison simple : tout l'écosystème dont le système dépend est écrit en Python. ComfyUI, les modèles image→3D, les modèles audio, l'API de Blender, le SDK du protocole d'outils. Choisir autre chose signifierait écrire des ponts vers Python partout — donc avoir Python quand même, plus un second langage.</p>
+    <p><strong>Sur la performance</strong>, la question mérite une réponse chiffrée plutôt qu'une assurance. Le temps d'une opération typique se répartit ainsi : cinq à quarante secondes de GPU pour une image, deux à trente pour du texte, une à trois minutes pour un maillage 3D, une à vingt millisecondes pour une requête au canon — et <strong>moins d'une milliseconde pour la couche Python autour</strong>. L'orchestration représente de l'ordre d'un millième du temps d'un travail. Le système est limité par le GPU et par les entrées-sorties, jamais par le calcul Python.</p>
+    <p>La faiblesse réelle de Python, le verrou qui empêche le vrai parallélisme de calcul, tombe exactement là où le système n'en a pas besoin : l'invariant 09 impose une seule charge lourde à la fois.</p>
+    <p><strong>SQL est structurant aussi</strong>, et c'est moins évident. Ce n'est pas un détail d'implémentation du canon : les contraintes d'exclusion, les types intervalle et les fonctions de parcours sont l'endroit où vivent les garanties du système. Du SQL mal écrit ne se rattrape pas en Python.</p>
+
+    <h3>Quatre environnements Python, pas un</h3>
+    <p>C'est le piège le plus concret de cette pièce. « Le projet est en Python » cache le fait qu'il y a quatre interpréteurs distincts, avec des versions imposées par des tiers.</p>
+  </div>
+
+  <div class="envs">
+    <div class="env">
+      <h4>Les serveurs</h4>
+      <p class="py">Python 3.14 · sur le VPS</p>
+      <p>Serveurs d'outils, API, orchestration. Dépendances légères, pas de calcul lourd. On suit la dernière version stable.</p>
+    </div>
+    <div class="env">
+      <h4>Le worker GPU</h4>
+      <p class="py">Python 3.12 · sur le desktop</p>
+      <p>Torch, ComfyUI, les modèles image, audio et 3D. <strong>Cet écosystème traîne systématiquement d'une à deux versions</strong> derrière la dernière stable. Vouloir aligner sur 3.14 coûterait des jours de compilation.</p>
+    </div>
+    <div class="env">
+      <h4>Blender</h4>
+      <p class="py">Version imposée par Blender</p>
+      <p>Python embarqué, ses propres modules, aucune installation de paquets externes sans précaution. À traiter comme un environnement étranger auquel on parle, pas comme une partie du projet.</p>
+    </div>
+    <div class="env">
+      <h4>Unreal Engine</h4>
+      <p class="py">Version imposée par Unreal</p>
+      <p>Même situation, avec en plus des assets binaires et un système de transactions à respecter. Le code qui tourne là-bas est écrit pour là-bas.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <p>Conséquence pratique : le dépôt est un <strong>espace de travail uv</strong> à plusieurs paquets, chacun avec ses propres dépendances, mais le worker GPU et les serveurs ne partagent pas le même interpréteur. Tout code destiné à tourner dans les deux — les types partagés, les schémas Pydantic — vit dans un paquet commun compatible avec les deux versions.</p>
+  </div>
+</section>
+
+<section id="stockage">
+  <span class="sec-num">02</span>
+  <h2>Le stockage</h2>
+  <div class="col">
+    <p class="lede">« Le stockage » recouvre quatre problèmes qui n'ont pas la même réponse. Les confondre est l'erreur classique.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Ce qu'on stocke</th><th>Volume attendu</th><th>Où</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Le canon — entités, arêtes, faits datés</td><td class="v">dizaines de milliers de lignes</td><td>Postgres</td></tr>
+        <tr><td class="name">L'index sémantique — embeddings</td><td class="v">jusqu'à 100 k fragments</td><td>Postgres + pgvector</td></tr>
+        <tr><td class="name">La file des travaux et le journal</td><td class="v">quelques milliers de lignes</td><td>Postgres</td></tr>
+        <tr><td class="name">Les binaires — images, maillages, audio, poids</td><td class="v">150 à 300 Go</td><td><strong>Stockage objet</strong> — R2 ou MinIO. Seules les métadonnées vont en base.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>La dernière ligne est une règle, pas une préférence : <strong>aucun fichier binaire n'entre dans la base.</strong> La base stocke un chemin, une empreinte, un type et l'entité liée. Mettre les fichiers en base gonfle les sauvegardes d'un facteur cent et rend toute restauration douloureuse.</p>
+    <p>La première version de cette pièce écrivait « système de fichiers ». C'est devenu <strong>un stockage objet</strong> : les binaires sont produits sur le desktop mais doivent rester lisibles quand il dort, et un stockage objet donne une adresse stable et un accès direct depuis l'interface, sans faire transiter les fichiers par le VPS. La répartition entre un service distant et un serveur maison, et le partage entre les deux, se décide en <strong>pièce 16</strong>.</p>
+
+    <h3>Postgres <span class="dur d-struct">Structurant</span></h3>
+    <p>Le choix ne se justifie pas par la performance sur un critère isolé — Neo4j fait mieux le graphe, Qdrant fait mieux le vectoriel. Il se justifie par deux propriétés que rien d'autre ne réunit.</p>
+    <p><strong>La transaction commune.</strong> Quand un fait entre au canon et qu'un travail est déposé dans la foulée, les deux réussissent ou échouent ensemble. Deux bases séparées rendent cette garantie impossible, et on découvre un jour un travail qui référence un fait qui n'existe pas.</p>
+    <p><strong>Les contraintes comme code exécutable.</strong> C'est l'invariant 02 rendu littéral. <code>EXCLUDE USING gist (entite_id WITH =, validite WITH &amp;&amp;)</code> fait <em>refuser physiquement par la base</em> deux périodes de validité qui se chevauchent. « Un personnage est en un seul lieu à un instant donné » s'écrit une fois en SQL et devient incontournable. Aucun agent, aucune recette, aucun bug ne peut passer outre.</p>
+
+    <div class="callout crit">
+      <span class="tag">Décision révisée</span>
+      <p>Le dossier de recherche recommandait <strong>Kuzu</strong> comme moteur du canon — base de graphe embarquée avec index vectoriel et recherche plein texte intégrés. Le dépôt a été <strong>archivé le 10 octobre 2025</strong> par son éditeur, passé en lecture seule, dernière version utilisable en juillet 2025. Trois forks communautaires existent, aucun ne domine, le plus actif compte quelques dizaines d'étoiles. Recommandation abandonnée : bâtir plusieurs années de travail sur un projet gelé, ou sur un fork au mainteneur unique, reproduit exactement le risque qui vient de se réaliser.</p>
+    </div>
+
+    <h3>Postgres pur, sans extension de graphe <span class="dur d-solide">Solide</span></h3>
+    <p>L'extension Apache AGE ajouterait le langage Cypher à Postgres et rendrait les parcours de graphe plus lisibles. Elle a été écartée pour une raison qui suffit : <strong>AGE ne sait faire ni la bitemporalité, ni les contraintes dures.</strong> Ses propriétés sont d'un type JSON-ish sans intervalle natif, sans index sur une période, sans <code>CHECK</code>, sans clé étrangère, sans contrainte d'exclusion. Adopter AGE reviendrait à remonter dans le code applicatif les deux mécanismes qui font toute la valeur du canon.</p>
+    <p class="alt" style="border-left:2px solid var(--rule);padding-left:14px;color:var(--ink-3);font-size:15.5px">Le gain qu'on abandonne est réel mais étroit : la lisibilité de cinq à huit requêtes de parcours, écrites une seule fois. La compensation est d'encapsuler chaque parcours dans une fonction Postgres — <code>SELECT * FROM voisins(:id, ARRAY['allie'], 3, :date)</code> — ce qui rend une API de graphe lisible en SQL standard, pour environ une heure de travail.</p>
+    <p>Note pour plus tard : <strong>ajouter AGE n'est pas une option différable.</strong> L'extension stocke le graphe dans ses propres schémas, donc l'adopter ensuite signifierait dupliquer les données — ce qui viole l'invariant 01 — ou migrer.</p>
+
+    <h3>La projection Markdown <span class="dur d-solide">Solide</span></h3>
+    <p>Les fichiers plats ont deux qualités que la base n'a pas : ils se lisent sans outil, et git leur donne un historique, des diffs et des branches gratuitement. Ils ont aussi trois défauts rédhibitoires comme source : aucune contrainte, aucune transaction, et des requêtes linéaires qu'il faudrait écrire soi-même.</p>
+    <p>La conception retenue ne choisit pas : <strong>source dans Postgres, projection en fichiers Markdown versionnés par git, régénérée et commitée à chaque consolidation.</strong> Ce que ça donne concrètement, au-delà du confort de lecture : <code>git log</code> sur l'état du monde, et <code>git diff</code> pour répondre à « qu'est-ce qui a changé dans mon univers cette semaine ». Ni la base seule ni les fichiers seuls ne donnent ça.</p>
+    <p>Et une propriété de survie : si un jour tout le système disparaît, il reste un dépôt git lisible de l'univers complet.</p>
+  </div>
+</section>
+
+<section id="briques">
+  <span class="sec-num">03</span>
+  <h2>Les briques logicielles</h2>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Brique</th><th>Version visée</th><th>Rôle</th><th>Durabilité</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="4">Socle</td></tr>
+        <tr><td class="name">Python</td><td class="v">3.14 / 3.12</td><td>Langage principal, deux environnements</td><td><span class="dur d-struct">Structurant</span></td></tr>
+        <tr><td class="name">PostgreSQL</td><td class="v">18</td><td>Canon, index sémantique, file, journal</td><td><span class="dur d-struct">Structurant</span></td></tr>
+        <tr><td class="name">pgvector</td><td class="v">dernière stable</td><td>Index sémantique dans Postgres</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">uv</td><td class="v">dernière stable</td><td>Paquets, environnements, espace de travail multi-services</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">Docker + Compose</td><td class="v">—</td><td>Empaquetage et exécution des services</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">Dockge</td><td class="v">—</td><td>Gestion des piles Compose, déjà en place</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Caddy</td><td class="v">—</td><td>Reverse proxy et TLS, déjà en place</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Tailscale</td><td class="v">—</td><td>Réseau privé entre les quatre étages</td><td><span class="dur d-solide">Solide</span></td></tr>
+
+        <tr class="grp"><td colspan="4">Accès aux données</td></tr>
+        <tr><td class="name">psycopg 3</td><td class="v">3.x</td><td>Pilote Postgres, mode asynchrone</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">Aucun ORM</td><td class="v">—</td><td>SQL écrit à la main</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">Migrations SQL numérotées</td><td class="v">maison</td><td>Fichiers <code>.sql</code> ordonnés, exécutés par un script court</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Pydantic</td><td class="v">2.x</td><td>Schémas d'outils, paramètres de recettes, validation du canon</td><td><span class="dur d-solide">Solide</span></td></tr>
+
+        <tr class="grp"><td colspan="4">Agents et outils</td></tr>
+        <tr><td class="name">SDK MCP officiel</td><td class="v">1.27+</td><td>Écriture des serveurs d'outils</td><td><span class="dur d-revoir">À revoir</span></td></tr>
+        <tr><td class="name">Transport Streamable HTTP</td><td class="v">spec 2026-07-28</td><td>Transport des outils. HTTP+SSE est déprécié.</td><td><span class="dur d-revoir">À revoir</span></td></tr>
+        <tr><td class="name">Hermes Agent</td><td class="v">—</td><td>Orchestrateur, sous-agents, routage de modèle par agent</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">LiteLLM</td><td class="v">—</td><td>Point d'entrée unique des modèles, local et distant</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">n8n</td><td class="v">—</td><td>Plomberie déterministe, déjà en place</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+
+        <tr class="grp"><td colspan="4">Services</td></tr>
+        <tr><td class="name">FastAPI + uvicorn</td><td class="v">—</td><td>API HTTP et WebSocket du système</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">File des travaux</td><td class="v">maison</td><td>Table Postgres, réclamation par verrou, réveil, annulation</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Jinja2</td><td class="v">—</td><td>Gabarits de prompts, de codex et de rapports</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">git</td><td class="v">—</td><td>Historique de la projection Markdown du canon</td><td><span class="dur d-solide">Solide</span></td></tr>
+
+        <tr class="grp"><td colspan="4">Qualité et observation</td></tr>
+        <tr><td class="name">pytest</td><td class="v">—</td><td>Tests, dont les tests de contraintes du canon</td><td><span class="dur d-solide">Solide</span></td></tr>
+        <tr><td class="name">ruff</td><td class="v">—</td><td>Formatage et analyse statique</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+        <tr><td class="name">Langfuse</td><td class="v">v3</td><td>Traces d'agents, jeux d'évaluation. Sur le serveur maison.</td><td><span class="dur d-remp">Remplaçable</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Les quatre décisions qui méritent leur justification</h3>
+
+  <div class="dec">
+    <h4>Le SDK MCP officiel, pas FastMCP <span class="dur d-revoir">À revoir</span></h4>
+    <p>FastMCP offre une écriture plus confortable — décorateurs, aides à l'authentification, utilitaires de test. Le SDK officiel est plus bas niveau et plus fidèle à la spécification.</p>
+    <p>La spécification du protocole a beaucoup changé le 28 juillet 2026 : le protocole est devenu essentiellement sans état, le transport HTTP+SSE est formellement déprécié avec une fenêtre de transition d'un an, et plusieurs primitives sont passées en déprécié. Sur une couche aussi structurante, <strong>suivre la spécification par construction vaut mieux que le confort d'écriture</strong> — un projet tiers peut prendre du retard sur une spécification qui bouge.</p>
+    <p class="alt">Réexamen prévu : début 2027, quand la spécification se sera stabilisée. Si FastMCP a suivi et que l'écart de confort reste net, la bascule ne coûte que la réécriture des déclarations d'outils.</p>
+  </div>
+
+  <div class="dec">
+    <h4>psycopg 3 plutôt qu'asyncpg <span class="dur d-solide">Solide</span></h4>
+    <p>asyncpg est mesurablement plus rapide. Ce n'est pas le critère : à quelques milliers de requêtes par jour pour un utilisateur unique, la vitesse du pilote ne discrimine rien.</p>
+    <p>Ce qui discrimine, c'est la <strong>fidélité des types</strong>. La bitemporalité du canon repose entièrement sur <code>tstzrange</code>, et le schéma utilisera des types composites. psycopg 3 les gère nativement et proprement ; asyncpg demande des adaptateurs écrits à la main pour chacun. Sur une couche qu'on veut pouvoir oublier, la fidélité gagne contre la vitesse.</p>
+  </div>
+
+  <div class="dec">
+    <h4>Pas d'ORM <span class="dur d-solide">Solide</span></h4>
+    <p>Le schéma du canon est bâti sur des contraintes d'exclusion, des types intervalle, des requêtes récursives et des fonctions SQL. Ce sont exactement les constructions contre lesquelles un ORM se bat : il les exprime mal, les cache, ou oblige à écrire du SQL brut quand même.</p>
+    <p>SQL écrit à la main, Pydantic pour valider ce qui entre et ce qui sort. Pydantic sert trois fois dans le système — schémas d'outils, paramètres de recettes, validation du canon — ce qui en fait la seule couche de typage nécessaire.</p>
+  </div>
+
+  <div class="dec">
+    <h4>File des travaux et migrations faites maison <span class="dur d-remp">Remplaçable</span></h4>
+    <p>Les bibliothèques existent — procrastinate et pgqueuer côté file, plusieurs outils côté migrations. Elles ont été écartées pour la même raison : <strong>les besoins de ce système sont trop spécifiques pour qu'une bibliothèque les couvre, et trop simples pour justifier sa complexité.</strong></p>
+    <p>La file doit réveiller une machine éteinte, tolérer un worker qui disparaît une heure, streamer des logs et annuler un travail en cours. Aucune bibliothèque ne fait les quatre. En partant de <code>SELECT ... FOR UPDATE SKIP LOCKED</code> sur une table, le code tient dans quelques centaines de lignes qu'on comprend entièrement.</p>
+    <p class="alt">Le degré « remplaçable » est ici littéral : si la file maison devient une charge, procrastinate reste le repli, avec une annulation de travail en cours bien documentée. Le point de substitution est l'interface de la file, pas son implémentation.</p>
+  </div>
+</section>
+
+<section id="pas-decide">
+  <span class="sec-num">04</span>
+  <h2>Ce que cette pièce ne décide pas</h2>
+  <div class="col">
+    <p class="lede">Une omission volontaire mérite d'être écrite, sinon elle sera lue comme un oubli.</p>
+
+    <h3>Le langage et la forme de l'interface</h3>
+    <p>Rien n'impose que l'interface soit une page web. Une application desktop native, une application installable, un site classique ou même une interface en terminal restent toutes ouvertes, et le choix se fait en <strong>pièce 18</strong>.</p>
+    <p>Mais cette pièce prend la décision qui garde ces options ouvertes : <strong>le backend expose une API HTTP et WebSocket en JSON, et l'interface est un client de cette API.</strong> Des pages rendues côté serveur auraient verrouillé le système dans le web sans que la décision soit prise. Avec une API, la forme de l'interface devient réversible, et plusieurs interfaces peuvent coexister.</p>
+    <p>Conséquence à garder en tête pour la pièce 18 : une application desktop en Python conserverait la propriété d'un langage unique pour la quasi-totalité du projet, et ferait disparaître toute dépendance JavaScript. Ce n'est pas une recommandation, c'est un paramètre du choix à venir.</p>
+
+    <h3>Les modèles</h3>
+    <p>Quel modèle pour quel rôle, comment les servir, comment les échanger : <strong>pièce 14</strong>. Cette pièce fixe seulement le point d'entrée unique par lequel ils passent tous.</p>
+
+    <h3>Les outils externes</h3>
+    <p>Les versions de Blender, d'Unreal et de ComfyUI, et leur mode de pilotage : <strong>pièce 15</strong>. Cette pièce note seulement que Blender et Unreal embarquent chacun leur propre Python, ce qui en fait des environnements étrangers.</p>
+  </div>
+</section>
+
+<section id="ouverts">
+  <span class="sec-num">05</span>
+  <h2>Points laissés ouverts</h2>
+  <div class="col">
+    <p class="lede">Quatre, chacun affecté.</p>
+  </div>
+
+  <div class="openq">
+    <h4>Le canon est-il un serveur réseau ou une bibliothèque en processus ?</h4>
+    <p>Hérité de la pièce 00. Cette pièce fixe Postgres comme moteur mais ne dit pas si les recettes parlent au canon par le réseau ou en l'important. L'arbitrage oppose la joignabilité depuis l'extérieur à la latence des recettes. <span class="to">→ pièce 03</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le dimensionnement de Postgres sur le VPS</h4>
+    <p>L'index sémantique est le seul poste qui grossit vraiment : 100 000 fragments en 1024 dimensions font environ 400 Mo bruts, plus l'index. Passer en demi-précision ou en 768 dimensions ramènerait autour de 200 Mo. Le choix dépend du modèle d'embeddings retenu. <span class="to">→ pièces 14 et 16</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le format d'échange entre le backend et l'interface</h4>
+    <p>JSON sur HTTP et WebSocket est acquis, mais la forme des événements — protocole normalisé ou format maison — dépend de ce que l'orchestrateur retenu sait émettre. <span class="to">→ pièces 09 et 18</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>La stratégie de sauvegarde et de restauration</h4>
+    <p>Postgres, la projection git et 150 à 300 Go de binaires n'ont ni la même fréquence ni le même support de sauvegarde. <span class="to">→ pièce 16</span></p>
+  </div>
+</section>
+
+<section id="registre">
+  <span class="sec-num">06</span>
+  <h2>Registre des révisions</h2>
+  <div class="col">
+    <p class="lede">Toute correction apportée à cette pièce s'inscrit ici, avec sa date et son motif.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Date</th><th>Ce qui change</th><th>Motif</th></tr></thead>
+        <tbody>
+          <tr><td class="v">30 août 2026</td><td class="name">Version initiale</td><td>Pièce posée. Abandon de Kuzu au profit de Postgres pur, décidé pendant la rédaction après constat de l'archivage du projet.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Renumérotation du dossier</td><td>Insertion des pièces 06 (Le Récit) et 07 (La Bibliothèque). Tous les renvois de cette pièce vers une pièce ultérieure sont décalés de deux.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Les binaires passent en stockage objet</td><td>« Système de fichiers » ne disait pas depuis quelle machine, ni ce qui se passe quand le desktop dort. Le stockage objet donne une adresse stable et un accès direct depuis l'interface. Répartition détaillée en pièce 16.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="tag">Réexamens programmés</span>
+      <p><strong>Début 2027</strong> — le SDK MCP et le transport, quand la spécification du protocole se sera stabilisée. <strong>À chaque ajout de modalité</strong> — le dimensionnement de Postgres et l'empreinte de l'index sémantique. <strong>Si la file maison dépasse quelques centaines de lignes</strong> — repli sur une bibliothèque.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · pièce 01 · posée le 30 août 2026 · corrigeable</div>
+</footer>
+
+</body></html>

@@ -1,0 +1,831 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Glossaire de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:52px 0 34px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.crumb b{color:var(--ember);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ember);border:1px solid var(--ember);
+  padding:4px 10px;border-radius:4px;margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,54px);line-height:1.04;letter-spacing:-.025em;margin:0 0 18px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:19px;line-height:1.55;color:var(--ink-2);margin:0;max-width:62ch}
+section{padding-top:52px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(23px,2.9vw,30px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:12px}
+h3{font-family:var(--f-display);font-weight:600;font-size:19px;margin:36px 0 8px;letter-spacing:-.01em}
+p{margin:0 0 16px}
+.lede{font-size:18.5px;color:var(--ink-2);margin-bottom:22px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 16px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+li::marker{color:var(--ink-3)}
+
+/* filtre */
+.filterbar{position:sticky;top:46px;z-index:20;background:var(--paper);padding:16px 0 12px;
+  border-bottom:1px solid var(--rule-soft);margin-bottom:6px}
+.filterbar input{width:100%;max-width:420px;font-family:var(--f-mono);font-size:13.5px;
+  padding:10px 14px;border:1px solid var(--rule);border-radius:5px;background:var(--surface);
+  color:var(--ink)}
+.filterbar input::placeholder{color:var(--ink-3)}
+.filterbar input:focus{outline:2px solid var(--ember);outline-offset:1px;border-color:var(--ember)}
+.filterbar .count{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);margin-left:14px}
+
+/* entrées */
+.fam{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);margin:42px 0 0;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.e{display:grid;gap:4px 22px;padding:17px 0;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:840px){.e{grid-template-columns:220px 1fr}}
+.e .t{font-family:var(--f-display);font-weight:600;font-size:17px;line-height:1.3}
+.e .t code{font-size:14px;background:none;padding:0;color:var(--ember)}
+.e .body p{margin:0 0 8px;font-size:16px;color:var(--ink-2);line-height:1.5}
+.e .body p:last-child{margin-bottom:0}
+.e .meta{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:7px}
+.e .meta b{color:var(--ember);font-weight:600}
+.e .no{font-size:15px;color:var(--ink-3);border-left:2px solid var(--rule);padding-left:12px;margin-top:9px}
+.e.hidden{display:none}
+.fam.hidden{display:none}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:18px 22px;margin:24px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:8px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+
+.tablewrap{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+td.v{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+
+footer{border-top:1px solid var(--rule);padding:28px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:60px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1000px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">Glossaire</span><span class="sep">/</span><span class="kind">obligatoire</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a class="cur" href="#top"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · <b>Glossaire</b> · référence permanente</p>
+    <p class="statusbadge">● Obligatoire · aucun nom sans entrée</p>
+    <h1>Le <em>glossaire</em></h1>
+    <p class="standfirst">Tous les termes du projet, à un seul endroit. Un mot qui n'est pas ici n'existe pas dans le dossier — et une pièce ne peut pas introduire un nom sans l'y ajouter.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="regle" style="padding-top:44px">
+  <span class="sec-num">La règle</span>
+  <h2>Pourquoi ce fichier est obligatoire</h2>
+  <div class="col">
+    <p class="lede">La nomenclature a déjà dérivé deux fois entre le plan et la pièce 02 : un nom est apparu sans justification, un autre a changé de sens en cours de route. Ce fichier existe pour que ça n'arrive plus.</p>
+    <ul>
+      <li><strong>Le glossaire est obligatoire, les pièces sont optionnelles.</strong> Un terme peut n'être défini que ici. Il ne peut jamais n'être défini que dans une pièce.</li>
+      <li><strong>Aucun nom nouveau sans une entrée.</strong> Si une pièce introduit un mot, la même modification ajoute sa ligne ici.</li>
+      <li><strong>Une entrée dit à quel niveau le terme appartient</strong> — processus, domaine, outil, concept — parce que la confusion vient toujours d'un mot employé à deux niveaux.</li>
+      <li><strong>Un terme non encore fixé est marqué comme tel</strong>, avec la pièce qui le tranchera. Une définition provisoire vaut mieux qu'un mot flottant.</li>
+    </ul>
+  </div>
+
+  <h3>Les trois niveaux</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Niveau</th><th>Ce que c'est</th><th>Les noms actuels</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Processus</td><td>Ce qu'on démarre et arrête. Une unité de déploiement.</td><td class="v">canon · atelier · api · orchestrateur · recettes · worker</td></tr>
+        <tr><td class="name">Domaine</td><td>Un périmètre fonctionnel. Un domaine = un point d'entrée pour les agents.</td><td class="v">Canon · File · Catalogue · Bibliothèque</td></tr>
+        <tr><td class="name">Outil</td><td>Une fonction qu'un agent appelle. Nommée <code>domaine.action</code>.</td><td class="v">canon.lire_entite · file.deposer · …</td></tr>
+        <tr><td class="name">Concept</td><td>Une notion du projet qui n'est ni un processus ni une fonction.</td><td class="v">fait · validité · recette · fil · asset · …</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout crit">
+    <span class="tag">Corrections déjà appliquées</span>
+    <p><strong>« production »</strong> est supprimé — c'était un nom de processus inventé sans justification. Le processus s'appelle désormais <code>atelier</code>. <strong>« atelier »</strong> cesse d'être un point d'entrée pour devenir un nom de processus ; le point d'entrée qui portait ce nom s'appelle désormais <strong>Catalogue</strong>.</p>
+  </div>
+</section>
+
+<section id="entrees">
+  <span class="sec-num">Les entrées</span>
+  <h2>Tous les termes</h2>
+
+  <div class="filterbar">
+    <input type="search" id="q" placeholder="filtrer — tapez un mot" aria-label="Filtrer les entrées du glossaire" autocomplete="off">
+    <span class="count" id="cnt"></span>
+  </div>
+
+  <div id="glist">
+
+  <p class="fam">Processus — ce qu'on démarre et arrête</p>
+
+  <div class="e"><div class="t"><code>canon</code><br>le processus</div><div class="body">
+    <p>Le seul processus qui écrit dans le schéma du même nom. Porte les contraintes, la bitemporalité, la validation de schéma et les fonctions de parcours. Expose trois surfaces : deux points d'entrée pour les agents et une surface HTTP pour le code.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+    <p class="no">À ne pas confondre avec le <em>domaine</em> Canon, ni avec le <em>schéma SQL</em> canon. Trois choses distinctes qui portent le même mot.</p>
+  </div></div>
+
+  <div class="e"><div class="t"><code>atelier</code><br>le processus</div><div class="body">
+    <p>Le seul processus qui écrit dans le schéma du même nom. Regroupe trois domaines qui tournent tous autour de la fabrication : la File, le Catalogue et la Bibliothèque. Expose quatre surfaces : trois points d'entrée pour les agents et une surface HTTP pour le code et le worker.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+    <p class="no">Remplace « production », terme abandonné.</p>
+  </div></div>
+
+  <div class="e"><div class="t"><code>api</code></div><div class="body">
+    <p>Le point d'entrée unique de l'interface, en HTTP et WebSocket. N'écrit aucune donnée métier : il lit le journal, diffuse les événements, et transmet les demandes. Accepte les dépôts même quand le desktop dort.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t"><code>orchestrateur</code></div><div class="body">
+    <p>Le processus qui héberge l'Assistant et ses sous-agents. Tourne sur le desktop, avec les modèles locaux. Traite les demandes déposées dans l'api au réveil de la machine.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>desktop</b></span><span>Fixé en · <b>pièce 02</b></span><span>Logiciel · <b>à réexaminer en pièce 09</b></span></div>
+    <p class="no">Le processus s'appelle orchestrateur ; l'agent qu'il héberge s'appelle l'Assistant. Deux niveaux différents.</p>
+  </div></div>
+
+  <div class="e"><div class="t"><code>recettes</code></div><div class="body">
+    <p>Le processus qui exécute les suites d'étapes figées. Tourne sur le VPS, à côté du canon, parce qu'une recette fait beaucoup d'appels et n'exécute jamais de calcul lourd.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t"><code>worker</code></div><div class="body">
+    <p>Le processus qui réclame les travaux, charge et décharge les modèles, exécute, et rend les résultats. Le seul élément hors du VPS. Réveillé à la demande, se rendort après inactivité.</p>
+    <p><strong>Gardien unique du matériel</strong> : c'est le seul processus qui adresse la carte graphique. <code>litellm</code> ne parle pas aux moteurs locaux, il passe par un relais servi par le worker, qui prend le bail avant de relayer.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>desktop</b></span><span>Fixé en · <b>pièce 02</b></span><span>Détaillé en · <b>pièce 04</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t"><code>litellm</code></div><div class="body">
+    <p>Le routeur de modèles. Un seul point d'entrée qui parle le format OpenAI ; derrière, une configuration associe un nom logique de rôle à un modèle réel, local ou distant, avec repli automatique.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Configuré en · <b>pièce 14</b></span></div>
+    <p class="no">Reste sur le VPS même si l'orchestrateur est sur le desktop : c'est lui qui bascule vers le cloud quand la machine dort, et un routeur qui dort n'est pas un routeur.</p>
+  </div></div>
+
+  <div class="e"><div class="t"><code>postgres</code></div><div class="body">
+    <p>La base unique. Porte le canon, l'index sémantique, la file et le journal, dans quatre schémas séparés. Aucun fichier binaire n'y entre.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span><span>Fixé en · <b>pièce 01</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t"><code>minio</code></div><div class="body">
+    <p>Le stockage objet local, sur le serveur maison. Reçoit les variantes rejetées et les fichiers intermédiaires — le gros du volume, jamais consulté à distance.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>serveur maison</b></span><span>Fixé en · <b>pièce 16</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t"><code>n8n</code> · <code>caddy</code> · <code>tailscale</code></div><div class="body">
+    <p>L'existant. Déclencheurs planifiés et webhooks ; reverse proxy et TLS ; réseau privé entre les étages. Aucun n'est spécifique à ce projet.</p>
+    <div class="meta"><span>Niveau · <b>processus</b></span><span>Tourne sur · <b>VPS</b></span></div>
+  </div></div>
+
+  <p class="fam">Domaines — les huit zones de responsabilité</p>
+
+  <div class="e"><div class="t">Domaine<br><span style="font-size:13px;font-weight:400;color:var(--ink-3)">la notion</span></div><div class="body">
+    <p>Une zone de responsabilité, avec ses garanties et les outils qu'elle expose aux agents. Il y en a <strong>huit</strong>, servis par <strong>deux</strong> processus seulement. Quatre sont transversaux — Canon, File, Catalogue, Bibliothèque — et quatre sont propres à une modalité — Récit, Images, 3D, Son.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+    <p class="no">Un domaine n'est pas un processus. Le nombre de domaines peut grandir sans que le nombre de processus bouge — c'est précisément ce qui rend la vidéo ajoutable plus tard.</p>
+    <p class="no">Le contrôle qui évite d'en oublier un : la liste se dérive de <strong>la matière</strong> que le système manipule, jamais des outils qu'un serveur expose. Faits du monde, prose, images, maillages, sons, fichiers produits, travail à faire, disponibilité — huit matières, huit domaines. Trois domaines ont manqué avant que cette règle soit posée.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Canon<br><span style="font-size:13px;font-weight:400;color:var(--ink-3)">le domaine</span></div><div class="body">
+    <p>Le monde : entités, relations, faits datés, croyances, contradictions. Deux profils : <strong>écriture</strong>, réservé à l'Archiviste, et <strong>lecture</strong>, pour tous les autres — les outils d'écriture n'existent simplement pas dans le second.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>canon</b></span><span>Conçu en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">File</div><div class="body">
+    <p>Les travaux : déposer, suivre l'avancement, annuler, récupérer un résultat. Le seul chemin qui mène aux machines de calcul.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 04</b></span></div>
+    <p class="no">« La File » désigne le domaine et son mécanisme. Un élément dedans est un <em>travail</em>, jamais « une file ».</p>
+  </div></div>
+
+  <div class="e"><div class="t">Catalogue</div><div class="body">
+    <p>Ce qui est disponible pour travailler : les recettes existantes et leurs paramètres, les styles entraînés, les voix enregistrées, les thèmes musicaux, les sessions de modélisation ouvertes. Un agent le consulte avant de déposer un travail.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 05</b></span></div>
+    <p class="no">Remplace le point d'entrée qui s'appelait « atelier ».</p>
+  </div></div>
+
+  <div class="e"><div class="t">Bibliothèque</div><div class="body">
+    <p>Les assets produits : chercher, récupérer, valider, rattacher à une entité. Domaine distinct du Canon à cause du cycle de vie — on produit quatre variantes, on en valide une, on jette les autres, et ce va-et-vient n'a rien à faire dans le canon.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 07</b></span></div>
+    <p class="no">À ne pas confondre avec la pièce 16, qui dit <em>où</em> les fichiers vivent physiquement. La Bibliothèque dit ce que le domaine garantit et quels outils il expose.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Récit</div><div class="body">
+    <p>Domaine de modalité. La prose : trames, chapitres, scènes, dialogues, versions et comparaison de versions. Le seul matériau qui circule dans les <strong>deux sens</strong> avec le Canon — il le consomme comme contrainte d'écriture, et on en extrait ensuite des faits qui y remontent.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 06</b></span></div>
+    <p class="no">À ne pas confondre avec « le texte » en général, qui est le matériau de sortie de tout modèle et n'est pas une modalité. Le Récit désigne la prose qu'on garde, qu'on structure et qu'on réécrit.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Images</div><div class="body">
+    <p>Domaine de modalité. Ce qui n'a de sens que pour l'image : choisir un style ou une LoRA, cadrer, fournir une référence, décliner des variantes, comparer. N'exécute rien et ne range rien — il emprunte la File pour le calcul et la Bibliothèque pour le rangement.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 11</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">3D</div><div class="body">
+    <p>Domaine de modalité. Maillage, retopologie, dépliage UV, cuisson des cartes, matériaux, export glTF, sessions Blender et Unreal. Même règle : il commande, il n'exécute pas.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 12</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Son</div><div class="body">
+    <p>Domaine de modalité. Voix, ambiances, effets, thèmes musicaux liés à une faction ou un lieu, mixage.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Dans le processus · <b>atelier</b></span><span>Conçu en · <b>pièce 13</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Vidéo</div><div class="body">
+    <p>Quatrième domaine de modalité, <strong>pas encore existant</strong>. Inscrit ici parce qu'il sert de test : si l'ajouter demande de toucher autre chose qu'une boîte de plus dans le processus <code>atelier</code>, la séparation entre domaines transversaux et domaines de modalité est ratée.</p>
+    <div class="meta"><span>Niveau · <b>domaine</b></span><span>Statut · <b>à venir</b></span><span>Vérifié en · <b>pièce 20</b></span></div>
+  </div></div>
+
+  <p class="fam">Agents — qui fait le travail</p>
+
+  <div class="e"><div class="t">Agent</div><div class="body">
+    <p>Un modèle, plus des instructions, plus l'autorisation d'utiliser certains outils. C'est ce qui transforme « une IA qui écrit » en « quelqu'un qui fait un travail ».</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">L'Assistant</div><div class="body">
+    <p>Ton unique interlocuteur. Reçoit les demandes, décide quoi faire, délègue aux agents core, déclenche des recettes, rassemble les résultats.</p>
+    <div class="meta"><span>Niveau · <b>agent</b></span><span>Hébergé par · <b>orchestrateur</b></span><span>Fixé en · <b>pièce 09</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Agent core</div><div class="body">
+    <p>Un agent de deuxième niveau, responsable d'un domaine. <strong>Six pour huit domaines</strong> : le Catalogue et la Bibliothèque ne sont possédés par personne, on les consulte sans les exercer. Reçoit une tâche de l'Assistant et délègue à ses propres sous-agents.</p>
+    <div class="meta"><span>Niveau · <b>agent</b></span><span>Statut · <b>provisoire, fixé en pièce 08</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Sous-agent</div><div class="body">
+    <p>Un agent de troisième niveau, spécialisé sur une tâche précise avec son propre modèle. Exemples sous Lore : le rédacteur (modèle non censuré, aucun outil), l'extracteur (petit modèle, sortie structurée).</p>
+    <div class="meta"><span>Niveau · <b>agent</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Auditeur</div><div class="body">
+    <p>Un agent relecteur, instance séparée du générateur, avec d'autres instructions et si possible un autre modèle. Quatre familles : cohérence interne, conformité au canon, conformité au style, validité technique. Leur passage est une étape de recette, jamais une décision d'agent — c'est l'invariant 06.</p>
+    <div class="meta"><span>Niveau · <b>agent</b></span><span>Fixé en · <b>pièces 08 et 10</b></span></div>
+    <p class="no">Synonyme accepté : relecteur. Un seul des deux mots sera retenu en pièce 08.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Noms d'agents provisoires</div><div class="body">
+    <p>Les six agents core ont été nommés en cours de conception : <strong>Archiviste</strong> (Canon), <strong>Narrateur</strong> (récit), <strong>Directeur artistique</strong> (image), <strong>Sculpteur</strong> (3D), <strong>Compositeur</strong> (son), <strong>Régisseur</strong> (File). Les quatre familles d'auditeurs de même : cohérence interne, conformité au canon, conformité au style, validité technique.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Statut · <b>provisoire</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+    <p class="no">Ces noms sont utilisables dès maintenant, mais aucun n'est acquis tant que la pièce 08 n'a pas arrêté la liste, le modèle et le profil d'outils de chacun.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Rôle</div><div class="body">
+    <p>Le gabarit d'un agent : quel modèle, quelles instructions, quels outils. Un rôle peut être instancié plusieurs fois — trois auditeurs partagent un rôle mais sont trois agents.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+    <p class="no">Rien à voir avec un <em>rôle SQL</em>, qui est une permission Postgres.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Fil</div><div class="body">
+    <p>L'historique de conversation d'un agent pour une tâche donnée. Un fil de sous-agent est <strong>jetable</strong> : il reçoit une tâche, fait ses appels, rend un résultat compact, et son historique est abandonné. C'est l'invariant 12, et c'est le levier qui lève la limite des seize appels d'outils.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Résumé en clair</div><div class="body">
+    <p>Un champ obligatoire dans la sortie de chaque agent : une phrase en français sur ce qu'il vient de faire. C'est ce que l'interface affiche comme message de conversation ; le détail technique reste dépliable dessous. Transport structuré, affichage humain.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Profil d'outils</div><div class="body">
+    <p>Le sous-ensemble d'outils qu'un rôle donné voit. Mesuré : trente-neuf outils chargés occupent 62 % de la fenêtre d'un modèle local ; cloisonnés par rôle, moins de 10 %. Aucun agent ne voit plus de dix outils — invariant 10.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+  </div></div>
+
+  <p class="fam">Le canon — les notions du monde</p>
+
+  <div class="e"><div class="t">Entité</div><div class="body">
+    <p>Une chose de ton univers. Porte <strong>uniquement son identité</strong> — identifiant, type, nom, autres noms — et <strong>aucun champ libre</strong> : tout ce qui pourrait changer est un <em>fait</em>. C'est cette règle qui empêche la moitié de la vérité du monde de finir dans des descriptions ininterrogeables.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Fait</div><div class="body">
+    <p>Une affirmation datée à propos d'une entité ou d'une relation. Un fait n'est <strong>jamais supprimé ni écrasé</strong> : sa période de validité est fermée. Invariant 03.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Candidat</div><div class="body">
+    <p>Un fait qui est <strong>dans le canon sans être vrai</strong>. C'est l'état par lequel entre toute proposition d'agent : visible, interrogeable, mais n'engageant rien. Seul le contrôle d'intégrité s'applique à l'entrée.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+    <p class="no">C'est cet état intermédiaire qui permet d'écrire vite sans salir le canon.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Promotion</div><div class="body">
+    <p>Le passage de candidat à validé, après audit. <strong>C'est le seul moment où les règles du monde s'appliquent</strong> — jamais à la proposition. Déclenchée par une recette ou par toi, jamais par l'agent qui a produit le fait.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Croyance</div><div class="body">
+    <p>Un lien entre un <em>porteur</em>, un <em>fait</em>, un <em>statut</em> — sait, ignore, croit faux, soupçonne — et une <em>validité</em> propre, parce qu'on apprend les choses à une date.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Porteur</div><div class="body">
+    <p>Celui qui tient une croyance : une entité de type personnage, ou <strong>le lecteur</strong>. C'est cette égalité de traitement qui évite d'inventer un troisième axe de temps.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Fait sensible</div><div class="body">
+    <p>Un drapeau sur un fait, faux par défaut, qui active la couche de croyances pour lui. Tant qu'il est à faux, la couche n'existe pas : ni ligne, ni stockage, ni coût de contexte.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Règle de monde</div><div class="body">
+    <p>Une règle que tu déclares sur ton univers — « un personnage est en un seul lieu à la fois » — stockée comme une <strong>ligne dans une table</strong>, avec sa portée, son message et sa <em>sévérité</em>. Pas dans le schéma : la changer n'est pas une migration.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+    <p class="no">À ne pas confondre avec les contraintes structurelles, qui sont dans le schéma SQL et ne se règlent pas.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Sévérité</div><div class="body">
+    <p>Le réglage d'une règle de monde : <strong>refus</strong> ou <strong>signalement</strong>. Toutes démarrent en signalement. On promeut une règle en refus quand on est sûr qu'elle ne souffre aucune exception — et on peut la redescendre.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Type d'entité</div><div class="body">
+    <p>Une valeur d'une <strong>liste fermée de neuf</strong> : personnage, lieu, faction, objet, événement, concept, espèce, œuvre, période. Ajouter un type demande trois entités réelles qui n'entrent nulle part, un test qui le distingue de son voisin, et une inscription au registre.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Relation</div><div class="body">
+    <p>Un lien typé entre deux entités : allié, ennemi, membre de, situé à, possède, a tué, connaît. Porte elle aussi une période de validité.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+    <p class="no">Le mot technique équivalent est <em>arête</em>, employé quand on parle du graphe. Le glossaire retient <strong>relation</strong> comme terme de référence.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Validité</div><div class="body">
+    <p>La période pendant laquelle un fait est vrai <em>dans la chronologie de la fiction</em>. Un roi qui meurt voit fermer la validité de « vivant », il n'est pas effacé.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Bitemporalité</div><div class="body">
+    <p>Le fait de porter <strong>deux axes de temps</strong> : la validité dans la fiction, et le moment où le système a enregistré l'information. Permet de répondre à « qu'est-ce qui était vrai au jour 40 » et à « que savait le système au chapitre 12 » séparément.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Ordre de révélation</div><div class="body">
+    <p>Le moment du récit où une information est révélée au lecteur. Un meurtre commis au chapitre 2 peut n'être révélé qu'au chapitre 30.</p>
+    <p><strong>Ce n'est pas un troisième axe de temps.</strong> Le lecteur est traité comme un <em>porteur</em> de croyances parmi d'autres, dont la validité se compte en positions du Récit au lieu d'années du monde. « Que sait Kael à l'an 12 » et « que sait le lecteur au chapitre 20 » sont la même requête.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Surcouche épistémique</div><div class="body">
+    <p>Ce que chaque personnage <strong>croit</strong>, distinct de ce qui est vrai. Une table de <em>croyances</em>, pas des graphes dupliqués. C'est la couche qui rend possible l'ironie dramatique et le narrateur non fiable — et surtout celle qui rend l'audit utilisable : sans elle, chaque mensonge et chaque secret serait signalé comme une contradiction.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+    <p class="no">Facultative <em>par fait</em> : elle n'existe que sur les faits marqués sensibles, donc ne coûte rien sur l'immense majorité.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Ontologie</div><div class="body">
+    <p>Le catalogue des <em>types</em> d'entités et du vocabulaire d'attributs. Les types sont une liste fermée de neuf ; les attributs, eux, ne sont pas encore normalisés — c'est un point ouvert de la pièce 03.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+    <p class="no">Synonyme employé ailleurs : <em>schéma d'entité</em>. Ne pas confondre avec un schéma SQL.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Contradiction</div><div class="body">
+    <p>Un conflit détecté entre plusieurs faits — un objet du canon, pas une erreur à corriger tout de suite. Trois statuts : <strong>ouverte</strong>, <strong>résolue</strong>, ou <strong>assumée</strong>. Le troisième compte : un narrateur peu fiable ou deux versions d'une légende sont des contradictions voulues, et les assumer les fait taire sans les effacer.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Branche</div><div class="body">
+    <p>Une continuité alternative du canon, pour explorer un « et si » sans toucher à la version principale.</p>
+    <p><strong>Écartée par décision en pièce 03</strong>, pas oubliée. Le coût de l'ajout ultérieur est nommé : une colonne de branche sur les faits, les relations et les croyances, plus un filtre sur chaque requête — donc une migration.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Statut · <b>écartée</b></span><span>Réexaminée en · <b>pièce 20</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Provenance</div><div class="body">
+    <p>La trace de ce qui a produit un fait : la scène, la session, l'agent. Permet de remonter d'une affirmation à la conversation qui l'a créée.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Projection Markdown</div><div class="body">
+    <p>Le codex : un fichier par entité, régénéré depuis le canon à chaque consolidation et commité dans un dépôt git. Donne un historique lisible du monde et un <code>git diff</code> pour « qu'est-ce qui a changé cette semaine ». <strong>Généré, jamais source.</strong></p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 01</b></span><span>Détaillé en · <b>pièce 18</b></span></div>
+  </div></div>
+
+  <p class="fam">Le travail — comment les choses se font</p>
+
+  <div class="e"><div class="t">Travail</div><div class="body">
+    <p>Une tâche lourde déposée dans la File : générer une image, produire un maillage, entraîner un style. Porte un type, une recette et sa version, des paramètres, une entité liée <strong>obligatoire</strong>, une clé d'idempotence, une classe de service, des capacités requises, un statut parmi six, et son coût. Un travail ne sait pas sur quelle machine il tourne.</p>
+    <p>Six états : <strong>attente · prêt · réclamé · rendu · échoué · annulé</strong>. L'abandon et l'expiration ne sont pas des états mais des transitions, qui écrivent un événement.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+    <p class="no">Terme technique équivalent en anglais : <em>job</em>. Le dossier dit <strong>travail</strong>.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Recette</div><div class="body">
+    <p>Une suite d'étapes écrite à l'avance et invariable. Aucun modèle ne décide de l'ordre. Une recette appelle des modèles et dépose des travaux, mais n'exécute jamais de calcul lourd elle-même.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 10</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Réclamation</div><div class="body">
+    <p>L'action par laquelle le worker s'attribue un travail prêt, de façon exclusive. Repose sur <code>SELECT … FOR UPDATE SKIP LOCKED</code> : deux workers qui réclament au même instant ne peuvent pas obtenir la même ligne. Ouvre un bail et engage le worker à battre.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Bail</div><div class="body">
+    <p>Deux choses portent ce nom, et c'est volontaire parce que c'est le même mécanisme. Le <strong>bail de réclamation</strong> est la durée pendant laquelle un travail appartient au worker qui l'a pris ; il se prolonge à chaque battement et expire si le worker disparaît. Le <strong>bail de ressource</strong> est le verrou nommé — <code>gpu:0</code> — qu'il faut détenir pour toucher la carte graphique, et qui n'a qu'un détenteur à la fois.</p>
+    <p>C'est le second qui rend l'invariant 09 vrai : les travaux et les appels de modèles locaux se disputent le même verrou, donc deux charges lourdes ne peuvent pas partir ensemble.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+    <p class="no">Le bail est déclaré <em>par machine</em>, jamais globalement. Une seconde machine apporte son propre verrou.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Classe de service</div><div class="body">
+    <p>Le régime d'un travail face au bail : <strong>interactif</strong> — bail court plafonné, prioritaire, bascule vers un modèle distant si le verrou est pris, aucune reprise — ou <strong>travail</strong> — mis en file, repris, journalisé, annulable. Les deux passent par le même verrou ; la classe décide de la priorité, jamais du droit d'accès.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span><span>Seuil réglé en · <b>pièce 14</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Capacités requises</div><div class="body">
+    <p>Ce qu'un travail exige d'une machine — mémoire graphique, présence d'un outil, disponibilité d'un modèle — au lieu de nommer la machine. Une machine de calcul s'enregistre en déclarant les siennes ; le couplage ne se fait qu'à la réclamation.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+    <p class="no">C'est ce qui donne sa forme au patron « un travail ignore où il tourne », et ce qui rend l'ajout d'une carte louée gratuit en code.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Battement de cœur</div><div class="body">
+    <p>Le signal périodique par lequel un worker prolonge son bail. Porte un <strong>compteur de progression</strong> : un bail ne se prolonge que si la progression a bougé, sinon un worker vivant mais figé garderait son travail indéfiniment.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Balayeur</div><div class="body">
+    <p>Le composant du processus <code>atelier</code> qui passe régulièrement remettre en <em>prêt</em> les travaux dont le bail est mort, en incrémentant leur tentative. C'est lui qui rend vraie la phrase « rien ne se perd si le worker disparaît ».</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Point de contrôle</div><div class="body">
+    <p>Un moment de l'exécution où le worker lit le drapeau d'annulation et peut s'arrêter proprement : entre deux étapes d'une recette, entre deux pas d'une diffusion, entre deux blocs d'un texte long.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+    <p class="no">À ne pas confondre avec un <em>point de reprise</em>, qui permettrait de redémarrer un entraînement là où il s'est arrêté — celui-là n'existe pas encore.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Travail interruptible</div><div class="body">
+    <p>Un type de travail que le worker a le droit de tuer brutalement une fois le délai de grâce écoulé, parce qu'il ne porte aucun état partagé. Déclaré au Catalogue, par type. Une génération d'image l'est ; une session Blender ouverte et un entraînement de style ne le sont pas.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span><span>Déclaré en · <b>pièce 05</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Réveil</div><div class="body">
+    <p>Le mécanisme qui allume une machine éteinte quand un travail l'attend. Passe obligatoirement par un intermédiaire allumé sur le réseau local : le réseau privé ne peut pas transmettre le signal.</p>
+    <p>Un réveil qui échoue change l'état de la <strong>machine</strong>, pas celui du travail — sinon une coupure de courant suffirait à perdre une nuit de dépôts.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièces 04 et 16</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Réveilleur</div><div class="body">
+    <p>L'intermédiaire allumé en permanence sur le réseau local qui reçoit l'ordre de réveil et émet le signal. Contrat volontairement minuscule : trois opérations, aucun état, aucune décision. Tenu aujourd'hui par la passerelle du réseau local.</p>
+    <p>Sa fragilité est écrite plutôt que subie : l'outillage d'une passerelle grand public peut disparaître à une mise à jour. Une <strong>épreuve quotidienne</strong> vérifie donc qu'il répond encore, pour que la panne se découvre à froid.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span><span>Matériel décidé en · <b>pièce 16</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Délai de patience</div><div class="body">
+    <p>Le temps qu'on accorde à une machine réveillée pour donner son premier battement avant de la déclarer injoignable — deux minutes, puis une seconde tentative, puis cinq minutes. À ne pas confondre avec le <em>délai de grâce</em> de trente secondes laissé à un worker pour s'arrêter proprement après une annulation.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Clé d'idempotence</div><div class="body">
+    <p>L'empreinte qui identifie <em>la même demande</em> : type, recette, version, paramètres normalisés, entité. Redéposer une clé déjà présente rend le travail existant au lieu d'en créer un second. L'unicité est une contrainte de base, pas une vérification applicative.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span></div>
+    <p class="no">Un dépôt idempotent n'est pas une exécution idempotente : un worker mort à quatre-vingt-dix pour cent a déjà écrit des fichiers. Ceux-là sont orphelins, jamais des assets.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Machine de calcul</div><div class="body">
+    <p>Une machine enregistrée auprès de la File avec ses capacités et ses ressources exclusives. Quatre étages prévus : le VPS, le desktop, le serveur maison, et un cloud d'appoint qui n'existe pas encore.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 04</b></span><span>Détaillé en · <b>pièce 16</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Asset</div><div class="body">
+    <p>Un fichier produit par un travail : image, maillage, texture, piste audio, style entraîné. Ses métadonnées vivent en base, son contenu binaire dans un stockage objet.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 05</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Variante</div><div class="body">
+    <p>Une des sorties d'un même travail de génération. On en produit typiquement quatre, on en valide une. Les variantes rejetées restent dans la Bibliothèque mais ne sont jamais rattachées au canon.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 05</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Validation</div><div class="body">
+    <p>Le geste humain qui marque un asset comme retenu. Un asset validé devient éligible à l'entraînement d'un style et peut être rattaché durablement à une entité.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 05</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Style</div><div class="body">
+    <p>Un modèle d'appoint entraîné sur des assets validés, qui rend un personnage, un lieu ou une esthétique reconnaissable dans toutes les générations suivantes. Son identifiant vit dans le canon, attaché à l'entité.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 11</b></span></div>
+    <p class="no">Terme technique : <em>LoRA</em>. Le même motif s'applique en audio sous le nom de <strong>thème</strong>.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Thème</div><div class="body">
+    <p>L'équivalent sonore d'un style : une signature musicale entraînée pour une faction ou un lieu, déclinable par situation.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 13</b></span></div>
+  </div></div>
+
+  <p class="fam">Technique — les mécanismes</p>
+
+  <div class="e"><div class="t">Outil</div><div class="body">
+    <p>Une fonction qu'un agent peut invoquer, exposée selon le protocole standard. Nommée <code>domaine.action</code>. Toute option coûteuse y est désactivée par défaut — invariant 11.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 05</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Point d'entrée</div><div class="body">
+    <p>L'adresse à laquelle un domaine est exposé. Un agent se connecte à un point d'entrée et voit exactement les outils qui s'y trouvent — c'est le mécanisme du cloisonnement par rôle.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Protocole d'outils</div><div class="body">
+    <p>Le standard par lequel les agents appellent les outils. Version de référence du 28 juillet 2026 : protocole sans état, transport Streamable HTTP, l'ancien transport SSE étant déprécié.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 01</b></span></div>
+    <p class="no">Nom technique : <em>MCP</em>. Le dossier dit « protocole d'outils » en prose et <code>MCP</code> dans les tableaux techniques.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Schéma SQL</div><div class="body">
+    <p>Une division nommée de la base Postgres. Quatre prévues : <code>canon</code>, <code>atelier</code>, <code>journal</code>, et l'index sémantique. Les permissions s'appliquent par schéma.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièces 02 et 03</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Rôle SQL</div><div class="body">
+    <p>Une permission Postgres. Quatre : <code>forge_canon</code> et <code>forge_atelier</code> écrivent chacun dans leur schéma, <code>forge_lecture</code> ne fait que lire, <code>forge_migration</code> n'est jamais utilisé par un service qui tourne.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+    <p class="no">Aucun rapport avec un <em>rôle d'agent</em>.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Événement</div><div class="body">
+    <p>Une ligne écrite dans le journal quand quelque chose se produit. Écrite <strong>dans la même transaction</strong> que le fait métier qu'elle décrit, ce qui garantit qu'aucun événement ne décrit une action annulée.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Journal</div><div class="body">
+    <p>Le schéma SQL qui contient les événements. Sert à la fois de source pour la diffusion en direct vers l'interface, et d'archive pour la relecture a posteriori et le rapport de session.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Transaction</div><div class="body">
+    <p>Une parenthèse d'écriture en base : tout ce qui s'y passe est validé ensemble ou annulé ensemble, jamais à moitié. C'est le mécanisme qui rend impossible l'affichage d'un événement décrivant une action annulée.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Notification</div><div class="body">
+    <p>Le signal émis par Postgres à la fermeture d'une transaction pour réveiller l'api. Ne transporte que l'<strong>identifiant</strong> de la ligne d'événement, jamais son contenu : la charge utile d'une notification est plafonnée vers huit kilo-octets et le dépassement échoue en silence.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+    <p class="no">À ne pas confondre avec l'<em>événement</em> lui-même, qui est la ligne en base. La notification n'est que la sonnette.</p>
+  </div></div>
+
+  <div class="e"><div class="t">Charge utile</div><div class="body">
+    <p>Le contenu technique d'un événement — arguments d'appel, retour brut de l'outil — stocké à côté du résumé en clair. C'est ce que l'interface garde replié sous le message lisible.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 02</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Rattrapage</div><div class="body">
+    <p>La reprise des événements manqués pendant qu'un client était déconnecté. Le client garde l'identifiant du dernier événement reçu et redemande tout ce qui a suivi. Possible seulement parce que le journal est une archive et non une file consommée.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 17</b> — portée et profondeur encore ouvertes</span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Rapport de session</div><div class="body">
+    <p>Le compte rendu d'une session : ce qui a été ajouté, ce qui a été invalidé et pourquoi, les contradictions non résolues, les décisions en attente d'arbitrage. La surface de décision du tableau de bord.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 18</b></span></div>
+  </div></div>
+
+  <p class="fam">Modèles et contexte</p>
+
+  <div class="e"><div class="t">Modèle</div><div class="body">
+    <p>Une IA brute, un fichier de plusieurs gigaoctets chargé en mémoire. Reçoit du texte, renvoie du texte. Ne sait rien faire seul.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Choisis en · <b>pièce 14</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Nom logique</div><div class="body">
+    <p>Le nom d'un rôle de modèle plutôt que d'un modèle : <code>orchestrateur</code>, <code>redacteur</code>, <code>extracteur</code>, <code>vision</code>, <code>audit</code>. Un agent demande un nom logique ; la configuration du routeur dit où il vit aujourd'hui. C'est ce qui rend l'invariant 14 vrai.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 14</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Chargement à chaud</div><div class="body">
+    <p>Le mécanisme qui charge et décharge les modèles sur une seule carte graphique, un à la fois, selon le modèle demandé. Compte des dizaines de secondes par bascule.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 14</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Budget de contexte par couche</div><div class="body">
+    <p>La répartition du contexte injecté en quatre parts à budget fixe : essentiel 20 %, pertinent 35 %, résumé 20 %, coordination 25 %. Mesuré à 89,9 % de compression dans la recherche d'origine.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 08</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Taxe de contexte</div><div class="body">
+    <p>Le coût permanent des définitions d'outils présentes dans la fenêtre à chaque tour. Mesuré : 12 300 unités pour trente-neuf outils, 2 750 une fois cloisonnés par rôle.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Mesuré en · <b>pièce 19</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Décodage en deux passes</div><div class="body">
+    <p>Le montage qui sépare la décision de la structuration : un modèle produit du texte libre sans contrainte, un second en extrait le JSON. Corrige l'effondrement mesuré du tool-calling quand grammaire et outils sont activés ensemble.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 14</b></span></div>
+  </div></div>
+
+  <p class="fam">Le dossier — les termes de la méthode</p>
+
+  <div class="e"><div class="t">Pièce</div><div class="body">
+    <p>Un document du dossier de conception. Vingt et une au total. Chacune répond à trois questions dans l'ordre : ce qu'on décide, quelles étaient les options, ce que ça impose aux autres pièces.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>sommaire</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Invariant</div><div class="body">
+    <p>Une règle qui arbitre toutes les décisions. Se reconnaît à deux propriétés : on peut nommer ce qu'elle évite, et vérifier mécaniquement si elle est respectée. Seize au total.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 00</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Durabilité</div><div class="body">
+    <p>Le degré attaché à une décision de la stack, qui dit ce que sa révision coûterait : <strong>structurant</strong> (des mois), <strong>solide</strong> (des jours), <strong>remplaçable</strong> (des heures), <strong>à revoir</strong> (daté, avec réexamen programmé).</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 01</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Point laissé ouvert</div><div class="body">
+    <p>Une question qu'une pièce soulève sans la résoudre, nommée et affectée à une pièce ultérieure. Une section vide est un résultat valide ; une section absente ne l'est pas — invariant 16.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 00</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Pièce corrigeable</div><div class="body">
+    <p>Une pièce dont le contenu dépend de l'état du monde extérieur et dont la révision est un geste normal, sans passer par la procédure d'amendement. Une seule à ce jour : la stack.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 01</b></span></div>
+  </div></div>
+
+  <div class="e"><div class="t">Amendement</div><div class="body">
+    <p>La modification d'un invariant, en dernier recours seulement, écrite et datée avec le cas qui l'a provoquée et ce qu'on accepte de perdre. Un invariant amendé sans que la perte soit nommée est un invariant abandonné.</p>
+    <div class="meta"><span>Niveau · <b>concept</b></span><span>Fixé en · <b>pièce 00</b></span></div>
+  </div></div>
+
+  </div>
+</section>
+
+<section id="abandonnes">
+  <span class="sec-num">Cimetière</span>
+  <h2>Termes abandonnés</h2>
+  <div class="col">
+    <p class="lede">Gardés ici pour que personne, toi ou moi, ne les réintroduise par mégarde.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Terme</th><th>Pourquoi abandonné</th><th>Remplacé par</th></tr></thead>
+        <tbody>
+          <tr><td class="name">production</td><td>Nom de processus inventé en cours de rédaction, sans justification, et sans rapport avec le vocabulaire du plan</td><td class="v">le processus <code>atelier</code></td></tr>
+          <tr><td class="name">atelier <small style="color:var(--ink-3)">(point d'entrée)</small></td><td>Le mot désignait un point d'entrée alors qu'il servait aussi ailleurs. Employé à deux niveaux, donc source de confusion</td><td class="v">le domaine <strong>Catalogue</strong></td></tr>
+          <tr><td class="name">Kuzu</td><td>Dépôt archivé par son éditeur en octobre 2025</td><td class="v">Postgres pur</td></tr>
+          <tr><td class="name">job</td><td>Anglicisme là où un mot français existe</td><td class="v"><strong>travail</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · glossaire · référence obligatoire · mis à jour le 13 septembre 2026</div>
+</footer>
+
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var cnt = document.getElementById('cnt');
+  var list = document.getElementById('glist');
+  var entries = Array.prototype.slice.call(list.querySelectorAll('.e'));
+  var fams = Array.prototype.slice.call(list.querySelectorAll('.fam'));
+  function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  entries.forEach(function(e){ e.dataset.k = norm(e.textContent); });
+  function apply(){
+    var v = norm(q.value.trim());
+    var n = 0;
+    entries.forEach(function(e){
+      var show = !v || e.dataset.k.indexOf(v) !== -1;
+      e.classList.toggle('hidden', !show);
+      if (show) n++;
+    });
+    fams.forEach(function(f){
+      var any = false, el = f.nextElementSibling;
+      while (el && !el.classList.contains('fam')) {
+        if (el.classList.contains('e') && !el.classList.contains('hidden')) { any = true; break; }
+        el = el.nextElementSibling;
+      }
+      f.classList.toggle('hidden', !any);
+    });
+    cnt.textContent = v ? n + ' entrée' + (n>1?'s':'') : entries.length + ' entrées';
+  }
+  q.addEventListener('input', apply);
+  apply();
+})();
+</script>
+
+</body></html>

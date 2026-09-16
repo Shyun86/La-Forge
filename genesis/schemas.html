@@ -1,0 +1,1092 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Atlas des schémas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:52px 0 34px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.crumb b{color:var(--ember);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ember);border:1px solid var(--ember);
+  padding:4px 10px;border-radius:4px;margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,54px);line-height:1.04;letter-spacing:-.025em;margin:0 0 18px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:19px;line-height:1.55;color:var(--ink-2);margin:0;max-width:62ch}
+section{padding-top:56px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(23px,2.9vw,30px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:12px}
+h3{font-family:var(--f-display);font-weight:600;font-size:19px;margin:36px 0 8px;letter-spacing:-.01em}
+p{margin:0 0 16px}
+.lede{font-size:18.5px;color:var(--ink-2);margin-bottom:22px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 16px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:18px 22px;margin:24px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:8px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.tablewrap{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+td.v{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+
+.step{display:grid;gap:4px 20px;padding:16px 0;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:840px){.step{grid-template-columns:170px 1fr}}
+.step .z{font-family:var(--f-mono);font-size:11px;color:var(--ember);padding-top:4px;line-height:1.4}
+.step p{margin:0 0 8px;font-size:16px;color:var(--ink-2);line-height:1.52}
+.step p:last-child{margin-bottom:0}
+.step b{color:var(--ink)}
+
+.fiche{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;
+  gap:6px 22px;margin:0 0 18px;padding:12px 16px;background:var(--surface-2);border-radius:4px}
+.fiche b{color:var(--ember);font-weight:600}
+
+footer{border-top:1px solid var(--rule);padding:28px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:60px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1060px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">Atlas des schémas</span><span class="sep">/</span><span class="kind">source unique</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a class="cur" href="#top"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · <b>Atlas des schémas</b> · source unique</p>
+    <p class="statusbadge">◈ Un schéma, un seul endroit où le corriger</p>
+    <h1>L'atlas des <em>schémas</em></h1>
+    <p class="standfirst">Tous les schémas du dossier, avec leur lecture guidée. Ce ne sont pas des copies : chaque dessin est écrit une seule fois et injecté ici comme dans la pièce qui le porte. Corriger un schéma à un seul endroit met les deux à jour.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="regle" style="padding-top:44px">
+  <span class="sec-num">La règle</span>
+  <h2>Pourquoi une source unique</h2>
+  <div class="col">
+    <p class="lede">Un schéma présent à deux endroits diverge. Toujours. On corrige celui qu'on a sous les yeux, l'autre reste, et le dossier finit par contenir deux architectures — exactement la panne que l'invariant 01 existe pour empêcher.</p>
+    <p>Les schémas vivent donc dans <code>schemas/</code>, un fichier par dessin, et <code>build_schemas.py</code> est la seule chose qui les écrit dans une page : celle qui veut en afficher un pose un marqueur, le script le remplit. Il en découle trois choses :</p>
+    <ul>
+      <li>Un schéma se corrige <strong>à un seul endroit</strong>, et l'atlas comme la pièce reçoivent la correction au même instant.</li>
+      <li>Le script <strong>vérifie</strong> que chaque schéma est bien présent partout où on l'attend, et le signale sinon. On ne peut plus perdre un dessin par oubli de marqueur.</li>
+      <li>Une <strong>page en ligne périmée</strong> est détectée : le registre compare l'empreinte du fichier local à celle qu'il avait à sa dernière publication, et liste ce qui reste à republier.</li>
+    </ul>
+    <p>La même mécanique gouverne la barre de navigation, pour la même raison — et parce qu'elle a déjà manqué : les pièces 00 et 01 sont restées en ligne un moment sans connaître le glossaire, alors que leurs fichiers locaux, eux, étaient à jour.</p>
+
+    <div class="callout">
+      <span class="tag">Ce que porte l'atlas en plus</span>
+      <p>La pièce ne montre que le dessin et sa légende. L'atlas y ajoute la <strong>lecture guidée</strong> — ce qu'on regarde, dans quel ordre, et ce qu'il faut avoir compris avant de passer à la suite. C'est ici qu'on revient quand un schéma ne se laisse pas lire du premier coup.</p>
+    </div>
+  </div>
+</section>
+
+<section id="arch">
+  <span class="sec-num">Schéma 01</span>
+  <h2>L'architecture</h2>
+  <p class="fiche"><span>Identifiant · <b>arch</b></span><span>Porté par · <b>pièce 02</b></span><span>Répond à · <b>qui parle à qui, et qui a le droit d'écrire</b></span></p>
+
+<!--DGCSS-->
+<style id="dgcss">
+.dg{margin:26px 0}
+.dg svg{display:block;width:100%;height:auto;color:var(--ink)}
+.dg-accent{stroke:var(--ember)}
+.dg-accent-t{fill:var(--ember)}
+.dg-crit{stroke:var(--crit)}
+.dg-crit-t{fill:var(--crit)}
+.dg figcaption{font-size:14.5px;color:var(--ink-3);line-height:1.5;margin-top:14px;
+  border-left:2px solid var(--rule);padding-left:14px;max-width:70ch}
+.dg-scroll{overflow-x:auto}
+.dg-scroll>svg{min-width:680px}
+</style>
+<!--/DGCSS-->
+
+<!--SCHEMA:arch-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 660" role="img" aria-label="L'architecture de la Forge : l'interface parle à l'api ; l'api déclenche l'orchestrateur, qui tourne sur le desktop, et les recettes, qui tournent sur le VPS ; les deux pilotent les mêmes processus d'outils, l'un par le protocole d'agents, l'autre en HTTP direct ; le processus canon sert le domaine Canon, le processus atelier sert sept domaines ; ces deux processus sont les seuls à écrire dans Postgres et dans le stockage objet ; le worker GPU du desktop réclame ses travaux au processus atelier et ne touche jamais la base.">
+<defs>
+  <marker id="ara1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="ara2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- interface -->
+  <rect x="40" y="18" width="210" height="46" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="145" y="41" text-anchor="middle" font-size="14" font-weight="600">Interface</text>
+  <text x="145" y="56" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">forme décidée en pièce 18</text>
+  <line x1="145" y1="64" x2="145" y2="86" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+
+  <!-- api -->
+  <rect x="40" y="92" width="320" height="54" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="200" y="115" text-anchor="middle" font-size="14.5" font-weight="600">api — HTTP + WebSocket</text>
+  <text x="200" y="132" text-anchor="middle" font-size="10.5" opacity="0.6">VPS · n'écrit aucune donnée métier</text>
+
+  <line x1="105" y1="146" x2="105" y2="180" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <line x1="290" y1="146" x2="290" y2="180" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+
+  <!-- pilotes -->
+  <rect x="40" y="186" width="150" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="115" y="210" text-anchor="middle" font-size="14.5" font-weight="600">orchestrateur</text>
+  <text x="115" y="227" text-anchor="middle" font-size="10.5" opacity="0.6">chemin choisi</text>
+  <text x="115" y="245" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">desktop</text>
+
+  <rect x="215" y="186" width="150" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="290" y="210" text-anchor="middle" font-size="14.5" font-weight="600">recettes</text>
+  <text x="290" y="227" text-anchor="middle" font-size="10.5" opacity="0.6">chemin écrit</text>
+  <text x="290" y="245" text-anchor="middle" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+
+  <line x1="206" y1="216" x2="212" y2="216" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <text x="196" y="178" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">déclenche</text>
+
+  <!-- bus de l'orchestrateur : pointillés -->
+  <polyline points="145,258 145,274 520,274 520,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.8" marker-end="url(#ara2)"/>
+  <polyline points="145,274 160,274 160,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.8" marker-end="url(#ara2)"/>
+  <text x="330" y="269" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">protocole d'agents</text>
+
+  <!-- bus des recettes : trait plein -->
+  <polyline points="252,258 252,288 592,288 592,300" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ara1)"/>
+  <polyline points="252,288 224,288 224,300" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ara1)"/>
+  <text x="420" y="284" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">HTTP direct</text>
+
+  <!-- processus canon -->
+  <rect x="40" y="306" width="300" height="196" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="56" y="327" font-size="12.5" font-weight="600" class="dg-accent-t">processus canon</text>
+  <text x="324" y="327" text-anchor="end" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+  <rect x="56" y="338" width="132" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="122" y="366" text-anchor="middle" font-size="12" font-family="JetBrains Mono, monospace">canon</text>
+  <text x="122" y="386" text-anchor="middle" font-size="10" opacity="0.6">lecture + écriture</text>
+  <rect x="196" y="338" width="128" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="260" y="362" text-anchor="middle" font-size="11" font-family="JetBrains Mono, monospace">canon-lecture</text>
+  <text x="260" y="386" text-anchor="middle" font-size="10" opacity="0.6">lecture seule</text>
+  <rect x="56" y="420" width="268" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="190" y="446" text-anchor="middle" font-size="13" font-weight="600">Canon</text>
+  <text x="190" y="466" text-anchor="middle" font-size="10" opacity="0.6">la mémoire du monde · pièce 03</text>
+
+  <!-- processus atelier -->
+  <rect x="376" y="306" width="368" height="196" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="392" y="327" font-size="12.5" font-weight="600" class="dg-accent-t">processus atelier</text>
+  <text x="728" y="327" text-anchor="end" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+
+  <rect x="392" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="446" y="366" text-anchor="middle" font-size="12.5" font-weight="600">File</text>
+  <text x="446" y="386" text-anchor="middle" font-size="9.5" opacity="0.6">l'exécution · 04</text>
+  <rect x="512" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="566" y="366" text-anchor="middle" font-size="12.5" font-weight="600">Catalogue</text>
+  <text x="566" y="386" text-anchor="middle" font-size="9.5" opacity="0.6">le disponible · 05</text>
+  <rect x="632" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="686" y="362" text-anchor="middle" font-size="12" font-weight="600">Biblio-</text>
+  <text x="686" y="377" text-anchor="middle" font-size="12" font-weight="600">thèque</text>
+  <text x="686" y="394" text-anchor="middle" font-size="9.5" opacity="0.6">les assets · 07</text>
+
+  <rect x="392" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="432" y="446" text-anchor="middle" font-size="12" font-weight="600">Récit</text>
+  <text x="432" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 06</text>
+  <rect x="481" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="521" y="446" text-anchor="middle" font-size="12" font-weight="600">Images</text>
+  <text x="521" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 11</text>
+  <rect x="570" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="610" y="446" text-anchor="middle" font-size="12" font-weight="600">3D</text>
+  <text x="610" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 12</text>
+  <rect x="659" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="699" y="446" text-anchor="middle" font-size="12" font-weight="600">Son</text>
+  <text x="699" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 13</text>
+
+  <text x="560" y="497" text-anchor="middle" font-size="9.5" opacity="0.45" font-family="JetBrains Mono, monospace">+ Vidéo, plus tard, sans rien changer d'autre</text>
+
+  <!-- worker -->
+  <rect x="784" y="306" width="136" height="196" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="852" y="356" text-anchor="middle" font-size="14" font-weight="600">worker</text>
+  <text x="852" y="376" text-anchor="middle" font-size="10.5" opacity="0.6">RTX 4070</text>
+  <text x="852" y="393" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">desktop</text>
+  <text x="852" y="414" text-anchor="middle" font-size="10" opacity="0.5">réveillé au besoin</text>
+  <text x="852" y="452" text-anchor="middle" font-size="10" opacity="0.5">aucun accès</text>
+  <text x="852" y="467" text-anchor="middle" font-size="10" opacity="0.5">à la base</text>
+
+  <line x1="778" y1="352" x2="750" y2="352" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <line x1="750" y1="380" x2="778" y2="380" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <text x="764" y="341" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">réclame</text>
+  <text x="764" y="398" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">rend</text>
+
+  <!-- écritures -->
+  <line x1="190" y1="502" x2="190" y2="554" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="200" y="532" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">écrit</text>
+  <line x1="470" y1="502" x2="470" y2="554" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="480" y="532" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">écrit</text>
+
+  <polyline points="744,440 764,440 764,530 774,530" fill="none" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="700" y="524" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">dépose les fichiers</text>
+
+  <!-- postgres -->
+  <rect x="40" y="560" width="700" height="70" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="60" y="586" font-size="14.5" font-weight="600">postgres</text>
+  <text x="200" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma canon</text>
+  <text x="340" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma atelier</text>
+  <text x="486" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma journal</text>
+  <text x="60" y="608" font-size="10.5" opacity="0.5">une seule base · une seule transaction · une seule sauvegarde · les métadonnées seulement</text>
+
+  <!-- stockage objet -->
+  <rect x="780" y="560" width="140" height="70" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="850" y="584" text-anchor="middle" font-size="13" font-weight="600">stockage objet</text>
+  <text x="850" y="601" text-anchor="middle" font-size="10" opacity="0.6">R2 · MinIO</text>
+  <text x="850" y="616" text-anchor="middle" font-size="10" opacity="0.6">les binaires</text>
+
+  <!-- retour journal -->
+  <polyline points="40,594 22,594 22,119 34,119" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.6" marker-end="url(#ara2)"/>
+  <text x="26" y="356" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace" transform="rotate(-90 26 356)">lit le journal · diffuse</text>
+</g>
+</svg>
+<figcaption><strong>Les trois flèches épaisses sont le cœur du schéma.</strong> Deux processus seulement écrivent — dans Postgres pour les métadonnées, dans le stockage objet pour les binaires. Les deux pilotes atteignent les mêmes serveurs par deux chemins différents : pointillés pour l'orchestrateur (protocole d'agents), trait plein pour les recettes (HTTP direct) — mêmes outils, mêmes refus. Les huit domaines sont répartis entre les deux processus, dont les sept du processus atelier : les trois du haut sont transversaux, les quatre du bas sont propres à une modalité et empruntent les autres. Le worker est le seul élément qui peut être absent, et il n'a aucun mot de passe de base de données.</figcaption>
+</figure>
+<!--/SCHEMA:arch-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Le schéma se lit de haut en bas. Chaque étage descend d'un cran vers les données, et une seule chose compte vraiment.</p>
+  </div>
+
+  <div class="step"><div class="z">tout en haut</div><div>
+    <p><b>Interface → api.</b> L'interface est encadrée mais son contenu est laissé vide : sa forme se décide en pièce 18 — desktop, web ou application installable, la question reste ouverte. Elle ne parle qu'à l'api. C'est ce qui permettra d'en changer, ou d'en avoir plusieurs, sans toucher au reste.</p>
+  </div></div>
+
+  <div class="step"><div class="z">le bloc large</div><div>
+    <p><b>l'api.</b> La ligne « n'écrit aucune donnée métier » est une contrainte, pas un commentaire : l'api tourne avec un rôle SQL en lecture seule. Elle reçoit les demandes et diffuse les événements. Même buguée, même détournée, elle ne <em>peut</em> pas écrire.</p>
+    <p>Elle est sur le VPS et non sur le desktop pour une raison précise : <b>elle doit accepter un dépôt quand ta machine dort.</b></p>
+  </div></div>
+
+  <div class="step"><div class="z">les deux boîtes</div><div>
+    <p><b>orchestrateur et recettes.</b> C'est la décision B-contre-C rendue visible. À gauche, un agent décide au moment où il tourne de ce qu'il appelle ensuite. À droite, un enchaînement écrit une fois, qui donnera le même résultat dans six mois.</p>
+    <p>Regarde les étiquettes de machine : l'orchestrateur porte <b>desktop</b>, les recettes portent <b>VPS</b>. Ce n'est pas un détail de déploiement. Une recette d'audit fait facilement cinquante appels au canon ; à travers le réseau privé, cela coûterait jusqu'à une seconde de latence cumulée, en local c'est négligeable. L'orchestrateur, lui, n'a aucune raison d'être ailleurs que là où tu es.</p>
+    <p>La petite flèche entre les deux dit que l'orchestrateur peut <em>déclencher</em> une recette. L'inverse n'existe pas.</p>
+  </div></div>
+
+  <div class="step"><div class="z">les deux bus</div><div>
+    <p><b>Pointillés et trait plein.</b> Deux chemins descendent des pilotes vers les processus d'outils : l'orchestrateur passe par le protocole d'agents, les recettes par du HTTP direct.</p>
+    <p>Le point à retenir : ils arrivent aux <b>mêmes serveurs</b>. Une recette n'a aucun privilège que l'orchestrateur n'aurait pas — même noyau, même validation, mêmes refus. Deux façons de parler, une seule autorité.</p>
+  </div></div>
+
+  <div class="step"><div class="z">les deux grands cadres</div><div>
+    <p><b>Deux processus, sept domaines.</b> C'est la partie qui a le plus bougé, et celle où il faut ralentir.</p>
+    <p>Un <em>processus</em> est ce qui tourne sur une machine. Un <em>domaine</em> est une zone de responsabilité. Il n'y a que deux processus, mais ils servent sept domaines.</p>
+    <p>À gauche, le processus <code>canon</code> et ses deux points d'entrée : <code>canon</code> en lecture-écriture, <code>canon-lecture</code> en lecture seule. Un agent qui n'a rien à écrire n'a tout simplement pas la porte.</p>
+    <p>À droite, le processus <code>atelier</code> et ses sept domaines, en deux rangées qui ne jouent pas le même rôle. <b>La rangée du haut est transversale</b> : File, Catalogue, Bibliothèque servent toutes les modalités de la même façon. <b>La rangée du bas est propre à un métier</b> : Récit, Images, 3D et Son possèdent le vocabulaire et les étapes qui n'ont de sens que chez eux — structurer et versionner pour le récit, cadrer et décliner pour l'image, retopologier et déplier les UV pour la 3D, mixer pour le son. Ils ne possèdent ni exécution ni stockage : ils empruntent la File et la Bibliothèque.</p>
+    <p>C'est cette séparation qui rend la vidéo ajoutable plus tard sans rien casser : une cinquième boîte dans la rangée du bas, et rien d'autre à toucher.</p>
+  </div></div>
+
+  <div class="step"><div class="z">les trois flèches épaisses</div><div>
+    <p><b>Le cœur du schéma.</b> Trois flèches seulement descendent vers le stockage, et elles partent toutes les trois des processus d'outils. Personne d'autre n'écrit — ni l'api, ni l'orchestrateur, ni les recettes, ni le worker.</p>
+    <p>Ce n'est pas une convention de dessin. C'est appliqué par les rôles SQL de Postgres, donc <b>vérifiable par un test qui essaie et se fait refuser</b>. Si ce test ne peut pas être écrit, la frontière n'existe pas.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la bande du bas</div><div>
+    <p><b>postgres et le stockage objet, séparés.</b> Postgres tient les trois schémas — <code>canon</code>, <code>atelier</code>, <code>journal</code> — dans une seule base : un événement et le fait qu'il décrit tombent ou passent ensemble.</p>
+    <p>Mais il ne tient que les <b>métadonnées</b>. Les images, les maillages, les fichiers audio partent dans un stockage objet, parce que 150 à 300 Go de binaires en base multiplient la taille des sauvegardes par cent et rendent toute restauration pénible. La base garde un chemin, une empreinte, un type et l'entité liée.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la flèche de gauche</div><div>
+    <p><b>« lit le journal · diffuse ».</b> Le seul chemin de retour du schéma. C'est le sujet du schéma suivant.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte en pointillés</div><div>
+    <p><b>Le worker, sur le desktop.</b> Encadré en pointillés parce qu'il est le seul élément qui peut être absent : la machine dort, et le système continue d'accepter du travail.</p>
+    <p>Deux flèches seulement, <em>réclame</em> et <em>rend</em>. Aucune vers la base. Le worker n'a pas de mot de passe Postgres du tout — il ne sait même pas qu'une base existe.</p>
+  </div></div>
+</section>
+
+<section id="flux">
+  <span class="sec-num">Schéma 02</span>
+  <h2>Le flux d'un événement</h2>
+  <p class="fiche"><span>Identifiant · <b>flux</b></span><span>Porté par · <b>pièce 02</b></span><span>Répond à · <b>comment tu vois ce que font les agents, sans jamais voir de faux</b></span></p>
+
+<!--SCHEMA:flux-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 330" role="img" aria-label="Le flux d'un événement : le fait métier et l'événement sont écrits dans la même transaction ; à la validation, une notification portant le seul identifiant réveille l'api, qui relit la ligne et la diffuse en WebSocket ; la ligne reste en base comme archive.">
+<defs>
+  <marker id="fxa1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="fxa2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <rect x="36" y="52" width="424" height="152" rx="7" fill="none" class="dg-accent" stroke-width="1.75" stroke-dasharray="7 4"/>
+  <text x="52" y="74" font-size="11.5" font-weight="600" class="dg-accent-t" font-family="JetBrains Mono, monospace">UNE SEULE TRANSACTION</text>
+
+  <rect x="54" y="88" width="180" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="144" y="118" text-anchor="middle" font-size="14" font-weight="600">le fait</text>
+  <text x="144" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">schéma canon</text>
+  <text x="144" y="158" text-anchor="middle" font-size="10.5" opacity="0.6">les contraintes</text>
+  <text x="144" y="173" text-anchor="middle" font-size="10.5" opacity="0.6">peuvent refuser ici</text>
+
+  <line x1="234" y1="137" x2="258" y2="137" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="262" y="88" width="180" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="352" y="118" text-anchor="middle" font-size="14" font-weight="600">l'événement</text>
+  <text x="352" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">schéma journal</text>
+  <text x="352" y="158" text-anchor="middle" font-size="10.5" opacity="0.6">+ résumé en clair</text>
+  <text x="352" y="173" text-anchor="middle" font-size="10.5" opacity="0.6">+ charge utile</text>
+
+  <line x1="460" y1="128" x2="504" y2="128" stroke="currentColor" stroke-width="1.75" marker-end="url(#fxa1)"/>
+  <text x="482" y="118" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">commit</text>
+
+  <rect x="508" y="88" width="150" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="583" y="118" text-anchor="middle" font-size="13.5" font-weight="600">notification</text>
+  <text x="583" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">l'identifiant seul</text>
+  <text x="583" y="160" text-anchor="middle" font-size="10.5" opacity="0.6">jamais le contenu</text>
+  <text x="583" y="176" text-anchor="middle" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">plafond ≈ 8 Ko</text>
+
+  <line x1="658" y1="128" x2="694" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="698" y="88" width="112" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="754" y="122" text-anchor="middle" font-size="14" font-weight="600">api</text>
+  <text x="754" y="144" text-anchor="middle" font-size="10.5" opacity="0.6">relit la ligne</text>
+  <text x="754" y="162" text-anchor="middle" font-size="10.5" opacity="0.6">en lecture seule</text>
+
+  <line x1="810" y1="128" x2="840" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="844" y="88" width="100" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="894" y="122" text-anchor="middle" font-size="13.5" font-weight="600">interface</text>
+  <text x="894" y="144" text-anchor="middle" font-size="10.5" opacity="0.6">WebSocket</text>
+  <text x="894" y="162" text-anchor="middle" font-size="10.5" opacity="0.6">quelques ms</text>
+
+  <!-- archive -->
+  <line x1="352" y1="204" x2="352" y2="242" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7" marker-end="url(#fxa2)"/>
+  <rect x="196" y="248" width="312" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.8"/>
+  <text x="352" y="272" text-anchor="middle" font-size="12.5" font-weight="600">la ligne reste</text>
+  <text x="352" y="291" text-anchor="middle" font-size="10.5" opacity="0.6">l'archive n'est jamais consommée — d'où le rattrapage</text>
+
+  <!-- rattrapage -->
+  <polyline points="508,276 754,276 754,192" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.6" marker-end="url(#fxa2)"/>
+  <text x="631" y="268" text-anchor="middle" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace">rattrapage à la reconnexion · pièce 17</text>
+</g>
+</svg>
+<figcaption><strong>Le cadre en pointillés est toute la garantie.</strong> Parce que le fait et l'événement sont écrits dans la même parenthèse, il n'existe aucun instant où l'un est vrai sans l'autre : l'interface ne peut pas afficher un événement décrivant une action annulée, et aucun fait ne peut passer sans laisser de trace. La notification ne transporte que l'identifiant, parce que sa charge utile est plafonnée et que le dépassement échoue en silence. Et comme la ligne reste en base au lieu d'être consommée, un client déconnecté peut redemander tout ce qu'il a manqué.</figcaption>
+</figure>
+<!--/SCHEMA:flux-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Ces deux exigences — voir en direct, et ne jamais voir de faux — sont contradictoires dans la plupart des architectures. C'est ce que ce schéma résout.</p>
+  </div>
+
+  <div class="step"><div class="z">le cadre en pointillés</div><div>
+    <p><b>Une seule transaction.</b> Une transaction est une parenthèse : tout ce qui s'y passe est validé ensemble ou annulé ensemble, jamais à moitié. Le fait métier et l'événement qui le raconte sont écrits <em>dans la même parenthèse</em>.</p>
+    <p>Conséquence directe : il n'existe aucun instant où l'un est vrai sans l'autre. Tu ne verras jamais un événement décrivant une action qui a été annulée, et aucun fait ne peut entrer sans laisser de trace.</p>
+  </div></div>
+
+  <div class="step"><div class="z">boîte 1 — le fait</div><div>
+    <p><b>C'est ici que ça peut refuser.</b> Les contraintes du canon se déclenchent à l'insertion : chevauchement de validité, contradiction avec un fait existant, entité inconnue. Si l'une refuse, la parenthèse se referme sur rien et on s'arrête — pas d'événement, rien à afficher.</p>
+  </div></div>
+
+  <div class="step"><div class="z">boîte 2 — l'événement</div><div>
+    <p><b>Le résumé en clair est le champ qui compte.</b> Une phrase en français écrite par l'agent lui-même sur ce qu'il vient de faire : « J'ai ajouté que Kael a quitté la cité au printemps de la troisième année. »</p>
+    <p>C'est ce champ que l'interface affiche comme un message de conversation — la transparence que tu voulais, des agents qui se parlent lisiblement. La charge utile technique reste dépliable en dessous. On paie un champ de plus dans la sortie de chaque agent ; on achète <b>un transport structuré et fiable avec un affichage lisible</b>, au lieu du compromis habituel où on rend l'interface lisible en faisant parler les agents en texte libre, et où le parsing casse.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la notification</div><div>
+    <p><b>L'identifiant seul, jamais le contenu.</b> À la validation, un déclencheur Postgres émet une notification. Sa charge utile est plafonnée aux alentours de huit kilo-octets.</p>
+    <p>Envoyer l'événement entier marcherait — jusqu'au jour où un résultat d'outil dépasse la limite. Et ce jour-là, <b>l'échec est silencieux</b> : rien ne remonte, rien ne prévient. On envoie donc un identifiant, qui ne dépasse jamais, et l'api relit la ligne.</p>
+  </div></div>
+
+  <div class="step"><div class="z">api → interface</div><div>
+    <p><b>Quelques millisecondes.</b> Ce n'est pas de l'interrogation périodique : l'api tient une connexion en écoute et c'est Postgres qui la réveille. Elle relit la ligne complète avec son rôle en lecture seule, et la pousse aux interfaces connectées.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte du bas</div><div>
+    <p><b>La ligne reste.</b> Rien n'est consommé ni effacé. C'est ce qui distingue un journal d'une file de messages, et c'est ce qui rend possible tout le reste : le rapport de session, la relecture six mois plus tard, et le rattrapage.</p>
+    <p><b>Le rattrapage</b> — la flèche qui remonte vers l'api — est le seul point encore ouvert de ce schéma. Une notification n'est délivrée qu'aux connexions en écoute à cet instant : si l'api redémarre ou si tu refermes ton portable, les événements de l'intervalle ne seront jamais poussés. La parade est directe puisque tout est en base : le client garde l'identifiant du dernier événement reçu et redemande la suite. Reste à décider jusqu'où on rattrape, et si c'est par session ou global. → <strong>pièce 17</strong>.</p>
+  </div></div>
+
+  <div class="col">
+    <div class="callout good">
+      <span class="tag">Ce que ce choix évite, et que l'alternative ne peut pas éviter</span>
+      <p>Publier les événements sur un bus séparé — Redis, RabbitMQ, un service de messages — amène trois pannes. <strong>L'événement fantôme</strong> : le message part, l'écriture échoue, l'interface affiche un fait qui n'existe pas. <strong>L'événement perdu</strong> : l'écriture réussit, la publication échoue, le fait existe et tu ne l'as jamais vu. <strong>La sauvegarde à moitié</strong> : deux systèmes, deux sauvegardes, deux instants. Ici il n'y a qu'une écriture et qu'une base — les trois disparaissent, et sans un service de plus sur les huit gigaoctets du VPS.</p>
+    </div>
+  </div>
+</section>
+
+<section id="canon">
+  <span class="sec-num">Schéma 03</span>
+  <h2>Le modèle du Canon</h2>
+  <p class="fiche"><span>Identifiant · <b>canon</b></span><span>Porté par · <b>pièce 03</b></span><span>Répond à · <b>ce qui va dans quelle table, et pourquoi</b></span></p>
+
+<!--SCHEMA:canon-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 560" role="img" aria-label="Le modèle du Canon : quatre tables. Une entité porte un identifiant et un type pris dans une liste fermée. Un fait porte sur une entité et a deux périodes, celle du monde et celle de l'écriture, plus un statut candidat ou validé. Une relation lie deux entités et porte aussi une validité. Une croyance lie un porteur — un personnage ou le lecteur — à un fait, avec un statut et sa propre validité.">
+<defs>
+  <marker id="cna1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="cna2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- relation : lien par le haut -->
+  <polyline points="160,72 160,32 810,32 810,72" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#cna1)"/>
+  <text x="485" y="26" text-anchor="middle" font-size="10.5" opacity="0.65" font-family="JetBrains Mono, monospace">source et cible</text>
+
+  <!-- ENTITÉ -->
+  <rect x="40" y="72" width="240" height="186" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="56" y="98" font-size="14" font-weight="600" class="dg-accent-t">ENTITÉ</text>
+  <text x="264" y="98" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">ce qui existe</text>
+  <line x1="56" y1="108" x2="264" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="56" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">identifiant</text>
+  <text x="56" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">type</text>
+  <text x="130" y="152" font-size="10" opacity="0.55">liste fermée</text>
+  <text x="56" y="174" font-size="11.5" font-family="JetBrains Mono, monospace">nom</text>
+  <text x="56" y="196" font-size="11.5" font-family="JetBrains Mono, monospace">autres noms</text>
+  <text x="56" y="222" font-size="10" opacity="0.55">aucun champ libre :</text>
+  <text x="56" y="238" font-size="10" opacity="0.55">tout le reste est un fait</text>
+
+  <!-- FAIT -->
+  <rect x="360" y="72" width="280" height="228" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="376" y="98" font-size="14" font-weight="600" class="dg-accent-t">FAIT</text>
+  <text x="624" y="98" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">ce qui est vrai</text>
+  <line x1="376" y1="108" x2="624" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="376" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">sujet</text>
+  <text x="450" y="130" font-size="10" opacity="0.55">une entité</text>
+  <text x="376" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">attribut · valeur</text>
+  <text x="376" y="180" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="470" y="180" font-size="10" opacity="0.55">temps du monde</text>
+  <text x="376" y="202" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">écrit le</text>
+  <text x="470" y="202" font-size="10" opacity="0.55">temps d'écriture</text>
+  <text x="376" y="230" font-size="11.5" font-family="JetBrains Mono, monospace">statut</text>
+  <text x="450" y="230" font-size="10" opacity="0.55">candidat ou validé</text>
+  <text x="376" y="252" font-size="11.5" font-family="JetBrains Mono, monospace">provenance</text>
+  <text x="376" y="280" font-size="10" opacity="0.55">jamais écrasé — on ferme sa validité</text>
+
+  <line x1="286" y1="130" x2="354" y2="130" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="320" y="122" text-anchor="middle" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">sujet</text>
+
+  <!-- RELATION -->
+  <rect x="700" y="72" width="220" height="186" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="716" y="98" font-size="14" font-weight="600" class="dg-accent-t">RELATION</text>
+  <line x1="716" y1="108" x2="904" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="716" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">source · cible</text>
+  <text x="716" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">type</text>
+  <text x="716" y="180" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="716" y="208" font-size="10" opacity="0.55">une alliance a un début</text>
+  <text x="716" y="224" font-size="10" opacity="0.55">et souvent une fin</text>
+
+  <!-- CROYANCE -->
+  <line x1="500" y1="300" x2="500" y2="356" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="510" y="332" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">porte sur</text>
+
+  <polyline points="160,258 160,420 354,420" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="170" y="412" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">porteur</text>
+
+  <rect x="360" y="360" width="280" height="164" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="376" y="386" font-size="14" font-weight="600">CROYANCE</text>
+  <text x="624" y="386" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">facultatif</text>
+  <line x1="376" y1="396" x2="624" y2="396" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="376" y="418" font-size="11.5" font-family="JetBrains Mono, monospace">porteur · fait</text>
+  <text x="376" y="440" font-size="11.5" font-family="JetBrains Mono, monospace">statut</text>
+  <text x="376" y="460" font-size="10" opacity="0.55">sait · ignore · croit faux · soupçonne</text>
+  <text x="376" y="484" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="470" y="484" font-size="10" opacity="0.55">on apprend à une date</text>
+  <text x="376" y="510" font-size="10" opacity="0.55">n'existe que sur les faits marqués sensibles</text>
+
+  <rect x="700" y="360" width="220" height="164" rx="6" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.75"/>
+  <text x="716" y="386" font-size="12.5" font-weight="600">Le lecteur</text>
+  <line x1="716" y1="396" x2="904" y2="396" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="716" y="418" font-size="11" opacity="0.7">est un porteur comme</text>
+  <text x="716" y="434" font-size="11" opacity="0.7">un autre — sauf que sa</text>
+  <text x="716" y="450" font-size="11" opacity="0.7">validité se compte en</text>
+  <text x="716" y="466" font-size="11" opacity="0.7">chapitres, pas en années</text>
+  <text x="716" y="494" font-size="10" opacity="0.5">d'où : pas de troisième</text>
+  <text x="716" y="510" font-size="10" opacity="0.5">axe temporel à construire</text>
+
+  <line x1="694" y1="442" x2="646" y2="442" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7" marker-end="url(#cna2)"/>
+</g>
+</svg>
+<figcaption><strong>Quatre tables, et une seule est facultative.</strong> Une entité ne porte que son identité — tout ce qui pourrait changer est un <em>fait</em>, ce qui est la raison pour laquelle il n'y a aucun champ libre sur l'entité. Un fait porte deux temps : celui du monde et celui de l'écriture. Une relation est datée elle aussi, parce qu'une alliance commence et finit. La croyance, en pointillés, n'existe que sur les faits que tu marques comme sensibles — et le lecteur y entre comme un porteur de plus, ce qui évite d'inventer un troisième axe de temps.</figcaption>
+</figure>
+<!--/SCHEMA:canon-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Quatre tables. La difficulté n'est jamais de les lister — c'est de savoir ce qui va dans laquelle.</p>
+  </div>
+
+  <div class="step"><div class="z">à gauche</div><div>
+    <p><b>Entité : ce qui existe.</b> Elle ne porte que son identité — identifiant, type, nom, autres noms. La ligne du bas est la plus importante du bloc : <b>aucun champ libre.</b></p>
+    <p>Pas de colonne « description », pas de « notes ». La tentation est forte, et c'est exactement ce qui tue un canon : au bout de six mois, la moitié de la vérité du monde vit dans des paragraphes que rien ne peut interroger, dater ni vérifier. Tout ce qui pourrait changer est un fait.</p>
+  </div></div>
+
+  <div class="step"><div class="z">au centre</div><div>
+    <p><b>Fait : ce qui est vrai.</b> Un sujet, un attribut, une valeur — et <em>deux</em> temps, marqués en couleur parce que c'est la partie qu'on ne devine pas.</p>
+    <p>La ligne du bas dit ce qui gouverne toute la table : <b>jamais écrasé.</b> Il n'existe aucune mise à jour destructive. Quand Kael quitte la capitale, on ferme la validité de l'ancien fait et on ajoute le nouveau — les deux coexistent, et « où vivait Kael en l'an 7 » garde une réponse.</p>
+  </div></div>
+
+  <div class="step"><div class="z">à droite</div><div>
+    <p><b>Relation : ce qui lie.</b> Le champ à ne pas manquer est la <em>validité</em> : une alliance commence et finit. C'est l'oubli le plus fréquent et le plus coûteux — une relation sans date rend impossible la question la plus utile du worldbuilding, <em>qui était allié à qui au moment de la bataille</em>.</p>
+  </div></div>
+
+  <div class="step"><div class="z">en bas, en pointillés</div><div>
+    <p><b>Croyance : qui sait quoi.</b> Les pointillés disent qu'elle est facultative — elle n'existe que sur les faits que tu marques comme sensibles, c'est-à-dire une infime minorité. Pour tous les autres, aucune ligne, aucun coût de stockage, aucun coût de contexte.</p>
+    <p>Elle a sa propre validité, parce qu'on apprend les choses à une date : Kael ignore jusqu'à l'an 12, sait après.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte de droite</div><div>
+    <p><b>Le lecteur est un porteur comme un autre.</b> C'est le trait le plus économique du modèle : « que sait Kael à l'an 12 » et « que sait le lecteur au chapitre 20 » deviennent la même requête, la seule différence étant l'échelle de la validité.</p>
+    <p>Conséquence directe : <b>il n'y a pas de troisième axe temporel à construire.</b> L'ordre de révélation n'est pas un mécanisme de plus, c'est un usage de celui-ci.</p>
+  </div></div>
+</section>
+
+<section id="temps">
+  <span class="sec-num">Schéma 04</span>
+  <h2>Les deux temps</h2>
+  <p class="fiche"><span>Identifiant · <b>temps</b></span><span>Porté par · <b>pièce 03</b></span><span>Répond à · <b>pourquoi deux axes et pas un</b></span></p>
+
+<!--SCHEMA:temps-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 330" role="img" aria-label="Les deux axes de temps : sur l'axe du monde, une première version dit que Kael vit à la capitale de l'an 3 à toujours, une seconde version la remplace en la limitant à l'an 12 ; sur l'axe d'écriture, la première a été écrite le 2 mars et la seconde le 14 mai, et la première n'est pas effacée.">
+<defs>
+  <marker id="tpa1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="tpa2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <text x="40" y="34" font-size="12.5" font-weight="600" class="dg-accent-t">TEMPS DU MONDE — quand c'est vrai dans ton univers</text>
+
+  <line x1="40" y1="60" x2="920" y2="60" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+  <text x="150" y="52" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">an 3</text>
+  <text x="520" y="52" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">an 12</text>
+  <line x1="150" y1="54" x2="150" y2="66" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+  <line x1="520" y1="54" x2="520" y2="66" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+
+  <rect x="150" y="78" width="770" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="5 4" opacity="0.55"/>
+  <text x="164" y="100" font-size="11.5" opacity="0.55">Kael vit à la capitale · an 3 → toujours</text>
+  <text x="906" y="100" text-anchor="end" font-size="10" opacity="0.45" font-family="JetBrains Mono, monospace">version close</text>
+
+  <rect x="150" y="124" width="370" height="34" rx="4" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="164" y="146" font-size="11.5" font-weight="600">Kael vit à la capitale · an 3 → an 12</text>
+  <text x="506" y="146" text-anchor="end" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">en vigueur</text>
+
+  <text x="40" y="210" font-size="12.5" font-weight="600" class="dg-accent-t">TEMPS D'ÉCRITURE — quand tu l'as su</text>
+
+  <line x1="40" y1="240" x2="920" y2="240" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+  <circle cx="300" cy="240" r="5" fill="currentColor"/>
+  <circle cx="660" cy="240" r="5" fill="currentColor"/>
+  <line x1="300" y1="240" x2="300" y2="112" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <line x1="660" y1="240" x2="660" y2="158" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <text x="300" y="264" text-anchor="middle" font-size="11" font-weight="600">2 mars</text>
+  <text x="300" y="282" text-anchor="middle" font-size="10.5" opacity="0.6">le fait est écrit</text>
+  <text x="660" y="264" text-anchor="middle" font-size="11" font-weight="600">14 mai</text>
+  <text x="660" y="282" text-anchor="middle" font-size="10.5" opacity="0.6">on ferme sa validité</text>
+  <text x="660" y="300" text-anchor="middle" font-size="10.5" opacity="0.6">on n'efface rien</text>
+</g>
+</svg>
+<figcaption><strong>La ligne du haut n'est pas supprimée, elle est close.</strong> C'est toute la différence entre « le monde a changé » et « je me suis trompé » : les deux axes permettent de distinguer <em>Kael a quitté la capitale en l'an 12</em> de <em>je croyais qu'il y était resté et j'ai appris le contraire le 14 mai</em>. Sans le second axe, un flashback écrit après coup devient impossible à dater ; sans le premier, on perd la capacité d'interroger le monde à une date donnée.</figcaption>
+</figure>
+<!--/SCHEMA:temps-->
+
+  <h3>Lecture guidée</h3>
+  <div class="step"><div class="z">l'axe du haut</div><div>
+    <p><b>Le temps du monde.</b> Celui qu'on attend : quand un fait est vrai dans ton univers. Deux barres s'y superposent — l'ancienne version en pointillés, la nouvelle en trait plein.</p>
+  </div></div>
+
+  <div class="step"><div class="z">l'axe du bas</div><div>
+    <p><b>Le temps d'écriture.</b> Celui qui surprend : quand tu l'as su. Les deux points marquent les moments où <em>toi</em> as agi, et les pointillés verticaux relient chaque geste à la version qu'il a produite.</p>
+  </div></div>
+
+  <div class="step"><div class="z">ce que ça sépare</div><div>
+    <p>Deux situations que le seul axe du monde confond. <b>Le monde a changé</b> — Kael est parti en l'an 12, l'ancien fait reste vrai pour sa période. <b>Je me suis trompé</b> — je croyais qu'il était resté, et le fait n'a jamais été vrai.</p>
+    <p>Sans le second axe, les deux produisent la même donnée. Avec, on peut demander <em>« qu'est-ce que le canon disait le 2 mars ? »</em> — question qui paraît byzantine jusqu'au jour où une scène écrite en mars contredit un fait corrigé en mai, et où il faut savoir laquelle des deux a raison.</p>
+  </div></div>
+</section>
+
+<section id="promotion">
+  <span class="sec-num">Schéma 05</span>
+  <h2>Le chemin d'un fait</h2>
+  <p class="fiche"><span>Identifiant · <b>promotion</b></span><span>Porté par · <b>pièce 03</b></span><span>Répond à · <b>ce qui bloque, ce qui signale, et à quel moment</b></span></p>
+
+<!--SCHEMA:promotion-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 420" role="img" aria-label="Le chemin d'un fait : un agent propose, le fait entre comme candidat après un contrôle d'intégrité, l'audit le relit par plusieurs relecteurs séparés, puis il est promu en validé — c'est seulement à ce moment que les règles du monde s'appliquent — ou rejeté ; dans les deux cas le rapport de session en garde la trace.">
+<defs>
+  <marker id="pma1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="pma2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <rect x="34" y="120" width="140" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="104" y="150" text-anchor="middle" font-size="13.5" font-weight="600">un agent</text>
+  <text x="104" y="170" text-anchor="middle" font-size="11" opacity="0.6">propose</text>
+  <text x="104" y="186" text-anchor="middle" font-size="10" opacity="0.5">librement</text>
+
+  <line x1="174" y1="158" x2="222" y2="158" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+  <text x="198" y="118" text-anchor="middle" font-size="10" class="dg-crit-t" font-family="JetBrains Mono, monospace">étage 1</text>
+  <text x="198" y="132" text-anchor="middle" font-size="9.5" class="dg-crit-t" font-family="JetBrains Mono, monospace">intégrité</text>
+  <line x1="198" y1="140" x2="198" y2="150" class="dg-crit" stroke-width="1.5"/>
+
+  <rect x="226" y="120" width="150" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="301" y="150" text-anchor="middle" font-size="13.5" font-weight="600">candidat</text>
+  <text x="301" y="170" text-anchor="middle" font-size="10.5" opacity="0.6">dans le canon,</text>
+  <text x="301" y="186" text-anchor="middle" font-size="10.5" opacity="0.6">pas encore vrai</text>
+
+  <line x1="376" y1="158" x2="416" y2="158" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+
+  <rect x="420" y="106" width="180" height="104" rx="5" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="510" y="134" text-anchor="middle" font-size="13.5" font-weight="600">l'audit</text>
+  <text x="510" y="154" text-anchor="middle" font-size="10.5" opacity="0.6">cohérence · canon</text>
+  <text x="510" y="170" text-anchor="middle" font-size="10.5" opacity="0.6">style · technique</text>
+  <text x="510" y="192" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">jamais le producteur</text>
+
+  <polyline points="600,140 656,140 656,96" fill="none" stroke="currentColor" stroke-width="1.75" marker-end="url(#pma1)"/>
+  <polyline points="600,176 656,176 656,252" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+
+  <text x="700" y="46" font-size="10" class="dg-crit-t" font-family="JetBrains Mono, monospace">étage 2 — les règles de ton monde</text>
+  <text x="700" y="60" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace">sévérité réglable · refus ou signalement</text>
+  <line x1="694" y1="68" x2="694" y2="82" class="dg-crit" stroke-width="1.5"/>
+
+  <rect x="672" y="88" width="248" height="76" rx="5" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="796" y="118" text-anchor="middle" font-size="13.5" font-weight="600">validé</text>
+  <text x="796" y="138" text-anchor="middle" font-size="10.5" opacity="0.6">c'est vrai de ton monde</text>
+  <text x="796" y="154" text-anchor="middle" font-size="10" opacity="0.5">plus jamais écrasé</text>
+
+  <rect x="672" y="244" width="248" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="796" y="274" text-anchor="middle" font-size="13.5" font-weight="600">rejeté</text>
+  <text x="796" y="294" text-anchor="middle" font-size="10.5" opacity="0.6">conservé, avec son motif</text>
+  <text x="796" y="310" text-anchor="middle" font-size="10" opacity="0.5">un rejet est une information</text>
+
+  <polyline points="510,210 510,300 656,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7"/>
+  <rect x="286" y="300" width="224" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.85"/>
+  <text x="398" y="328" text-anchor="middle" font-size="12.5" font-weight="600">rapport de session</text>
+  <text x="398" y="348" text-anchor="middle" font-size="10.5" opacity="0.6">étage 3 — ce qui est signalé</text>
+  <text x="398" y="364" text-anchor="middle" font-size="10.5" opacity="0.6">et attend ton arbitrage</text>
+  <line x1="510" y1="300" x2="512" y2="300" stroke="currentColor" stroke-width="1.25"/>
+</g>
+</svg>
+<figcaption><strong>Les règles de ton monde ne s'appliquent qu'à la promotion, jamais à la proposition.</strong> C'est ce qui permet à un agent d'écrire vite sans salir le canon : il propose librement, seul le contrôle d'intégrité l'arrête à l'entrée. Le reste — les incohérences de monde — se découvre à l'audit et remonte dans ton rapport de session, où tu tranches. Un fait rejeté est conservé avec son motif : savoir qu'une piste a été écartée, et pourquoi, vaut mieux que de la retrouver six mois plus tard sans le contexte.</figcaption>
+</figure>
+<!--/SCHEMA:promotion-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Le schéma se lit de gauche à droite, mais ce qu'il faut regarder d'abord, ce sont les deux petites barres rouges — elles marquent les seuls endroits où quelque chose peut être refusé.</p>
+  </div>
+
+  <div class="step"><div class="z">la première barre</div><div>
+    <p><b>Étage 1 — l'intégrité, à l'entrée.</b> Un fait qui pointe vers une entité inexistante, une date qui finit avant de commencer. Une violation ici signifie que <em>la donnée est cassée</em>, pas que le monde est étrange. C'est le seul contrôle qui arrête un agent en train d'écrire.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte en pointillés</div><div>
+    <p><b>Candidat : dans le canon, pas encore vrai.</b> Le fait est visible et interrogeable, mais il n'engage rien. C'est cet état intermédiaire qui permet à un agent de proposer librement sans salir quoi que ce soit.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la seconde barre</div><div>
+    <p><b>Étage 2 — les règles de ton monde, à la promotion seulement.</b> C'est la décision centrale de la pièce 03, et elle mérite qu'on s'y arrête.</p>
+    <p>Imagine l'inverse. Tu écris ; le Narrateur place Kael dans la capitale ; le canon dit qu'il en est parti trois chapitres plus tôt. Si la règle s'appliquait à la <em>proposition</em>, l'écriture serait bloquée : arrêt, correction, retour. Dix fois par session, et le système devient un obstacle.</p>
+    <p>Ici, le fait entre comme candidat, l'audit relève le conflit, et il remonte dans ton rapport avec les deux issues possibles — erreur de scène, ou voyage de retour manquant. Tu tranches quand tu veux.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte du bas</div><div>
+    <p><b>Étage 3 — le rapport de session.</b> Tout ce qui a été signalé sans bloquer atterrit là, et c'est ta surface de décision. Une contradiction peut y être laissée ouverte, résolue, ou <em>assumée</em> — un narrateur peu fiable ou deux versions d'une légende sont des contradictions voulues, et les assumer les fait taire sans les effacer.</p>
+  </div></div>
+
+  <div class="step"><div class="z">« rejeté »</div><div>
+    <p><b>Un rejet est conservé, avec son motif.</b> Savoir qu'une piste a été écartée, et pourquoi, vaut mieux que de la retrouver six mois plus tard sans le contexte — et que de la reproposer trois fois.</p>
+  </div></div>
+</section>
+
+<section id="file-etats">
+  <span class="sec-num">Schéma 06</span>
+  <h2>Le cycle de vie d'un travail</h2>
+  <p class="fiche"><span>Identifiant · <b>file-etats</b></span><span>Porté par · <b>pièce 04</b></span><span>Répond à · <b>ce qui se passe quand le worker disparaît en cours de route</b></span></p>
+
+<!--SCHEMA:file-etats-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 400" role="img" aria-label="Cycle de vie d'un travail : déposé, il entre en attente, passe à prêt quand une machine capable est joignable, puis à réclamé quand un worker le prend ; de là il finit en rendu, échoué ou annulé. Un bail expiré sans battement ramène le travail de réclamé à prêt en incrémentant la tentative. Un travail en attente ou prêt peut être annulé immédiatement, et échoue s'il n'est jamais réclamé au bout de sept jours.">
+<defs>
+  <marker id="cya1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="cya2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- dépôt -->
+  <text x="40" y="140" font-size="10.5" opacity="0.6" font-family="JetBrains Mono, monospace">dépôt</text>
+  <line x1="40" y1="150" x2="40" y2="176" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+
+  <!-- attente -->
+  <rect x="20" y="182" width="150" height="62" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="95" y="210" text-anchor="middle" font-size="15" font-weight="600">attente</text>
+  <text x="95" y="229" text-anchor="middle" font-size="9.5" opacity="0.6">machine à réveiller</text>
+
+  <line x1="170" y1="213" x2="228" y2="213" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+  <text x="199" y="204" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">joignable</text>
+
+  <!-- prêt -->
+  <rect x="232" y="182" width="150" height="62" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="307" y="210" text-anchor="middle" font-size="15" font-weight="600">prêt</text>
+  <text x="307" y="229" text-anchor="middle" font-size="9.5" opacity="0.6">réclamable</text>
+
+  <line x1="382" y1="213" x2="440" y2="213" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+  <text x="411" y="204" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">réclame</text>
+
+  <!-- réclamé -->
+  <rect x="444" y="182" width="164" height="62" rx="5" fill="none" class="dg-accent" stroke-width="2"/>
+  <text x="526" y="210" text-anchor="middle" font-size="15" font-weight="600" class="dg-accent-t">réclamé</text>
+  <text x="526" y="229" text-anchor="middle" font-size="9.5" opacity="0.6">bail actif · battements</text>
+
+  <!-- retour reprise -->
+  <polyline points="500,182 500,128 307,128 307,178" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#cya1)"/>
+  <text x="404" y="120" text-anchor="middle" font-size="9.5" class="dg-crit-t" font-family="JetBrains Mono, monospace">bail expiré · tentative + 1</text>
+
+  <!-- terminaux -->
+  <rect x="752" y="60" width="188" height="56" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="846" y="86" text-anchor="middle" font-size="14.5" font-weight="600" class="dg-good-t">rendu</text>
+  <text x="846" y="103" text-anchor="middle" font-size="9.5" opacity="0.6">résultat enregistré</text>
+
+  <rect x="752" y="185" width="188" height="56" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="846" y="211" text-anchor="middle" font-size="14.5" font-weight="600">échoué</text>
+  <text x="846" y="228" text-anchor="middle" font-size="9.5" opacity="0.6">avec raison nommée</text>
+
+  <rect x="752" y="310" width="188" height="56" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="846" y="336" text-anchor="middle" font-size="14.5" font-weight="600">annulé</text>
+  <text x="846" y="353" text-anchor="middle" font-size="9.5" opacity="0.6">bail libéré</text>
+
+  <line x1="608" y1="196" x2="746" y2="106" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+  <line x1="608" y1="213" x2="746" y2="213" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+  <line x1="608" y1="230" x2="746" y2="318" stroke="currentColor" stroke-width="1.5" marker-end="url(#cya1)"/>
+
+  <!-- annulation avant réclamation -->
+  <polyline points="95,244 95,342 500,342 500,338 746,338" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.75" marker-end="url(#cya2)"/>
+  <polyline points="307,244 307,342" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.75"/>
+  <text x="320" y="334" font-size="9.5" opacity="0.6" font-family="JetBrains Mono, monospace">annulation avant réclamation — immédiate</text>
+
+  <!-- expiration -->
+  <text x="20" y="272" font-size="9.5" class="dg-crit-t" font-family="JetBrains Mono, monospace">jamais réclamé</text>
+  <text x="20" y="287" font-size="9.5" class="dg-crit-t" font-family="JetBrains Mono, monospace">pendant 7 jours</text>
+  <text x="20" y="302" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace">→ échoué</text>
+</g>
+</svg>
+<figcaption><strong>La flèche en pointillés qui remonte est la seule qui compte vraiment.</strong> Elle dit qu'un worker qui disparaît ne fait rien perdre : le travail redevient réclamable, avec une tentative de plus. Les trois états terminaux sont les seuls d'où l'on ne sort pas, et chacun porte une raison nommée plutôt qu'un simple drapeau — c'est ce qui permet à l'interface de dire <em>pourquoi</em> au lieu de dire <em>non</em>.</figcaption>
+</figure>
+<!--/SCHEMA:file-etats-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Six états, et une seule flèche mérite qu'on s'y arrête longtemps : celle qui remonte.</p>
+  </div>
+
+  <div class="step"><div class="z">la règle de lecture</div><div>
+    <p><b>Un état est une condition dans laquelle on peut rester ; tout le reste est une transition.</b> C'est ce qui explique pourquoi il n'y a que six boîtes. Abandonner un travail dont le worker a disparu n'est pas un état, c'est le passage de <em>réclamé</em> à <em>prêt</em>. Expirer non plus. Les deux écrivent un événement au journal, ce qui suffit largement à les raconter.</p>
+    <p>La tentation inverse — un état par situation qu'on veut raconter — donne quatorze états dont la moitié décrivent un instant.</p>
+  </div></div>
+
+  <div class="step"><div class="z">attente</div><div>
+    <p><b>Déposé, mais pas encore réclamable.</b> Une raison est toujours attachée : machine endormie, machine injoignable, aucune machine capable, dépendance en cours.</p>
+    <p>C'est cet état qui rend le réveil racontable. Sans lui, un travail qui attend une machine éteinte serait indistinguable d'un travail que personne n'a pris — et l'interface n'aurait rien à afficher d'utile.</p>
+  </div></div>
+
+  <div class="step"><div class="z">prêt → réclamé</div><div>
+    <p><b>Un seul worker, garanti par Postgres.</b> Le passage se fait par <code>SELECT … FOR UPDATE SKIP LOCKED</code> : deux workers qui réclament au même instant ne peuvent pas obtenir la même ligne, le second saute celle que le premier verrouille. C'est une propriété du moteur, pas une coordination applicative — donc rien à déboguer le jour où la course se produit.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la flèche en pointillés qui remonte</div><div>
+    <p><b>Le cœur du schéma.</b> Elle dit qu'un worker qui disparaît ne fait rien perdre : le bail arrive à terme, un balayeur remet le travail en <em>prêt</em>, la tentative est incrémentée, et un autre worker — ou le même, une fois revenu — le reprend.</p>
+    <p>Le piège que cette flèche cache : un worker <em>vivant mais figé</em> continuerait de battre et garderait son travail indéfiniment. D'où le compteur de progression porté par chaque battement — un bail ne se prolonge que si la progression a bougé.</p>
+  </div></div>
+
+  <div class="step"><div class="z">les trois boîtes de droite</div><div>
+    <p><b>Trois terminaux, chacun avec une raison nommée.</b> C'est ce qui permet à l'interface de dire <em>pourquoi</em> au lieu de dire <em>non</em>. « Échoué » se décline en erreur définitive, tentatives épuisées, jamais réclamé, aucune machine capable — quatre situations qui ne se réparent pas de la même façon.</p>
+  </div></div>
+
+  <div class="step"><div class="z">en bas à gauche</div><div>
+    <p><b>Sept jours.</b> Un travail jamais réclamé finit par échouer, mais très tard. C'est délibéré : un réveil qui échoue change l'état de la <em>machine</em>, pas celui du travail, sinon une coupure de courant de dix minutes suffirait à perdre une nuit de dépôts.</p>
+  </div></div>
+</section>
+
+<section id="file-bail">
+  <span class="sec-num">Schéma 07</span>
+  <h2>Le bail, et la voie unique vers la carte</h2>
+  <p class="fiche"><span>Identifiant · <b>file-bail</b></span><span>Porté par · <b>pièce 04</b></span><span>Répond à · <b>comment l'invariant 09 devient vrai au sens propre</b></span></p>
+
+<!--SCHEMA:file-bail-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 400" role="img" aria-label="Le bail : les recettes et les agents déposent des travaux dans la File ; litellm route les modèles locaux vers une adresse servie par le worker. Le worker réclame ses travaux à la File et lui demande le bail du verrou gpu:0 avant toute exécution. Le registre des baux n'accorde le verrou qu'à un seul détenteur à la fois, les demandes interactives passant devant les travaux sans jamais les préempter.">
+<defs>
+  <marker id="bla1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="bla2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- demandeurs -->
+  <rect x="20" y="60" width="230" height="62" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="135" y="88" text-anchor="middle" font-size="14" font-weight="600">recettes · agents</text>
+  <text x="135" y="106" text-anchor="middle" font-size="9.5" opacity="0.6">classe : travail</text>
+
+  <rect x="20" y="200" width="230" height="62" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="135" y="228" text-anchor="middle" font-size="14" font-weight="600">litellm</text>
+  <text x="135" y="246" text-anchor="middle" font-size="9.5" opacity="0.6">classe : interactif</text>
+
+  <line x1="250" y1="91" x2="308" y2="91" stroke="currentColor" stroke-width="1.5" marker-end="url(#bla1)"/>
+  <text x="279" y="82" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">dépose</text>
+
+  <!-- litellm vers worker, par le bas -->
+  <polyline points="135,262 135,352 796,352 796,306" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#bla1)"/>
+  <text x="466" y="344" text-anchor="middle" font-size="9.5" opacity="0.6" font-family="JetBrains Mono, monospace">appelle un modèle local — aucune autre adresse n'existe</text>
+
+  <!-- File -->
+  <rect x="312" y="40" width="248" height="252" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="328" y="62" font-size="12.5" font-weight="600" class="dg-accent-t">File</text>
+  <text x="544" y="62" text-anchor="end" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+
+  <rect x="328" y="76" width="216" height="88" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="436" y="102" text-anchor="middle" font-size="13" font-weight="600">les travaux</text>
+  <text x="436" y="122" text-anchor="middle" font-size="9.5" opacity="0.6">six états · reprise · annulation</text>
+  <text x="436" y="140" text-anchor="middle" font-size="9.5" opacity="0.6">idempotence en base</text>
+
+  <rect x="328" y="180" width="216" height="96" rx="4" fill="none" class="dg-accent" stroke-width="1.5"/>
+  <text x="436" y="206" text-anchor="middle" font-size="13" font-weight="600" class="dg-accent-t">registre des baux</text>
+  <text x="436" y="226" text-anchor="middle" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">gpu:0 — un seul détenteur</text>
+  <text x="436" y="245" text-anchor="middle" font-size="9.5" opacity="0.6">interactif devant travail</text>
+  <text x="436" y="262" text-anchor="middle" font-size="9.5" opacity="0.6">jamais de préemption</text>
+
+  <!-- worker -->
+  <rect x="640" y="40" width="300" height="252" rx="6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-dasharray="7 4"/>
+  <text x="656" y="62" font-size="12.5" font-weight="600">worker — gardien du matériel</text>
+  <text x="924" y="62" text-anchor="end" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">desktop</text>
+
+  <rect x="656" y="76" width="268" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="790" y="102" text-anchor="middle" font-size="12.5" font-weight="600">exécution des travaux</text>
+  <text x="790" y="120" text-anchor="middle" font-size="9.5" opacity="0.6">ComfyUI · Blender · maillage · audio</text>
+
+  <rect x="656" y="150" width="268" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="790" y="176" text-anchor="middle" font-size="12.5" font-weight="600">relais des modèles locaux</text>
+  <text x="790" y="194" text-anchor="middle" font-size="9.5" opacity="0.6">prend le bail, puis relaie</text>
+
+  <rect x="656" y="226" width="268" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="790" y="248" text-anchor="middle" font-size="12.5" font-weight="600">RTX 4070</text>
+  <text x="790" y="265" text-anchor="middle" font-size="9.5" opacity="0.6">une charge lourde à la fois</text>
+
+  <!-- échanges File / worker -->
+  <line x1="634" y1="106" x2="566" y2="106" stroke="currentColor" stroke-width="1.5" marker-end="url(#bla1)"/>
+  <text x="600" y="97" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">réclame</text>
+  <line x1="566" y1="134" x2="634" y2="134" stroke="currentColor" stroke-width="1.5" marker-end="url(#bla1)"/>
+  <text x="600" y="150" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">rend</text>
+
+  <line x1="634" y1="216" x2="566" y2="216" stroke="currentColor" stroke-width="2.25" class="dg-accent" marker-end="url(#bla1)"/>
+  <text x="600" y="207" text-anchor="middle" font-size="9" class="dg-accent-t" font-family="JetBrains Mono, monospace">bail</text>
+</g>
+</svg>
+<figcaption><strong>Les deux classes entrent par des portes différentes et sortent par la même.</strong> Un travail est déposé et attend son tour ; un appel de modèle local arrive par le relais du worker. Les deux doivent obtenir le même verrou avant de toucher la carte, et ce verrou n'a qu'un détenteur. Le seuil qui décide ce qui est « long » ne protège donc plus rien — il ne fait que choisir entre attendre en ligne et être repris après une panne.</figcaption>
+</figure>
+<!--/SCHEMA:file-bail-->
+
+  <h3>Lecture guidée</h3>
+  <div class="col">
+    <p class="lede">Ce schéma résout le point ouvert le plus gênant qu'avait laissé la pièce 02 : le texte long et l'image se disputaient la même carte par deux chemins différents.</p>
+  </div>
+
+  <div class="step"><div class="z">les deux entrées à gauche</div><div>
+    <p><b>Deux portes, deux classes.</b> En haut, les recettes et les agents déposent des travaux. En bas, <code>litellm</code> appelle un modèle local. Ce sont deux façons d'arriver, et elles n'ont pas les mêmes besoins : l'une veut être reprise après une panne, l'autre veut une réponse maintenant.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la longue flèche du bas</div><div>
+    <p><b>« aucune autre adresse n'existe ».</b> C'est la décision de la pièce 04, et elle est littérale : <code>litellm</code> ne parle à aucun moteur d'inférence local. Les modèles locaux sont routés vers une adresse servie par le worker.</p>
+    <p>Ce que ça achète : la phrase « aucun composant n'a d'accès direct à un moteur d'inférence » cesse d'être une consigne et devient une propriété du câblage. Il n'existe pas d'adresse à laquelle un composant pourrait s'adresser pour contourner la File.</p>
+    <p>Le prix, à garder en tête : quand le desktop dort, il n'y a plus aucun modèle local — bascule vers un fournisseur distant, ou refus net. Même pour une question courte. La pièce 04 marque cette décision comme réexaminable.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la boîte du bas au centre</div><div>
+    <p><b>Le registre des baux, un seul détenteur.</b> Le verrou <code>gpu:0</code> est une ligne avec une contrainte d'unicité. Les deux classes le demandent, une seule l'obtient à la fois.</p>
+    <p>« Interactif devant travail » dit la priorité d'attente ; « jamais de préemption » dit qu'on n'interrompt pas celui qui détient le verrou — interrompre une génération à mi-course pour répondre à une question coûterait plus cher que d'attendre. Et pour qu'un travail de fond ne meure pas de faim un jour où l'on discute beaucoup, sa priorité effective monte avec son âge.</p>
+  </div></div>
+
+  <div class="step"><div class="z">la flèche épaisse « bail »</div><div>
+    <p><b>La seule qui compte.</b> Tout ce qui touche la carte passe par elle. C'est le trait qui rend le schéma vérifiable : s'il existe un chemin vers la RTX 4070 qui ne traverse pas cette flèche, l'invariant 09 est faux.</p>
+  </div></div>
+
+  <div class="step"><div class="z">ce que le schéma déplace</div><div>
+    <p><b>Le seuil cesse d'être une garantie.</b> C'est le vrai gain, et il n'est pas dessiné — il se déduit. Puisque les deux classes se disputent le même verrou, un seuil mal placé entre « échange court » et « texte long » ne peut plus produire deux charges simultanées. Il ne choisit plus qu'entre attendre en ligne et être repris après une panne.</p>
+    <p>Autrement dit : on a déplacé une question de sécurité vers une question de confort. La valeur exacte du seuil revient à la <strong>pièce 14</strong>.</p>
+  </div></div>
+
+  <div class="step"><div class="z">le cadre en pointillés à droite</div><div>
+    <p><b>Le worker peut être absent.</b> Même convention que dans le schéma de l'architecture. Mais il porte ici une responsabilité de plus qu'à la pièce 02 : il n'est plus seulement celui qui exécute les travaux, il est <em>le gardien du matériel</em>. Un rôle, une machine, un verrou.</p>
+  </div></div>
+</section>
+
+<section id="suite">
+  <span class="sec-num">Suite</span>
+  <h2>Schémas à venir</h2>
+  <div class="col">
+    <p class="lede">L'atlas se remplit au rythme des pièces. Les suivants sont déjà identifiés.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Schéma</th><th>Ce qu'il montrera</th><th>Avec la pièce</th></tr></thead>
+        <tbody>
+          <tr><td class="name">La double passe du Récit</td><td>Le rédacteur sans outils, l'extracteur qui structure, l'audit qui tranche — l'invariant 05 dessiné</td><td class="v">06</td></tr>
+          <tr><td class="name">Les profils d'outils</td><td>Quel rôle voit quels outils, et où passe la limite de dix</td><td class="v">08</td></tr>
+          <tr><td class="name">La chaîne 3D</td><td>Les sept étapes, et les points de relecture visuelle obligatoires</td><td class="v">12</td></tr>
+          <tr><td class="name">Les quatre étages de calcul</td><td>VPS, desktop, serveur maison, cloud d'appoint — qui réveille qui</td><td class="v">16</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · atlas des schémas · source unique · mis à jour le 13 septembre 2026</div>
+</footer>
+
+</body></html>

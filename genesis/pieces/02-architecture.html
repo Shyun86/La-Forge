@@ -1,0 +1,881 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Architecture de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:56px 0 38px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.crumb b{color:var(--ember);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ember);border:1px solid var(--ember);
+  padding:4px 10px;border-radius:4px;margin:0 0 20px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:58px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;margin:40px 0 8px;letter-spacing:-.01em;text-wrap:balance}
+h4{font-family:var(--f-display);font-weight:600;font-size:16.5px;margin:26px 0 6px}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.tablewrap{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:12px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+td.v{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+td.num{font-family:var(--f-mono);font-size:12.5px;text-align:right;white-space:nowrap}
+tr.grp td{background:var(--surface-2);font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);padding:8px 14px;font-weight:600}
+tr.tot td{font-weight:600;background:var(--surface-2)}
+
+.etage{border:1px solid var(--rule);border-left:3px solid var(--ember);border-radius:0 5px 5px 0;
+  background:var(--surface);padding:20px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.etage .lvl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:6px}
+.etage h4{margin:0 0 6px;font-size:18px}
+.etage .sub{font-size:15.5px;color:var(--ink-3);margin:0 0 14px}
+.etage p{font-size:16px;color:var(--ink-2)}
+.etage p:last-child{margin-bottom:0}
+.etage.audit{border-left-color:var(--crit)} .etage.audit .lvl{color:var(--crit)}
+
+.eps{display:grid;gap:8px;margin:16px 0}
+.ep{display:grid;gap:2px 16px;padding:10px 14px;background:var(--surface-2);border-radius:4px}
+@media(min-width:720px){.ep{grid-template-columns:200px 1fr;align-items:baseline}}
+.ep .n{font-family:var(--f-mono);font-size:12.5px;color:var(--ember);font-weight:600}
+.ep .d{font-size:15px;color:var(--ink-2);line-height:1.45}
+
+.openq{border-top:1px solid var(--rule-soft);padding:18px 0}
+.openq:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.openq h4{margin:0 0 5px;font-size:17px}
+.openq p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.openq .to{font-family:var(--f-mono);font-size:11.5px;color:var(--ember)}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1040px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">02 — Architecture</span>
+    <span class="spacer"></span>
+    <span class="pn"><a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9" title="Stack technique">← 01</a><a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597" title="Le Canon">03 →</a></span>
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a class="cur" href="#top"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · pièce <b>02</b> · fondations</p>
+    <p class="statusbadge">● Révisée le 2 septembre 2026</p>
+    <h1>L'<em>architecture</em></h1>
+    <p class="standfirst">Quels processus existent, sur quelle machine chacun tourne, qui a le droit d'écrire, et comment ce qui se passe remonte jusqu'à toi. Tout le reste du dossier détaille des pièces de ce squelette.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="role">
+  <span class="sec-num">Ce que décide cette pièce</span>
+  <h2>Le squelette, et rien d'autre</h2>
+  <div class="col">
+    <p class="lede">Cette pièce fixe cinq choses, et refuse d'en fixer une sixième.</p>
+    <ol>
+      <li><strong>La liste des processus</strong> et la machine de chacun.</li>
+      <li><strong>Huit domaines pour deux processus</strong> — la séparation entre ce qui est transversal et ce qui est propre à une modalité.</li>
+      <li><strong>Les frontières d'écriture</strong>, posées dans Postgres et non dans des consignes.</li>
+      <li><strong>La séparation des métadonnées et des binaires</strong> : base d'un côté, stockage objet de l'autre.</li>
+      <li><strong>Le flux d'événements</strong>, qui garantit que l'interface ne montre jamais rien de faux.</li>
+    </ol>
+    <p>Elle tranche aussi, au passage, une question que le sommaire avait mal rangée : <strong>le canon est un processus séparé, pas une bibliothèque importée par ceux qui l'utilisent.</strong> C'est une question de forme du système et non de schéma de données — la pièce 03 conçoit ce qu'il y a dedans, celle-ci décide ce qu'il est. Le prix payé est la latence réseau des recettes, et c'est exactement pourquoi elles restent sur le VPS, à côté de la base.</p>
+    <p>Ce qu'elle ne fixe pas : <strong>la forme de l'interface.</strong> Cette pièce la traite comme un client de l'api, sans dire si c'est une application desktop, une page web ou une application installable. Ce choix appartient à la pièce 18, et l'architecture est faite pour qu'il reste ouvert — et même pour que plusieurs interfaces puissent coexister.</p>
+
+    <div class="callout">
+      <span class="tag">Version révisée</span>
+      <p>La première version de cette pièce contenait un processus nommé <code>production</code>, inventé en cours de rédaction, et employait « atelier » à deux niveaux différents. Les deux sont corrigés ici, et les anciens noms sont inscrits au <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">cimetière du glossaire</a> pour que personne ne les réintroduise. Trois autres décisions ont changé : l'orchestrateur passe sur le desktop, les binaires passent en stockage objet, et les domaines Images, 3D et Son sont rétablis. Le détail est au registre en fin de page.</p>
+    </div>
+  </div>
+</section>
+
+<section id="machines">
+  <span class="sec-num">01</span>
+  <h2>Les processus, et où chacun tourne</h2>
+  <div class="col">
+    <p class="lede">Neuf processus, trois machines. La question « où » n'est pas un détail de déploiement : elle décide de ce qui continue de fonctionner quand une machine est éteinte.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Processus</th><th>Machine</th><th>Rôle</th><th>Si la machine s'arrête</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="4">Le VPS — allumé en permanence</td></tr>
+        <tr><td class="name"><code>api</code></td><td class="v">VPS</td><td>Surface HTTP et WebSocket. Reçoit les demandes, diffuse les événements.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>canon</code></td><td class="v">VPS</td><td>Sert le domaine Canon. Porte les contraintes et la bitemporalité.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>atelier</code></td><td class="v">VPS</td><td>Sert les six autres domaines.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>recettes</code></td><td class="v">VPS</td><td>Exécute les enchaînements écrits.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>postgres</code></td><td class="v">VPS</td><td>Canon, file, journal, index sémantique.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>litellm</code></td><td class="v">VPS</td><td>Point d'entrée unique des modèles.</td><td>Tout s'arrête.</td></tr>
+        <tr><td class="name"><code>n8n</code> · <code>caddy</code> · <code>tailscale</code></td><td class="v">VPS</td><td>Plomberie périodique, TLS, réseau privé. Déjà en place.</td><td>—</td></tr>
+
+        <tr class="grp"><td colspan="4">Le desktop — allumé quand tu travailles</td></tr>
+        <tr><td class="name"><code>orchestrateur</code></td><td class="v">desktop</td><td>L'Assistant. Comprend la demande, délègue, rend compte.</td><td><strong>Le dépôt continue.</strong> L'api accepte, la File empile, rien ne se perd.</td></tr>
+        <tr><td class="name"><code>worker</code></td><td class="v">desktop</td><td>Le calcul lourd. Réclame ses travaux, rend ses résultats.</td><td>La File attend. Réveil à la demande.</td></tr>
+
+        <tr class="grp"><td colspan="4">Ailleurs</td></tr>
+        <tr><td class="name">stockage objet</td><td class="v">R2 ou maison</td><td>Les fichiers produits.</td><td>Les métadonnées restent, les fichiers deviennent temporairement illisibles.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <h3>Pourquoi l'orchestrateur est sur le desktop et l'api sur le VPS</h3>
+    <p>C'est la décision la plus visible de cette révision, et elle se justifie par une seule asymétrie : <strong>l'orchestrateur a besoin d'être là où tu es, l'api a besoin d'être là où tu n'es pas.</strong></p>
+    <p>L'orchestrateur ne sert à rien sans toi : c'est l'agent avec qui tu parles. Le mettre sur le VPS reviendrait à faire transiter chaque tour de conversation par le réseau pour qu'il redescende ensuite vers ton écran, sans qu'aucune de ces allées et venues achète quoi que ce soit. Il est déjà installé sur ta machine, il y voit tes fichiers locaux, et sa mémoire — le poste le plus incertain du budget — sort ainsi des huit gigaoctets partagés du VPS.</p>
+    <p>L'api, elle, doit répondre <em>quand le desktop dort</em>. C'est ce qui permet à n8n de déclencher une consolidation à trois heures du matin, à une recette de déposer un travail que le worker prendra demain, et à toi de consulter ton canon depuis ton téléphone. Une api sur le desktop rendrait le système inexistant hors des heures où la machine est allumée.</p>
+
+    <h3>Pourquoi les recettes restent sur le VPS</h3>
+    <p>La raison est mesurable : une recette d'audit fait facilement cinquante appels au canon. À travers le réseau privé, cela coûterait entre 0,25 et une seconde de latence cumulée ; en local, à côté de la base, c'est négligeable.</p>
+    <p>Et ça ne coûte rien en calcul, parce qu'<strong>une recette n'exécute jamais de travail lourd</strong> : elle orchestre et dépose des travaux. Le calcul part sur le desktop, l'orchestration reste où sont les données.</p>
+
+    <h3>Ce que fait litellm, concrètement</h3>
+    <p>Trois choses, et c'est ce qui justifie un processus à lui seul.</p>
+    <p><strong>Il rend les modèles remplaçables.</strong> C'est l'invariant 14 rendu opérationnel : le code appelle un nom logique — <code>role:redaction</code>, <code>role:extraction</code> — et litellm décide quel modèle réel répond. Changer de modèle pour un rôle devient une ligne de configuration, pas une modification de code.</p>
+    <p><strong>Il applique la souveraineté.</strong> C'est le point d'étranglement où l'invariant 13 devient vérifiable : un rôle marqué « propriétaire » ne peut être routé que vers des fournisseurs classés sans entraînement. La règle vit dans une configuration lisible, à un seul endroit, au lieu d'être dispersée dans chaque appel.</p>
+    <p><strong>Il compte.</strong> Jetons consommés, latence, échecs, par rôle et par modèle — les chiffres dont la pièce 19 aura besoin, et qu'on ne peut pas reconstituer après coup.</p>
+    <p>Il est sur le VPS parce que <em>tout</em> l'appelle : les recettes, les serveurs d'outils, l'orchestrateur. Un point d'entrée unique doit être sur la machine toujours allumée, sinon il n'est plus unique — chacun se remettrait à appeler les modèles directement, et les trois propriétés ci-dessus disparaîtraient ensemble.</p>
+  </div>
+</section>
+
+<section id="schema">
+  <span class="sec-num">02</span>
+  <h2>Le schéma d'ensemble</h2>
+  <div class="col">
+    <p class="lede">Le même dessin figure dans l'<a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">atlas des schémas</a>, accompagné d'une lecture guidée bloc par bloc. Ce n'est pas une copie : les deux pages reçoivent le dessin depuis la même source, donc ils ne peuvent pas diverger.</p>
+  </div>
+
+<!--DGCSS-->
+<style id="dgcss">
+.dg{margin:26px 0}
+.dg svg{display:block;width:100%;height:auto;color:var(--ink)}
+.dg-accent{stroke:var(--ember)}
+.dg-accent-t{fill:var(--ember)}
+.dg-crit{stroke:var(--crit)}
+.dg-crit-t{fill:var(--crit)}
+.dg figcaption{font-size:14.5px;color:var(--ink-3);line-height:1.5;margin-top:14px;
+  border-left:2px solid var(--rule);padding-left:14px;max-width:70ch}
+.dg-scroll{overflow-x:auto}
+.dg-scroll>svg{min-width:680px}
+</style>
+<!--/DGCSS-->
+
+<!--SCHEMA:arch-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 660" role="img" aria-label="L'architecture de la Forge : l'interface parle à l'api ; l'api déclenche l'orchestrateur, qui tourne sur le desktop, et les recettes, qui tournent sur le VPS ; les deux pilotent les mêmes processus d'outils, l'un par le protocole d'agents, l'autre en HTTP direct ; le processus canon sert le domaine Canon, le processus atelier sert sept domaines ; ces deux processus sont les seuls à écrire dans Postgres et dans le stockage objet ; le worker GPU du desktop réclame ses travaux au processus atelier et ne touche jamais la base.">
+<defs>
+  <marker id="ara1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="ara2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- interface -->
+  <rect x="40" y="18" width="210" height="46" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="145" y="41" text-anchor="middle" font-size="14" font-weight="600">Interface</text>
+  <text x="145" y="56" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">forme décidée en pièce 18</text>
+  <line x1="145" y1="64" x2="145" y2="86" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+
+  <!-- api -->
+  <rect x="40" y="92" width="320" height="54" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="200" y="115" text-anchor="middle" font-size="14.5" font-weight="600">api — HTTP + WebSocket</text>
+  <text x="200" y="132" text-anchor="middle" font-size="10.5" opacity="0.6">VPS · n'écrit aucune donnée métier</text>
+
+  <line x1="105" y1="146" x2="105" y2="180" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <line x1="290" y1="146" x2="290" y2="180" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+
+  <!-- pilotes -->
+  <rect x="40" y="186" width="150" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="115" y="210" text-anchor="middle" font-size="14.5" font-weight="600">orchestrateur</text>
+  <text x="115" y="227" text-anchor="middle" font-size="10.5" opacity="0.6">chemin choisi</text>
+  <text x="115" y="245" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">desktop</text>
+
+  <rect x="215" y="186" width="150" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="290" y="210" text-anchor="middle" font-size="14.5" font-weight="600">recettes</text>
+  <text x="290" y="227" text-anchor="middle" font-size="10.5" opacity="0.6">chemin écrit</text>
+  <text x="290" y="245" text-anchor="middle" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+
+  <line x1="206" y1="216" x2="212" y2="216" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <text x="196" y="178" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">déclenche</text>
+
+  <!-- bus de l'orchestrateur : pointillés -->
+  <polyline points="145,258 145,274 520,274 520,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.8" marker-end="url(#ara2)"/>
+  <polyline points="145,274 160,274 160,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.8" marker-end="url(#ara2)"/>
+  <text x="330" y="269" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">protocole d'agents</text>
+
+  <!-- bus des recettes : trait plein -->
+  <polyline points="252,258 252,288 592,288 592,300" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ara1)"/>
+  <polyline points="252,288 224,288 224,300" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ara1)"/>
+  <text x="420" y="284" text-anchor="middle" font-size="10" opacity="0.6" font-family="JetBrains Mono, monospace">HTTP direct</text>
+
+  <!-- processus canon -->
+  <rect x="40" y="306" width="300" height="196" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="56" y="327" font-size="12.5" font-weight="600" class="dg-accent-t">processus canon</text>
+  <text x="324" y="327" text-anchor="end" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+  <rect x="56" y="338" width="132" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="122" y="366" text-anchor="middle" font-size="12" font-family="JetBrains Mono, monospace">canon</text>
+  <text x="122" y="386" text-anchor="middle" font-size="10" opacity="0.6">lecture + écriture</text>
+  <rect x="196" y="338" width="128" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="260" y="362" text-anchor="middle" font-size="11" font-family="JetBrains Mono, monospace">canon-lecture</text>
+  <text x="260" y="386" text-anchor="middle" font-size="10" opacity="0.6">lecture seule</text>
+  <rect x="56" y="420" width="268" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="190" y="446" text-anchor="middle" font-size="13" font-weight="600">Canon</text>
+  <text x="190" y="466" text-anchor="middle" font-size="10" opacity="0.6">la mémoire du monde · pièce 03</text>
+
+  <!-- processus atelier -->
+  <rect x="376" y="306" width="368" height="196" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="392" y="327" font-size="12.5" font-weight="600" class="dg-accent-t">processus atelier</text>
+  <text x="728" y="327" text-anchor="end" font-size="10" opacity="0.5" font-family="JetBrains Mono, monospace">VPS</text>
+
+  <rect x="392" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="446" y="366" text-anchor="middle" font-size="12.5" font-weight="600">File</text>
+  <text x="446" y="386" text-anchor="middle" font-size="9.5" opacity="0.6">l'exécution · 04</text>
+  <rect x="512" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="566" y="366" text-anchor="middle" font-size="12.5" font-weight="600">Catalogue</text>
+  <text x="566" y="386" text-anchor="middle" font-size="9.5" opacity="0.6">le disponible · 05</text>
+  <rect x="632" y="338" width="108" height="70" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="686" y="362" text-anchor="middle" font-size="12" font-weight="600">Biblio-</text>
+  <text x="686" y="377" text-anchor="middle" font-size="12" font-weight="600">thèque</text>
+  <text x="686" y="394" text-anchor="middle" font-size="9.5" opacity="0.6">les assets · 07</text>
+
+  <rect x="392" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="432" y="446" text-anchor="middle" font-size="12" font-weight="600">Récit</text>
+  <text x="432" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 06</text>
+  <rect x="481" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="521" y="446" text-anchor="middle" font-size="12" font-weight="600">Images</text>
+  <text x="521" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 11</text>
+  <rect x="570" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="610" y="446" text-anchor="middle" font-size="12" font-weight="600">3D</text>
+  <text x="610" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 12</text>
+  <rect x="659" y="420" width="79" height="62" rx="4" fill="none" stroke="currentColor" stroke-width="1.25"/>
+  <text x="699" y="446" text-anchor="middle" font-size="12" font-weight="600">Son</text>
+  <text x="699" y="465" text-anchor="middle" font-size="9.5" opacity="0.6">pièce 13</text>
+
+  <text x="560" y="497" text-anchor="middle" font-size="9.5" opacity="0.45" font-family="JetBrains Mono, monospace">+ Vidéo, plus tard, sans rien changer d'autre</text>
+
+  <!-- worker -->
+  <rect x="784" y="306" width="136" height="196" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="852" y="356" text-anchor="middle" font-size="14" font-weight="600">worker</text>
+  <text x="852" y="376" text-anchor="middle" font-size="10.5" opacity="0.6">RTX 4070</text>
+  <text x="852" y="393" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">desktop</text>
+  <text x="852" y="414" text-anchor="middle" font-size="10" opacity="0.5">réveillé au besoin</text>
+  <text x="852" y="452" text-anchor="middle" font-size="10" opacity="0.5">aucun accès</text>
+  <text x="852" y="467" text-anchor="middle" font-size="10" opacity="0.5">à la base</text>
+
+  <line x1="778" y1="352" x2="750" y2="352" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <line x1="750" y1="380" x2="778" y2="380" stroke="currentColor" stroke-width="1.5" marker-end="url(#ara1)"/>
+  <text x="764" y="341" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">réclame</text>
+  <text x="764" y="398" text-anchor="middle" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">rend</text>
+
+  <!-- écritures -->
+  <line x1="190" y1="502" x2="190" y2="554" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="200" y="532" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">écrit</text>
+  <line x1="470" y1="502" x2="470" y2="554" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="480" y="532" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">écrit</text>
+
+  <polyline points="744,440 764,440 764,530 774,530" fill="none" stroke="currentColor" stroke-width="2.25" marker-end="url(#ara1)"/>
+  <text x="700" y="524" font-size="10.5" class="dg-accent-t" font-family="JetBrains Mono, monospace">dépose les fichiers</text>
+
+  <!-- postgres -->
+  <rect x="40" y="560" width="700" height="70" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="60" y="586" font-size="14.5" font-weight="600">postgres</text>
+  <text x="200" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma canon</text>
+  <text x="340" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma atelier</text>
+  <text x="486" y="586" font-size="11" opacity="0.65" font-family="JetBrains Mono, monospace">schéma journal</text>
+  <text x="60" y="608" font-size="10.5" opacity="0.5">une seule base · une seule transaction · une seule sauvegarde · les métadonnées seulement</text>
+
+  <!-- stockage objet -->
+  <rect x="780" y="560" width="140" height="70" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+  <text x="850" y="584" text-anchor="middle" font-size="13" font-weight="600">stockage objet</text>
+  <text x="850" y="601" text-anchor="middle" font-size="10" opacity="0.6">R2 · MinIO</text>
+  <text x="850" y="616" text-anchor="middle" font-size="10" opacity="0.6">les binaires</text>
+
+  <!-- retour journal -->
+  <polyline points="40,594 22,594 22,119 34,119" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.6" marker-end="url(#ara2)"/>
+  <text x="26" y="356" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace" transform="rotate(-90 26 356)">lit le journal · diffuse</text>
+</g>
+</svg>
+<figcaption><strong>Les trois flèches épaisses sont le cœur du schéma.</strong> Deux processus seulement écrivent — dans Postgres pour les métadonnées, dans le stockage objet pour les binaires. Les deux pilotes atteignent les mêmes serveurs par deux chemins différents : pointillés pour l'orchestrateur (protocole d'agents), trait plein pour les recettes (HTTP direct) — mêmes outils, mêmes refus. Les huit domaines sont répartis entre les deux processus, dont les sept du processus atelier : les trois du haut sont transversaux, les quatre du bas sont propres à une modalité et empruntent les autres. Le worker est le seul élément qui peut être absent, et il n'a aucun mot de passe de base de données.</figcaption>
+</figure>
+<!--/SCHEMA:arch-->
+</section>
+
+<section id="domaines">
+  <span class="sec-num">03</span>
+  <h2>Deux processus, huit domaines</h2>
+  <div class="col">
+    <p class="lede">C'est le point où la nomenclature s'est effondrée une première fois. Il vaut la peine de le poser lentement.</p>
+    <p>Un <strong>processus</strong> est ce qui tourne sur une machine — on le démarre, on l'arrête, il a une adresse et une empreinte mémoire. Un <strong>domaine</strong> est une zone de responsabilité, avec ses garanties et les outils qu'elle expose aux agents.</p>
+    <p><strong>Les deux nombres n'ont aucune raison d'être égaux</strong>, et c'est précisément ce qui rend le système extensible : ajouter un domaine ne coûte pas un processus de plus sur un VPS de huit gigaoctets.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Domaine</th><th>Processus</th><th>Ce qu'il garantit</th><th>Conçu en</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="4">Transversaux — servent toutes les modalités de la même façon</td></tr>
+        <tr><td class="name">Canon</td><td class="v">canon</td><td>Un fait n'est jamais écrasé, sa validité est close. Aucune contradiction non signalée. Bitemporalité.</td><td class="v">pièce 03</td></tr>
+        <tr><td class="name">File</td><td class="v">atelier</td><td>Un travail n'est réclamé que par un seul worker. Rien ne se perd si le worker disparaît en cours de route.</td><td class="v">pièce 04</td></tr>
+        <tr><td class="name">Catalogue</td><td class="v">atelier</td><td>Ce qui est proposé aux agents est ce qui est réellement disponible ici et maintenant.</td><td class="v">pièce 05</td></tr>
+        <tr><td class="name">Bibliothèque</td><td class="v">atelier</td><td>Chaque asset a une provenance et une empreinte. Les métadonnées et le binaire ne se séparent jamais.</td><td class="v">pièce 07</td></tr>
+        <tr class="grp"><td colspan="4">De modalité — possèdent le vocabulaire d'un métier</td></tr>
+        <tr><td class="name">Récit</td><td class="v">atelier</td><td>Une version d'un texte n'écrase jamais la précédente. Ce qui est écrit ne devient un fait qu'après extraction et audit.</td><td class="v">pièce 06</td></tr>
+        <tr><td class="name">Images</td><td class="v">atelier</td><td>Un rendu est reproductible : même style, même référence, même réglage donnent le même résultat.</td><td class="v">pièce 11</td></tr>
+        <tr><td class="name">3D</td><td class="v">atelier</td><td>Aucune étape structurante ne passe sans relecture visuelle.</td><td class="v">pièce 12</td></tr>
+        <tr><td class="name">Son</td><td class="v">atelier</td><td>Une voix ou un thème reste identifiable d'une production à l'autre.</td><td class="v">pièce 13</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>La séparation en deux rangées est le cœur de la section. Les domaines transversaux répondent à des questions identiques quelle que soit la modalité : <em>où va ce calcul, qu'est-ce qui est disponible, où est rangé le résultat.</em> Les faire exister trois fois — une par modalité — reviendrait à écrire trois fois « déposer un travail » et trois fois « enregistrer un asset ».</p>
+    <p>Les domaines de modalité, eux, possèdent ce qui n'a de sens que chez eux. Une trame, une scène, un dialogue, une version d'un chapitre : que pour le récit. Choisir un style ou une LoRA, cadrer, décliner des variantes : que pour l'image. Retopologier, déplier les UV, cuire une carte de normales, exporter en glTF : que pour la 3D. Une voix, une ambiance, un mixage : que pour le son. <strong>Ils n'exécutent rien et ne rangent rien</strong> — ils empruntent la File et la Bibliothèque.</p>
+
+    <div class="callout crit">
+      <span class="tag">Erreur corrigée, et pourquoi elle mérite d'être racontée</span>
+      <p>Une version intermédiaire de la conception ne comptait que quatre domaines : Images, 3D et Son avaient disparu. Le raisonnement paraissait propre — « l'exécution est la File, le rangement est la Bibliothèque, donc les modalités n'ont plus de contenu propre ». Il était faux : il ne restait plus d'endroit pour tout ce qui fait le métier de chaque modalité, alors même que le dossier a des pièces qui portent ces noms. La leçon vaut au-delà du cas : <strong>factoriser ce qui se répète est juste, mais si l'opération vide une boîte au lieu de l'alléger, c'est qu'on a factorisé une chose qui n'était pas la même.</strong></p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">Le test d'extensibilité</span>
+      <p>La vidéo n'existe pas encore et arrivera. Elle doit s'ajouter comme un <strong>neuvième domaine dans la rangée du bas</strong> : un jeu d'outils dans le processus <code>atelier</code>, une pièce dans le dossier, et rien d'autre. Pas de processus de plus, pas de table de plus dans la File, pas de modification de la Bibliothèque. Si l'ajout demande autre chose, la séparation posée ici est ratée — et c'est la pièce 20 qui le vérifiera.</p>
+    </div>
+
+    <h3>Pourquoi le Récit est un domaine et pas « du texte »</h3>
+    <p>C'est le domaine dont l'absence a failli passer inaperçue, parce que « du texte » ressemble au matériau de base plutôt qu'à une matière particulière. Trois propriétés le distinguent, et aucune des trois autres modalités n'en a une seule.</p>
+    <p><strong>La circulation est à double sens.</strong> Une image consomme le canon et ne lui rend jamais rien. Un chapitre le consomme comme contrainte d'écriture, puis on en <em>extrait</em> des faits qui remontent au canon. C'est le seul matériau qui fait l'aller-retour.</p>
+    <p><strong>C'est ici que vit l'invariant 05.</strong> « Celui qui écrit n'est pas celui qui décide » n'a de traduction concrète qu'ici : le Narrateur produit de la prose libre, sans aucun outil et sans grammaire contrainte ; un second modèle relit sa sortie et en extrait la structure. Deux appels, deux modèles, jamais un seul. Ce mécanisme en deux passes n'aurait eu nulle part où être décrit.</p>
+    <p><strong>Ça se réécrit.</strong> D'une image on garde une variante et on jette les trois autres ; un chapitre se retravaille dix fois et l'historique compte. Le Récit a une structure — œuvre, partie, chapitre, scène — et des versions comparables entre elles, ce qui n'a d'équivalent nulle part ailleurs dans le système.</p>
+
+    <div class="callout crit">
+      <span class="tag">Le motif derrière trois oublis</span>
+      <p>Le Récit est la troisième zone à avoir manqué, après Images / 3D / Son et après la Bibliothèque. Ce n'est pas de la malchance : la liste des domaines avait été dérivée <strong>depuis les outils</strong> — qu'est-ce qu'un serveur expose — au lieu de l'être <strong>depuis la matière</strong> — quelles sortes de choses le système manipule. Dérivée depuis la matière, elle tombe seule et se vérifie : faits du monde, prose, images, maillages, sons, fichiers produits, travail à faire, disponibilité. Huit matières, huit domaines. Le contrôle à refaire à chaque ajout tient en une phrase : <em>si une sorte de matière n'a pas de domaine, il en manque un.</em></p>
+    </div>
+
+    <h3>Les points d'entrée, concrètement</h3>
+    <p>Un domaine n'est pas une abstraction : il se matérialise par un point d'entrée que les agents voient, et une surface HTTP que le code appelle.</p>
+  </div>
+
+  <div class="eps">
+    <div class="ep"><span class="n">/mcp/canon</span><span class="d">Lecture et écriture. Réservé à l'Archiviste.</span></div>
+    <div class="ep"><span class="n">/mcp/canon-lecture</span><span class="d">Lecture seule, pour tous les autres agents. Les outils d'écriture n'y existent pas.</span></div>
+    <div class="ep"><span class="n">/http/canon</span><span class="d">Surface pour le code : les recettes et l'api. Même noyau, même validation.</span></div>
+    <div class="ep"><span class="n">/mcp/file</span><span class="d">Déposer un travail, suivre son avancement, l'annuler, récupérer son résultat.</span></div>
+    <div class="ep"><span class="n">/mcp/catalogue</span><span class="d">Ce qui est disponible : recettes, styles entraînés, voix, sessions ouvertes, capacités du worker.</span></div>
+    <div class="ep"><span class="n">/mcp/bibliotheque</span><span class="d">Les assets : chercher, récupérer, valider, rattacher à une entité.</span></div>
+    <div class="ep"><span class="n">/mcp/recit</span><span class="d">Trames, chapitres, scènes, dialogues, versions et comparaison de versions.</span></div>
+    <div class="ep"><span class="n">/mcp/images</span> <span class="d">Style, cadrage, référence, variantes, comparaison.</span></div>
+    <div class="ep"><span class="n">/mcp/3d</span><span class="d">Maillage, retopologie, UV, cuisson, matériaux, export, sessions Blender et Unreal.</span></div>
+    <div class="ep"><span class="n">/mcp/son</span><span class="d">Voix, ambiances, effets, thèmes, mixage.</span></div>
+    <div class="ep"><span class="n">/http/atelier</span><span class="d">Surface pour le code : les recettes, l'api, et le worker qui réclame ses travaux.</span></div>
+  </div>
+
+  <div class="col">
+    <p>Le point d'entrée en lecture seule mérite d'être compris pour ce qu'il est : <strong>un agent qui n'a rien à écrire n'a pas d'outil d'écriture dans son contexte.</strong> Il ne peut pas oublier une consigne, il ne peut pas être convaincu de la contourner, et il ne paie pas ces outils en jetons. C'est l'invariant 02 appliqué à la lettre.</p>
+
+    <h3>Pourquoi la Bibliothèque n'est pas dans le Canon</h3>
+    <p>La question se pose, puisque les deux stockent des choses durables. La réponse tient au cycle de vie : <strong>on produit quatre variantes d'un portrait, on en valide une, on jette les autres.</strong> Ce va-et-vient n'a rien à faire dans le canon, qui décrit ce qui est vrai de ton monde et où rien ne se jette. Le canon ne connaît qu'un identifiant d'asset validé ; tout le reste — les essais, les rejets, les paramètres qui ont produit chacun — vit dans la Bibliothèque.</p>
+
+    <h3>Pourquoi deux processus et pas un, ni sept</h3>
+    <p><strong>Pas un</strong>, parce que la frontière d'écriture du canon doit être un processus distinct avec son propre compte en base. Fusionner reviendrait à supprimer la garantie de la section suivante.</p>
+    <p><strong>Pas sept</strong>, parce que chaque processus Python coûte environ 150 Mo sur un VPS qui en a huit mille, partagés avec tes autres services. Le regroupement en deux économise à peu près 300 Mo par rapport à quatre, et bien davantage par rapport à sept.</p>
+    <p>Et l'invariant 10 — jamais plus de dix outils par agent — n'est pas menacé par ce regroupement : ce qu'un agent voit dépend de son <strong>profil d'outils</strong>, pas du nombre de processus qui les servent. Un agent d'image n'a aucune raison de voir les outils du son, même s'ils sortent du même processus. C'est la pièce 08 qui fixe ces profils.</p>
+  </div>
+</section>
+
+<section id="frontieres">
+  <span class="sec-num">04</span>
+  <h2>Les frontières d'écriture</h2>
+  <div class="col">
+    <p class="lede">L'invariant 02 exige qu'une garantie vive dans un outil, jamais dans une consigne. Ici, l'outil est le système de permissions de Postgres.</p>
+    <p>Quatre rôles SQL, créés une fois :</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Rôle SQL</th><th>Utilisé par</th><th>Droits</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>forge_canon</code></td><td class="v">processus <code>canon</code></td><td>Lecture et écriture sur le schéma <code>canon</code>. Lecture seule ailleurs.</td></tr>
+        <tr><td class="name"><code>forge_atelier</code></td><td class="v">processus <code>atelier</code></td><td>Lecture et écriture sur le schéma <code>atelier</code>. Lecture seule sur <code>canon</code>.</td></tr>
+        <tr><td class="name"><code>forge_lecture</code></td><td class="v">l'<code>api</code></td><td>Lecture seule partout. Écriture nulle part.</td></tr>
+        <tr><td class="name"><code>forge_migration</code></td><td class="v">le script de migration, à la main</td><td>Tous les droits. N'est jamais utilisé par un service qui tourne.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>La conséquence à retenir : <strong>même en cas de bug, même si un agent est manipulé, même si une recette est mal écrite, il est physiquement impossible d'écrire dans le canon autrement que par le processus canon.</strong> La couche de validation n'est pas contournable parce qu'il n'existe pas de chemin qui la contourne.</p>
+    <p>L'orchestrateur, les recettes et le worker n'ont aucun accès à la base. Ils n'ont pas de mot de passe Postgres du tout — ils parlent aux deux serveurs d'outils, point.</p>
+
+    <h3>La même frontière côté fichiers</h3>
+    <p>Le stockage objet a ses propres identifiants, et ils suivent la même logique. <strong>Seul le processus <code>atelier</code> détient une clé d'écriture.</strong> Le worker ne dépose pas ses résultats lui-même : il les rend au processus <code>atelier</code>, qui les enregistre et écrit la ligne de métadonnées <em>dans la même transaction</em>. Sans quoi on obtiendrait tôt ou tard un fichier orphelin que rien ne référence, ou une ligne qui pointe vers un fichier absent.</p>
+    <p>L'interface, elle, reçoit des liens de lecture à durée limitée. Elle télécharge les images directement depuis le stockage sans les faire transiter par le VPS — c'est ce qui évite de faire passer des centaines de mégaoctets par une machine à huit gigaoctets.</p>
+
+    <div class="callout">
+      <span class="tag">Le test de cette section</span>
+      <p>À la fin de la pièce 03, il doit être possible d'écrire un test qui se connecte avec <code>forge_atelier</code>, tente d'insérer une ligne dans le schéma du canon, et vérifie que Postgres refuse. <strong>Si ce test ne peut pas être écrit, la frontière n'existe pas.</strong> Le pendant côté fichiers : un test qui tente une écriture objet avec les identifiants du worker et se fait refuser.</p>
+    </div>
+  </div>
+</section>
+
+<section id="chemins">
+  <span class="sec-num">05</span>
+  <h2>Les deux chemins, et où passe la frontière</h2>
+  <div class="col">
+    <p class="lede">C'est la décision prise avant le dossier, ici rendue exécutable.</p>
+    <p>Une seule question détermine par quel chemin passe un enchaînement : <strong>doit-il donner le même résultat deux fois ?</strong></p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Enchaînement</th><th>Chemin</th><th>Pourquoi</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Session de worldbuilding</td><td class="v">orchestrateur</td><td>Deux réponses différentes à la même question sont le but recherché</td></tr>
+        <tr><td class="name">Question au canon</td><td class="v">orchestrateur</td><td>Exploration ouverte, chemin imprévisible par nature</td></tr>
+        <tr><td class="name">Fabriquer une image</td><td class="v">recette</td><td>Réglage validé, jamais réinventé</td></tr>
+        <tr><td class="name">Entraîner un style</td><td class="v">recette</td><td>Coûteux et reproductible à l'identique</td></tr>
+        <tr><td class="name">Chaîne 3D complète</td><td class="v">recette</td><td>Sept étapes ordonnées avec retour visuel obligatoire</td></tr>
+        <tr><td class="name">Auditer un fait entrant</td><td class="v">recette</td><td>Les relecteurs doivent tourner, pas être choisis</td></tr>
+        <tr><td class="name">Consolider la mémoire</td><td class="v">recette</td><td>Déclenché par n8n, aucun modèle ne décide de le sauter</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Les deux chemins mènent aux <strong>mêmes serveurs d'outils</strong>. Une recette n'a aucun privilège que l'orchestrateur n'aurait pas : elle passe par la surface HTTP au lieu du protocole d'agents, mais c'est le même noyau, la même validation, les mêmes refus.</p>
+    <p>Le sens de la petite flèche entre les deux compte : <strong>l'orchestrateur peut déclencher une recette, l'inverse n'existe pas.</strong> Une recette qui appellerait l'orchestrateur perdrait sa seule propriété — donner le même résultat deux fois.</p>
+  </div>
+</section>
+
+<section id="agents">
+  <span class="sec-num">06</span>
+  <h2>Les agents qui circulent là-dedans</h2>
+  <div class="col">
+    <p class="lede">Le schéma montre des boîtes et des flèches ; il ne dit pas qui les emprunte. Voici la population, à titre de cadre — la liste définitive, avec le modèle et le profil d'outils de chacun, est arrêtée en <strong>pièce 08</strong>.</p>
+    <p>Le principe de répartition est constant : <strong>plus on descend, plus la tâche est étroite, plus le fil est court, moins l'agent voit d'outils.</strong> Un agent d'étage bas ne sait pas qu'il existe un projet ; il sait faire une chose.</p>
+  </div>
+
+  <div class="etage">
+    <span class="lvl">Étage 0 · un seul</span>
+    <h4>L'Assistant</h4>
+    <p class="sub">C'est l'orchestrateur. Sur le desktop.</p>
+    <p>Le seul agent avec qui tu parles directement. Il ne fabrique rien lui-même : il comprend la demande, décide s'il faut un chemin ouvert ou un chemin écrit, délègue, et rend compte. C'est aussi le seul qui a le droit de te reposer une question — les étages du dessous n'ont pas accès à toi.</p>
+  </div>
+
+  <div class="etage">
+    <span class="lvl">Étage 1 · les agents core</span>
+    <h4>Six spécialistes durables</h4>
+    <p class="sub">Noms provisoires, à confirmer en pièce 08.</p>
+    <p>Six agents pour huit domaines, et ce n'est pas une incohérence : <strong>le Catalogue et la Bibliothèque ne sont possédés par personne.</strong> Ils sont consultés par tous et n'ont pas de métier propre à défendre — on ne « fait » pas du catalogue, on le lit. Les six autres domaines ont chacun un agent parce que chacun porte un savoir-faire qu'il faut exercer.</p>
+    <p><strong>Archiviste</strong> (Canon) interroge et enrichit le canon, prépare les faits candidats — mais ne décide pas seul qu'un fait entre : il propose, l'audit tranche. <strong>Narrateur</strong> (Récit) écrit trames, chapitres et dialogues en consommant le canon comme contrainte ; l'extraction de ce qu'il a écrit est une étape séparée, conformément à l'invariant 05. <strong>Directeur artistique</strong>, <strong>Sculpteur</strong> et <strong>Compositeur</strong> tiennent respectivement Images, 3D et Son : ils traduisent une intention en travaux, sans jamais toucher le GPU. <strong>Régisseur</strong> tient la File : il dépose, priorise, surveille et relance — et ne juge jamais la qualité de ce qui sort.</p>
+  </div>
+
+  <div class="etage">
+    <span class="lvl">Étage 2 · sous-agents</span>
+    <h4>Un fil, une tâche, puis on jette</h4>
+    <p class="sub">Créés par un agent core pour une question précise, détruits juste après.</p>
+    <p>C'est l'invariant 12 : <strong>un fil de sous-agent est jetable et n'a pas vocation à avoir de mémoire.</strong> Il reçoit un contexte minimal et deux ou trois outils, rend une réponse compacte, et disparaît. Tout ce qui doit survivre est écrit dans le canon ou la bibliothèque par l'agent qui l'a appelé.</p>
+    <p>C'est aussi le mécanisme qui protège le vrai plafond du système. Ce qui sature une fenêtre de contexte, ce ne sont pas les définitions d'outils mais l'accumulation des <em>résultats</em> d'appels. Un étage jetable est ce qui empêche cette accumulation de remonter jusqu'à l'orchestrateur, qui ne conserve que les conclusions.</p>
+  </div>
+
+  <div class="etage audit">
+    <span class="lvl">À part · les auditeurs</span>
+    <h4>Ils ne sont l'étage de personne</h4>
+    <p class="sub">Et surtout pas celui de l'agent qu'ils relisent.</p>
+    <p>L'invariant 06 dit qu'une IA ne relit jamais son propre travail. Les auditeurs sont donc appelés par une <strong>recette</strong>, jamais par le producteur, et leur verdict n'est pas négociable par lui. Quatre familles : cohérence interne, conformité au canon, conformité au style, validité technique — un maillage réellement exportable, un fichier réellement lisible.</p>
+    <p>L'écart mesuré justifie le coût : le taux d'acceptation passe de <strong>42 % à 85,5 %</strong> quand les relecteurs sont séparés et multiples plutôt qu'uniques et internes.</p>
+  </div>
+</section>
+
+<section id="evenements">
+  <span class="sec-num">07</span>
+  <h2>Le flux d'événements</h2>
+  <div class="col">
+    <p class="lede">Deux exigences contradictoires dans la plupart des architectures : voir en direct ce que font les agents, et ne jamais voir quelque chose de faux. Voici comment elles tiennent ensemble.</p>
+  </div>
+
+<!--SCHEMA:flux-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 330" role="img" aria-label="Le flux d'un événement : le fait métier et l'événement sont écrits dans la même transaction ; à la validation, une notification portant le seul identifiant réveille l'api, qui relit la ligne et la diffuse en WebSocket ; la ligne reste en base comme archive.">
+<defs>
+  <marker id="fxa1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="fxa2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <rect x="36" y="52" width="424" height="152" rx="7" fill="none" class="dg-accent" stroke-width="1.75" stroke-dasharray="7 4"/>
+  <text x="52" y="74" font-size="11.5" font-weight="600" class="dg-accent-t" font-family="JetBrains Mono, monospace">UNE SEULE TRANSACTION</text>
+
+  <rect x="54" y="88" width="180" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="144" y="118" text-anchor="middle" font-size="14" font-weight="600">le fait</text>
+  <text x="144" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">schéma canon</text>
+  <text x="144" y="158" text-anchor="middle" font-size="10.5" opacity="0.6">les contraintes</text>
+  <text x="144" y="173" text-anchor="middle" font-size="10.5" opacity="0.6">peuvent refuser ici</text>
+
+  <line x1="234" y1="137" x2="258" y2="137" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="262" y="88" width="180" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="352" y="118" text-anchor="middle" font-size="14" font-weight="600">l'événement</text>
+  <text x="352" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">schéma journal</text>
+  <text x="352" y="158" text-anchor="middle" font-size="10.5" opacity="0.6">+ résumé en clair</text>
+  <text x="352" y="173" text-anchor="middle" font-size="10.5" opacity="0.6">+ charge utile</text>
+
+  <line x1="460" y1="128" x2="504" y2="128" stroke="currentColor" stroke-width="1.75" marker-end="url(#fxa1)"/>
+  <text x="482" y="118" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">commit</text>
+
+  <rect x="508" y="88" width="150" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="583" y="118" text-anchor="middle" font-size="13.5" font-weight="600">notification</text>
+  <text x="583" y="140" text-anchor="middle" font-size="10.5" opacity="0.6">l'identifiant seul</text>
+  <text x="583" y="160" text-anchor="middle" font-size="10.5" opacity="0.6">jamais le contenu</text>
+  <text x="583" y="176" text-anchor="middle" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">plafond ≈ 8 Ko</text>
+
+  <line x1="658" y1="128" x2="694" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="698" y="88" width="112" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="754" y="122" text-anchor="middle" font-size="14" font-weight="600">api</text>
+  <text x="754" y="144" text-anchor="middle" font-size="10.5" opacity="0.6">relit la ligne</text>
+  <text x="754" y="162" text-anchor="middle" font-size="10.5" opacity="0.6">en lecture seule</text>
+
+  <line x1="810" y1="128" x2="840" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#fxa1)"/>
+
+  <rect x="844" y="88" width="100" height="98" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="894" y="122" text-anchor="middle" font-size="13.5" font-weight="600">interface</text>
+  <text x="894" y="144" text-anchor="middle" font-size="10.5" opacity="0.6">WebSocket</text>
+  <text x="894" y="162" text-anchor="middle" font-size="10.5" opacity="0.6">quelques ms</text>
+
+  <!-- archive -->
+  <line x1="352" y1="204" x2="352" y2="242" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7" marker-end="url(#fxa2)"/>
+  <rect x="196" y="248" width="312" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.8"/>
+  <text x="352" y="272" text-anchor="middle" font-size="12.5" font-weight="600">la ligne reste</text>
+  <text x="352" y="291" text-anchor="middle" font-size="10.5" opacity="0.6">l'archive n'est jamais consommée — d'où le rattrapage</text>
+
+  <!-- rattrapage -->
+  <polyline points="508,276 754,276 754,192" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.6" marker-end="url(#fxa2)"/>
+  <text x="631" y="268" text-anchor="middle" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace">rattrapage à la reconnexion · pièce 17</text>
+</g>
+</svg>
+<figcaption><strong>Le cadre en pointillés est toute la garantie.</strong> Parce que le fait et l'événement sont écrits dans la même parenthèse, il n'existe aucun instant où l'un est vrai sans l'autre : l'interface ne peut pas afficher un événement décrivant une action annulée, et aucun fait ne peut passer sans laisser de trace. La notification ne transporte que l'identifiant, parce que sa charge utile est plafonnée et que le dépassement échoue en silence. Et comme la ligne reste en base au lieu d'être consommée, un client déconnecté peut redemander tout ce qu'il a manqué.</figcaption>
+</figure>
+<!--/SCHEMA:flux-->
+
+  <div class="col">
+    <p>Le mécanisme tient en quatre temps :</p>
+    <ol>
+      <li>Un service écrit une ligne dans <code>journal.evenement</code> — session, agent, type, <strong>résumé en clair</strong>, charge utile, horodatage — <em>dans la même transaction</em> que le fait métier qu'elle décrit.</li>
+      <li>À la validation, un déclencheur Postgres émet une notification portant l'<strong>identifiant seul</strong>.</li>
+      <li>L'api écoute ce canal, relit la ligne, et la diffuse aux clients connectés en WebSocket.</li>
+      <li>La table reste comme archive. Elle est la source du rapport de session et de la relecture a posteriori.</li>
+    </ol>
+
+    <div class="callout good">
+      <span class="tag">La propriété qui compte</span>
+      <p>Parce que l'événement est écrit dans la même transaction que le fait, <strong>tu ne verras jamais dans l'interface un événement pour quelque chose qui a été annulé</strong>, et aucun fait ne peut entrer sans laisser de trace. C'est le défaut classique des architectures qui publient sur un bus séparé : l'écriture échoue, le message est déjà parti, et l'interface affiche une réalité qui n'existe pas. Ou l'inverse : l'écriture passe, la publication échoue, et tu ne vois rien.</p>
+    </div>
+
+    <p>Un détail d'implémentation à ne pas rater : la charge utile d'une notification Postgres est limitée à environ huit kilo-octets. On n'envoie donc <strong>que l'identifiant</strong>. Envoyer l'événement entier marche jusqu'au jour où un résultat d'outil dépasse la limite — et ce jour-là, l'échec est silencieux.</p>
+
+    <h3>Le champ « résumé en clair »</h3>
+    <p>Chaque événement porte une phrase en français écrite par l'agent lui-même sur ce qu'il vient de faire : « J'ai ajouté que Kael a quitté la cité au printemps de la troisième année. » C'est ce champ que l'interface affiche comme un message de conversation — la transparence recherchée, des agents qui se parlent lisiblement. Le détail technique reste dépliable en dessous.</p>
+    <p>Le coût est d'un champ de plus dans le schéma de sortie de chaque agent. Le bénéfice est que <strong>le transport reste structuré et fiable pendant que l'affichage reste lisible</strong> — au lieu du compromis habituel, où on rend l'interface lisible en faisant parler les agents en texte libre, et où le parsing casse.</p>
+
+    <h3>Ce que ça coûte en infrastructure</h3>
+    <p>Rien. Pas un service de plus sur les huit gigaoctets du VPS, et une seule sauvegarde qui emporte aussi l'historique de ce qui s'est passé.</p>
+  </div>
+</section>
+
+<section id="stockage">
+  <span class="sec-num">08</span>
+  <h2>Métadonnées et binaires</h2>
+  <div class="col">
+    <p class="lede">La base et les fichiers ne se stockent pas au même endroit, et la ligne de partage est nette.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Ce qui va en base</th><th>Ce qui va au stockage objet</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>L'identifiant de l'asset, son type, ses dimensions, son empreinte, l'entité du canon à laquelle il est rattaché, la recette et les paramètres qui l'ont produit, son statut de validation, sa clé objet.</td>
+          <td>Le fichier lui-même. Image, maillage, texture, audio, export.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Trois raisons, dans l'ordre d'importance.</p>
+    <p><strong>Les sauvegardes.</strong> Cent cinquante à trois cents gigaoctets de binaires en base multiplient la taille d'un sauvegarde par cent et rendent toute restauration pénible. Séparés, la base se sauvegarde en quelques secondes et se restaure aussi vite.</p>
+    <p><strong>La lecture directe.</strong> Un lien de lecture à durée limitée permet à l'interface de charger une image sans la faire transiter par le VPS. Sur une machine à huit gigaoctets partagés, ce n'est pas un détail.</p>
+    <p><strong>L'adresse stable.</strong> Les fichiers sont produits sur le desktop, mais doivent rester lisibles quand il dort. Un chemin local ne survit pas à l'extinction de la machine ; une clé objet, si.</p>
+    <p>La répartition entre un service distant et un serveur maison — et le partage entre les deux selon qu'un asset est validé ou en cours — relève de la <strong>pièce 16</strong>. Cette pièce ne décide que de la séparation elle-même, et de qui détient la clé d'écriture.</p>
+  </div>
+</section>
+
+<section id="enveloppe">
+  <span class="sec-num">09</span>
+  <h2>L'enveloppe mémoire du VPS</h2>
+  <div class="col">
+    <p class="lede">Vérification faite avant de figer, parce que huit gigaoctets partagés se remplissent vite.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Processus</th><th>RAM estimée</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td class="name">postgres</td><td class="num">1 500 Mo</td><td>Mémoire tampon à 1,5 Go, à ajuster selon l'index sémantique</td></tr>
+        <tr><td class="name">n8n</td><td class="num">400 Mo</td><td>Déjà en place</td></tr>
+        <tr><td class="name">litellm</td><td class="num">200 Mo</td><td>Sans état, proxy pur</td></tr>
+        <tr><td class="name">canon</td><td class="num">150 Mo</td><td>Python + psycopg</td></tr>
+        <tr><td class="name">atelier</td><td class="num">150 Mo</td><td>Python + psycopg</td></tr>
+        <tr><td class="name">api</td><td class="num">150 Mo</td><td>Plus les connexions WebSocket ouvertes</td></tr>
+        <tr><td class="name">recettes</td><td class="num">150 Mo</td><td>Peut monter pendant une recette longue</td></tr>
+        <tr><td class="name">caddy + tailscale</td><td class="num">60 Mo</td><td>Déjà en place</td></tr>
+        <tr class="tot"><td class="name">Total</td><td class="num">≈ 2 750 Mo</td><td>Sur 8 Go, avec le système et tes autres backends</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Trois observations honnêtes sur ces chiffres.</p>
+    <p><strong>Le déplacement de l'orchestrateur a libéré 250 Mo</strong>, et surtout le poste le plus incertain du budget : sa consommation dépend du comportement d'Hermes avec plusieurs sous-agents actifs, et personne ne sait la prédire. La sortir du VPS retire du risque, pas seulement des mégaoctets.</p>
+    <p><strong>Le regroupement en deux processus d'outils plutôt que quatre économise environ 300 Mo</strong> — pas décisif, mais pas rien à cette échelle. C'est ce qui rend l'ajout d'un huitième domaine gratuit en mémoire.</p>
+    <p><strong>Langfuse reste exclu du VPS</strong> : sa base analytique réclame à elle seule huit à seize gigaoctets recommandés. Le sujet est clos, il vit sur le serveur maison.</p>
+    <p>Des limites mémoire explicites sont posées sur chaque conteneur dès le premier jour. Un processus qui déborde doit être tué, pas entraîner les dix autres avec lui.</p>
+  </div>
+</section>
+
+<section id="pas-decide">
+  <span class="sec-num">10</span>
+  <h2>Ce que cette pièce ne décide pas</h2>
+  <div class="col">
+    <p class="lede">Une omission volontaire mérite d'être écrite, sinon elle sera lue comme un oubli.</p>
+    <ul>
+      <li><strong>Le contenu du canon</strong> — types d'entités, champs, relations, modèle temporel : <strong>pièce 03</strong>. Cette pièce décide seulement qu'il est un processus unique à trois surfaces.</li>
+      <li><strong>Le cycle de vie d'un travail</strong> — états, reprise, réveil, annulation : <strong>pièce 04</strong>.</li>
+      <li><strong>La signature exacte des outils</strong> — quels outils sur quel point d'entrée, avec quels paramètres : <strong>pièce 05</strong>.</li>
+      <li><strong>Qui est un agent et ce qu'il voit</strong> — la liste ci-dessus est un cadre, pas une décision : <strong>pièces 08 et 09</strong>.</li>
+      <li><strong>La répartition du stockage objet</strong> — service distant, serveur maison, ou partage entre les deux : <strong>pièce 16</strong>.</li>
+      <li><strong>La forme de l'interface</strong> — desktop, web, application installable : <strong>pièce 18</strong>. Cette pièce garantit seulement qu'elle sera un client de l'api, donc que le choix reste ouvert et réversible.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="ouverts">
+  <span class="sec-num">11</span>
+  <h2>Points laissés ouverts</h2>
+  <div class="col">
+    <p class="lede">Sept, chacun affecté.</p>
+  </div>
+
+  <div class="openq">
+    <h4>La sérialisation du texte long</h4>
+    <p>C'est le point le plus gênant de cette pièce. Un chapitre de quatre mille mots sur un modèle local de 27 milliards de paramètres, c'est plusieurs minutes de carte graphique — le même ordre de grandeur qu'une image. Or le texte passe par litellm, en direct, pendant que l'image passe par la File : <strong>deux chemins se disputent la même carte</strong>, alors que l'invariant 09 exige une seule voie et une seule charge lourde à la fois. La règle probable — le texte long passe par la File, seuls les échanges courts vont direct — reste à écrire, et à décider si c'est litellm qui sérialise ou la File qui absorbe tout. <span class="to">→ pièce 04, avec la pièce 14</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>La profondeur du rattrapage</h4>
+    <p>Le mécanisme est acquis : le client garde l'identifiant du dernier événement reçu et redemande la suite. Restent deux réglages — jusqu'où on rattrape (tout, ou les N derniers), et si le rattrapage est par session ou global. <span class="to">→ pièce 17</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Comment une recette reprend si elle meurt au milieu</h4>
+    <p>Les travaux qu'elle a déposés survivent — ils sont dans la File. Mais la recette elle-même n'a pas d'état persisté. Deux voies : rendre chaque recette rejouable sans effet de bord, ou persister son avancement. La première est plus simple et probablement suffisante. <span class="to">→ pièce 10</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>L'authentification entre les processus</h4>
+    <p>Tout est sur le réseau privé, mais « le réseau est privé » n'est pas une authentification — et l'orchestrateur, désormais sur le desktop, traverse ce réseau à chaque appel d'outil. Il faut décider si les serveurs d'outils exigent un jeton, et lequel, d'autant que le protocole d'agents a récemment durci sa couche d'authentification. <span class="to">→ pièce 17</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le comportement quand le desktop est absent</h4>
+    <p>Un travail déposé alors que la machine dort déclenche un réveil — mais le réseau privé ne transporte pas les paquets de réveil, ce qui exclut la solution évidente et impose un relais sur le réseau local. Et si le réveil échoue, ou si la machine est physiquement éteinte : que voit-on, et au bout de combien de temps ? <span class="to">→ pièce 04, avec la pièce 16</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>La consommation mémoire réelle de l'orchestrateur</h4>
+    <p>Le poste le moins fiable du budget. Il a quitté le VPS, ce qui retire le risque du budget partagé — mais il reste à mesurer sur le desktop, avec trois sous-agents actifs, avant de trancher sur Hermes. <span class="to">→ pièces 09 et 16</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Ce que voit exactement chaque agent</h4>
+    <p>Cette pièce dit que les profils d'outils existent et que l'invariant 10 s'applique par profil et non par processus. Elle ne dit pas quel profil pour quel rôle, ni où passe la limite quand un même rôle est instancié deux fois. <span class="to">→ pièce 08</span></p>
+  </div>
+</section>
+
+<section id="registre">
+  <span class="sec-num">12</span>
+  <h2>Registre des révisions</h2>
+  <div class="col">
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Date</th><th>Ce qui change</th><th>Motif</th></tr></thead>
+        <tbody>
+          <tr><td class="v">31 août 2026</td><td class="name">Version initiale</td><td>Pièce posée.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Nomenclature</td><td>Le processus <code>production</code> — nom inventé en cours de rédaction, sans justification — devient <code>atelier</code>. Le point d'entrée qui s'appelait « atelier » devient le domaine <strong>Catalogue</strong>, le mot étant employé à deux niveaux. Le rôle SQL <code>forge_production</code> devient <code>forge_atelier</code>.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">L'orchestrateur passe sur le desktop</td><td>Il n'a de raison d'être que là où tu es, et il est déjà installé. L'api reste sur le VPS pour accepter les dépôts quand le desktop dort. Effet secondaire : 250 Mo et le poste le plus incertain sortent du budget mémoire du VPS.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Les binaires passent en stockage objet</td><td>Séparation métadonnées / fichiers. Motifs : taille des sauvegardes, lecture directe par l'interface sans transit par le VPS, adresse stable quand le desktop est éteint.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Images, 3D et Son rétablis comme domaines</td><td>Une version intermédiaire les avait absorbés dans la File et la Bibliothèque. C'était une perte et non une factorisation : tout ce qui est propre à une modalité n'avait plus d'endroit où vivre. Sept domaines, deux processus.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Le Récit devient le huitième domaine</td><td>« Le texte » n'avait aucun endroit où vivre : le Narrateur était le seul agent core sans domaine. Le Récit entre comme domaine de modalité, avec sa pièce 06 ; la Bibliothèque reçoit la pièce 07. Le dossier passe de dix-neuf à vingt et une pièces et tout ce qui suivait est décalé de deux.</td></tr>
+          <tr><td class="v">2 sept. 2026</td><td class="name">Les schémas viennent d'une source unique</td><td>Les deux schémas de cette pièce sont injectés depuis <code>build_schemas.py</code> et figurent aussi dans l'atlas, avec leur lecture guidée. Corriger un schéma à un endroit met les deux pages à jour.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · pièce 02 · posée le 31 août 2026 · révisée le 2 septembre 2026</div>
+</footer>
+
+</body></html>

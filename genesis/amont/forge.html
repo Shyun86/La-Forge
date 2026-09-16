@@ -1,0 +1,1184 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>La Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --ember-soft:#F2E3C9;
+  --m-text:#3C6494; --m-image:#9C4A62; --m-audio:#2F7466; --m-3d:#6A579C;
+  --good:#2F7466; --warn:#B0700F; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --ember-soft:#3A2E1A;
+    --m-text:#7EA8D8; --m-image:#D68CA1; --m-audio:#6FBCAA; --m-3d:#A596D8;
+    --good:#6FBCAA; --warn:#E5A64B; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --ember-soft:#3A2E1A;
+  --m-text:#7EA8D8; --m-image:#D68CA1; --m-audio:#6FBCAA; --m-3d:#A596D8;
+  --good:#6FBCAA; --warn:#E5A64B; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.col{max-width:70ch}
+.masthead{border-bottom:1px solid var(--rule);padding:64px 0 40px;background:var(--surface)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(38px,6.4vw,68px);line-height:1.02;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:32px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+.body-grid{display:grid;grid-template-columns:1fr;gap:0;padding:0 0 96px}
+@media(min-width:1040px){.body-grid{grid-template-columns:212px minmax(0,1fr);gap:56px;padding-top:48px}}
+nav.toc{display:none}
+@media(min-width:1040px){
+  nav.toc{display:block;position:sticky;top:70px;align-self:start;font-family:var(--f-mono);font-size:11.5px;line-height:1.5;border-right:1px solid var(--rule-soft);padding-right:20px;max-height:calc(100vh - 94px);overflow-y:auto}
+  nav.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;counter-reset:t}
+  nav.toc a{color:var(--ink-3);text-decoration:none;display:block;padding-left:24px;position:relative}
+  nav.toc a::before{counter-increment:t;content:counter(t,decimal-leading-zero);position:absolute;left:0;color:var(--rule)}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--ember)}
+}
+section{padding-top:64px;scroll-margin-top:24px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,3.4vw,36px);line-height:1.12;letter-spacing:-.02em;margin:0 0 8px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:44px 0 10px;text-wrap:balance}
+h4{font-family:var(--f-display);font-weight:600;font-size:16px;margin:28px 0 6px;letter-spacing:-.005em}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:26px}
+a{color:var(--ember);text-underline-offset:2px}
+strong{font-weight:600}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--surface-2);padding:1px 5px;border-radius:3px;color:var(--ink)}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+li::marker{color:var(--ink-3)}
+hr{border:0;border-top:1px solid var(--rule-soft);margin:44px 0}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid currentColor;vertical-align:2px}
+.c-text{color:var(--m-text)} .c-image{color:var(--m-image)} .c-audio{color:var(--m-audio)} .c-3d{color:var(--m-3d)}
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:18px 22px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:8px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+.tablewrap{overflow-x:auto;margin:26px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:12px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);white-space:nowrap;font-weight:600}
+td{padding:12px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+td.name{font-family:var(--f-display);font-weight:600}
+.verdict{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.v-yes{color:var(--good)} .v-mid{color:var(--warn)} .v-no{color:var(--crit)}
+.archgrid{display:grid;gap:20px;margin:30px 0}
+@media(min-width:900px){.archgrid{grid-template-columns:repeat(3,1fr)}}
+.arch{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.arch.reco{border-color:var(--ember);border-width:1.5px}
+.arch .label{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.arch.reco .label{color:var(--ember)}
+.arch h4{margin:0;font-size:19px}
+.arch .bet{font-family:var(--f-mono);font-size:11.5px;color:var(--ember);letter-spacing:.04em}
+.arch p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.5}
+.arch dl{margin:0;display:flex;flex-direction:column;gap:9px;font-size:13.5px}
+.arch dt{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.arch dd{margin:2px 0 0}
+.stack{display:flex;flex-direction:column;gap:2px;margin:30px 0;font-family:var(--f-mono);font-size:13px}
+.layer{background:var(--surface);border:1px solid var(--rule);padding:14px 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+.layer:first-child{border-radius:5px 5px 0 0}
+.layer:last-child{border-radius:0 0 5px 5px}
+.layer .lname{font-weight:600;color:var(--ink);min-width:190px}
+.layer .ldesc{color:var(--ink-3);font-size:12px;flex:1;min-width:220px}
+.layer.hl{border-left:3px solid var(--ember)}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:0 20px;padding:22px 0;border-top:1px solid var(--rule-soft)}
+.phase:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.phase .pn{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--ember);padding-top:5px;white-space:nowrap}
+.phase h4{margin:0 0 6px}
+.phase p{margin:0 0 10px;font-size:15.5px;color:var(--ink-2)}
+.phase ul{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;gap:5px}
+.phase .out{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.pitfall{border-top:1px solid var(--rule-soft);padding:18px 0}
+.pitfall:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.pitfall h4{margin:0 0 5px;display:flex;gap:10px;align-items:baseline}
+.pitfall h4 span{font-family:var(--f-mono);font-size:11px;color:var(--crit);letter-spacing:.1em}
+.pitfall p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.srcs{columns:2;column-gap:36px;font-size:14px;line-height:1.5}
+@media(max-width:700px){.srcs{columns:1}}
+.srcs li{break-inside:avoid;margin-bottom:9px}
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1180px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="kind">Amont</span><span class="sep">/</span><span class="here">Dossier de recherche</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a class="cur" href="#top"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Dossier d'architecture · révision 2 · août 2026</p>
+    <h1>La Forge : un atelier <em>multi-agents</em> pour fabriquer des mondes</h1>
+    <p class="standfirst">Étude comparative et trois architectures concrètes pour un système de création assistée — texte, image, audio, 3D — piloté par une hiérarchie d'agents, réparti entre RTX 4070, serveur maison, VPS et tiers gratuits, en poids ouverts.</p>
+    <div class="meta">
+      <span>RTX 4070 12 Go · 32 Go RAM</span>
+      <span>VPS 4 vCPU · 8 Go</span>
+      <span>Serveur maison intermittent</span>
+      <span>Cible Unreal Engine</span>
+      <span>≈ 90 sources croisées</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap body-grid">
+  <nav class="toc" aria-label="Sommaire">
+    <ol>
+      <li><a href="#cadrage">Cadrage &amp; hypothèses</a></li>
+      <li><a href="#etat">Ce qui a bougé en 2026</a></li>
+      <li><a href="#canon">Le vrai problème : le canon</a></li>
+      <li><a href="#orch">Orchestration &amp; harnais</a></li>
+      <li><a href="#texte">Modèles texte non censurés</a></li>
+      <li><a href="#image">Image</a></li>
+      <li><a href="#audio">Audio</a></li>
+      <li><a href="#troisd">3D &amp; Unreal</a></li>
+      <li><a href="#memoire">Mémoire &amp; canon en profondeur</a></li>
+      <li><a href="#ui">Interface &amp; transparence</a></li>
+      <li><a href="#archis">Trois architectures</a></li>
+      <li><a href="#repartition">Déploiement à quatre étages</a></li>
+      <li><a href="#roadmap">Ordre de construction</a></li>
+      <li><a href="#pieges">Pièges à éviter</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <!-- 1 -->
+  <section id="cadrage">
+    <span class="sec-num">01 — Cadrage</span>
+    <h2>Cadrage et hypothèses de travail</h2>
+    <div class="col">
+      <p class="lede">Trois constats qui déterminent tout le reste. Ils viennent de tes contraintes, pas de mes préférences.</p>
+
+      <h3>Un seul GPU = un ordonnanceur, pas du parallélisme</h3>
+      <p>C'est la contrainte structurante et elle est presque toujours sous-estimée. Une RTX 4070 a 12 Go. Un LLM agentique décent en occupe 8 à 11. Un modèle d'image moderne en FP8 en réclame 8 à 12. Un modèle image→3D en veut 8 à 29 selon la variante. Un TTS en veut 2 à 4. <strong>Ces charges ne cohabitent pas.</strong> Un sous-agent « image » et un sous-agent « 3D » qui travaillent « en parallèle » vont, dans les faits, se battre pour la même mémoire.</p>
+      <p>Conséquence : l'architecture n'est pas « des agents qui appellent des modèles », mais « des agents qui déposent des <em>jobs</em> dans une file, et un ordonnanceur qui charge/décharge les modèles un par un ». Cette file est le composant le plus important du système et c'est celui que personne ne construit en premier.</p>
+
+      <h3>Tu as quatre étages de calcul, pas deux</h3>
+      <p>La première version de ce dossier raisonnait sur « VPS + desktop + cloud » et tassait tout sur le VPS. C'était faux. Tu disposes en réalité de : un <strong>VPS toujours allumé mais faible</strong> (coordination, état, API), un <strong>serveur maison puissant mais intermittent</strong> (stockage lourd, services gourmands, inférence secondaire), un <strong>desktop GPU intermittent</strong> (tout le calcul lourd), et du <strong>cloud d'appoint</strong>. Chaque composant a un étage naturel, et la §12 en fait un plan complet, y compris le stockage — que la v1 avait complètement omis.</p>
+
+      <h3>« Gratuit » et « ne conserve pas mes données » sont deux exigences différentes</h3>
+      <p>Elles ne s'opposent pas partout : la recherche a trouvé au moins deux fournisseurs qui satisfont les deux (§12). Mais elles s'opposent chez Groq et Cerebras, dont la gratuité est financée par l'exploitation des données du free tier. La règle de tri est en §12, et elle n'est plus « tout local ou rien ».</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="etat">
+    <span class="sec-num">02 — État de l'art</span>
+    <h2>Ce qui a réellement bougé, y compris ce mois-ci</h2>
+    <div class="col">
+      <p class="lede">Cinq évolutions récentes changent les choix qu'on aurait faits il y a six mois.</p>
+
+      <h4>Le harnais s'est détaché du modèle — et tu en possèdes déjà un</h4>
+      <p>Deux sorties majeures. <strong>DeepSeek Harness (dsh)</strong>, ouvert en août 2026 sous MIT : un micro-noyau bâti sur une colonne vertébrale de six services (journal de session, registre d'agents, boucle d'exécution, registre d'outils, assemblage de prompt, registre d'adaptateurs de modèles), plus des fournisseurs interchangeables pour le système de fichiers, les sous-processus et les sous-agents. Client MCP intégré, support du protocole Agent Client. Mais preview 0.1, ruptures annoncées, et <em>pull requests externes fermées</em>.</p>
+      <p>Et surtout : <strong>Hermes Agent</strong> (Nous Research, MIT) — que tu possèdes déjà. La recherche a levé une ambiguïté importante : « Hermes » désigne deux choses distinctes chez Nous, la famille de <em>modèles</em> Hermes 3/4, et <strong>Hermes Agent, qui est un véritable harnais d'orchestration</strong>. Ce dernier est agnostique du modèle (<code>hermes model</code> bascule entre OpenAI, Anthropic, OpenRouter, Ollama, vLLM ou tout endpoint compatible), gère des <strong>sous-agents isolés avec routage de modèle par sous-agent</strong>, parle MCP nativement, se configure en YAML, embarque une mémoire à paliers, un ordonnanceur cron, plus de 40 outils, et <strong>sept backends d'exécution de terminal</strong> — local, Docker, SSH, Singularity, Modal, Daytona, Vercel. C'est, pour ton cas, l'outil le plus sous-évalué de ton inventaire. Il fait le successeur d'OpenClaw et importe automatiquement ses réglages.</p>
+
+      <h4>Trois protocoles se sont répartis le terrain, et un quatrième arrive</h4>
+      <p><strong>MCP</strong> couvre agent ↔ outils et données. <strong>A2A</strong> couvre agent ↔ agent. <strong>AG-UI</strong> couvre agent ↔ interface : événements typés pour le streaming, la multimodalité, l'UI générative, l'état partagé avec diffs, les interruptions human-in-the-loop, et <em>la délégation à des sous-agents avec état scopé et tracing</em>. Supporté par LangGraph, CrewAI, Mastra, Pydantic AI, Agno, LlamaIndex, AG2, Microsoft Agent Framework, Google ADK. À noter, et c'est un point de vigilance : <strong>ni dsh ni Hermes Agent ne figurent dans la liste des intégrations AG-UI</strong> — aucun pont n'existe aujourd'hui. Le quatrième, <strong>A2UI</strong> (Google), permet à un agent de <em>déclarer</em> des composants d'interface en JSON sans exécuter de code, en se limitant à un catalogue de composants pré-approuvés.</p>
+
+      <h4>Les MoE à faible activation ont rendu le local agentique viable</h4>
+      <p>La bascule s'est faite sur les architectures ~35B totaux / ~3B actifs. <strong>Ornith-1.5-35B-A3B</strong> (MIT) affiche 67,8 sur Terminal-Bench 2.1 contre 42,1 pour un dense Gemma-4-31B, avec 3B de paramètres actifs par token. Sur ta machine, ça veut dire : offload des experts en RAM avec une dégradation de débit tolérable, parce que seuls ~3B de paramètres passent réellement par le calcul à chaque token.</p>
+
+      <h4>On sait maintenant pourquoi les modèles ouverts ratent leurs appels d'outils</h4>
+      <p>Résultat le plus important de cette recherche pour ta §05. Un papier de 2026 sur la « taxe de contrainte » mesure ceci : taux d'invocation d'outils de 100 % avec les outils seuls, 100 % avec un schéma JSON seul, et <strong>0 % quand les deux sont activés simultanément</strong> — sur Qwen 35B/122B/397B, GPT-OSS-20B, Nemotron-3-Super, Qwen-235B-VL. La cause est une <em>bogue de la couche de décodage</em>, pas une faiblesse du modèle : la compilation de la grammaire JSON rend les tokens déclencheurs d'appel d'outil (le <code>&lt;tool_call&gt;</code> de Qwen) inatteignables dans l'automate. Ce n'est donc pas ta censure ou ton abliteration qui casse le tool-calling. C'est ton pipeline.</p>
+
+      <h4>La génération de mondes 3D complets est arrivée en 2026</h4>
+      <p>Le projet dont tu te souvenais existe : c'est <strong>Tencent HY-World 2.0</strong> (héritier de HunyuanWorld-1.0 et de HunyuanWorld-Voyager), rapport et code partiel publiés en avril 2026, mis à jour en 2.1 en juillet. Il produit des scènes 3D navigables, des maillages, des <em>gaussian splats</em>, des nuages de points et des cartes de profondeur/normales, à partir de texte, d'une image, de vues multiples ou de vidéo — et sa documentation revendique explicitement l'import dans Blender, Unreal Engine et Isaac Sim. Détails et concurrents en §08.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="canon">
+    <span class="sec-num">03 — Le cœur du problème</span>
+    <h2>Ton système n'est pas un générateur, c'est un gardien de canon</h2>
+    <div class="col">
+      <p class="lede">La partie difficile n'est pas de générer un personnage. C'est que le 200<sup>e</sup> ne contredise pas le 3<sup>e</sup>, et que l'agent image dessine la même cicatrice que celle décrite par l'agent lore huit mois plus tôt.</p>
+
+      <p><strong>AutoWorldBuilder</strong> (2026) attaque exactement ce problème avec 21 agents spécialisés et propose trois mécanismes que je reprends dans les trois architectures, parce qu'ils sont mesurés :</p>
+
+      <h4>1. Séparer la génération de l'audit</h4>
+      <p>Huit agents auditeurs indépendants évaluent les propositions des générateurs. La raison est mesurée : les modèles souffrent d'un <em>biais d'auto-approbation</em>. Le taux d'acceptation passe de 42 % à 85,5 % après boucle de révision, avec zéro conflit détecté en sortie.</p>
+
+      <h4>2. Le contexte comme budget par couche, pas comme un sac commun</h4>
+      <p>Quatre couches à budget fixe : <strong>Essentiel</strong> (~20 %), <strong>Pertinent</strong> (~35 %, récupéré par similarité), <strong>Résumé</strong> (~20 %), <strong>Collaboration</strong> (~25 %). Résultat : 89,9 % de compression, ~304 tokens par appel LLM en mode lean. C'est ce qui rend le système exécutable sur des modèles locaux à contexte modeste.</p>
+
+      <h4>3. Ordonnancer par localité sémantique</h4>
+      <p>Grouper les tâches qui partagent un domaine permet de réutiliser le contexte entre appels. Bénéfice direct en mono-GPU : moins de rechargements.</p>
+
+      <div class="callout">
+        <span class="tag">Le repère à retenir</span>
+        <p>20 tâches de worldbuilding, 95 % de succès, 56 à 103 concepts auto-cohérents par monde, 18 à 31 minutes par monde. C'est l'ordre de grandeur réaliste : pas « un monde en 30 secondes », mais « un monde cohérent en une demi-heure de calcul ».</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="orch">
+    <span class="sec-num">04 — Couche 1</span>
+    <h2>Orchestration : harnais, frameworks, et ce qu'on récupère de dsh</h2>
+    <div class="col">
+      <p class="lede">Tu as raison sur n8n et sur l'idée d'en combiner plusieurs. La question réelle est : qui tient la hiérarchie, et sur quoi on parie à trois ans.</p>
+
+      <h3>Hermes Agent : ce que ça change</h3>
+      <p>Sur les critères de ton projet, Hermes Agent coche beaucoup de cases que j'attribuais à du code à écrire :</p>
+      <ul>
+        <li><strong>Hiérarchie native.</strong> Sous-agents isolés pour des flux de travail parallèles, avec délégation — et surtout <em>routage de modèle par sous-agent</em>, automatique. C'est exactement ta §05 : l'agent lore sur un modèle non censuré, l'orchestrateur sur un modèle propre à tool-calling, sans plomberie à écrire.</li>
+        <li><strong>MCP natif</strong> avec découverte d'outils et gestion des timeouts. Ton serveur MCP « canon » se branche directement.</li>
+        <li><strong>Sept backends de terminal</strong> — dont Docker et SSH. Ta §10 (voir les terminaux) et ta §12 (worker GPU distant intermittent) trouvent là une réponse partielle immédiate.</li>
+        <li><strong>Cron intégré, passerelles de messagerie, création autonome de compétences</strong> compatibles avec le standard ouvert <code>agentskills.io</code>.</li>
+        <li><strong>MIT</strong>, agnostique du modèle, configuré en YAML.</li>
+      </ul>
+      <p>Les trois réserves sérieuses, à ne pas escamoter :</p>
+      <ul>
+        <li><strong>Sa mémoire n'est pas un canon.</strong> Hermes gère une mémoire à paliers (core → reachable → vecteurs) conçue pour un assistant personnel. Ce n'est ni versionné, ni typé, ni bitemporel. Si tu laisses le canon vivre dedans, tu retombes exactement dans le problème de la §03. Le canon doit rester une base externe exposée en MCP.</li>
+        <li><strong>Pas d'intégration AG-UI.</strong> Vérifié directement : Hermes Agent n'est pas dans la liste des frameworks supportés par AG-UI. Ton interface de transparence devra donc consommer ce que Hermes expose nativement, ou passer par un adaptateur maison.</li>
+        <li><strong>C'est un assistant généraliste, pas un pipeline créatif.</strong> Rien dedans ne connaît la cohérence narrative, les LoRA de personnage ou l'ordonnancement GPU. Ce sont tes serveurs MCP et ta file de jobs qui apportent ça.</li>
+      </ul>
+      <p><strong>Verdict : viable, et probablement le meilleur point de départ.</strong> Pas comme fondation exclusive, mais comme premier orchestrateur derrière une couche d'outils que tu contrôles.</p>
+
+      <h3>DeepSeek Harness : ce qu'on récupère aujourd'hui</h3>
+      <p>Tu proposais d'en extraire les parties stables et utiles. La recherche permet de trancher précisément. Deux éléments sont explicitement démontrés comme découplés et transposables :</p>
+      <ul>
+        <li><strong>Le patron d'adaptateur de modèle.</strong> Un registre d'adaptateurs multi-fournisseurs, tous derrière une interface compatible OpenAI. C'est l'idée, pas le code, qu'il faut prendre — et elle est déjà mieux servie par LiteLLM (ci-dessous), plus mature.</li>
+        <li><strong>L'abstraction de fournisseur d'exécution.</strong> C'est le morceau réellement intéressant : dsh dissocie « le système de fichiers » et « les sous-processus » du reste, de sorte que pointer les deux vers un sandbox distant (type E2B) déplace toute l'exécution Bash/PTY/LSP <em>sans forker un seul outil</em>. Ce patron-là, tu veux le copier dans ta file de jobs : un job ne sait pas s'il tourne sur le desktop, dans un conteneur ou sur une GPU louée.</li>
+      </ul>
+      <p>Le reste — format de configuration en pile de patchs, client MCP, UI web séparée — est utilisable mais les schémas vont bouger. Et l'équipe n'accepte pas de PR externes, ce qui limite l'idée d'en dériver quoi que ce soit à long terme. Rythme de sortie observé : une release tous les deux ou trois jours, ce qui est le signe d'un projet vivant et instable à la fois.</p>
+
+      <h3>La couche que la v1 avait oubliée : le routeur de modèles</h3>
+      <p>Entre les agents et les modèles, il manque un étage, et c'est lui qui rend le reste interchangeable :</p>
+      <ul>
+        <li><strong>LiteLLM</strong> — un proxy compatible OpenAI devant 100+ fournisseurs, routage par modèle en YAML, suivi de coût, règles de repli. N'importe quel framework (Hermes, LangGraph, n8n, du code maison) pointe sur une seule URL ; tu changes de modèle en éditant un fichier.</li>
+        <li><strong>llama-swap</strong> — un binaire Go qui lit le champ <code>model</code> d'une requête et charge/décharge à chaud le backend correspondant, pour qu'un seul modèle occupe la VRAM à la fois. C'est <em>littéralement</em> l'ordonnanceur mono-GPU de la §01, côté texte, déjà écrit. TTL par modèle pour libérer la VRAM après inactivité ; prévoir des dizaines de secondes de démarrage à froid.</li>
+        <li><strong>vLLM sleep mode</strong> — l'alternative à latence bien plus faible : réveil mesuré entre 0,1 et 0,8 s (niveau 1, poids déportés en RAM) ou 0,8 à 2,6 s (niveau 2), contre 20 à 100 s pour un chargement à froid. Mais vLLM préfère AWQ/GPTQ/FP8 au GGUF, et le niveau 1 réclame beaucoup de RAM : avec 32 Go partagés, ça reste étroit.</li>
+      </ul>
+      <p>La pile qui en découle — et qui est corroborée par plusieurs retours d'expérience indépendants — est : <code>agents → LiteLLM → llama-swap → llama.cpp/vLLM</code> en local, et <code>agents → LiteLLM → Ollama Cloud / NVIDIA / OpenRouter</code> pour le distant.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Brique</th><th>Rôle</th><th>Pour toi</th><th>Le vrai coût</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Hermes Agent</td><td>Harnais : hiérarchie, MCP, terminaux, cron</td><td>Déjà en ta possession, MIT, sous-agents avec routage de modèle par agent</td><td>Mémoire inadaptée au canon ; pas d'AG-UI ; généraliste</td><td class="verdict v-yes">Orchestrateur</td></tr>
+          <tr><td class="name">n8n</td><td>Plomberie déterministe</td><td>Déjà en place ; imbattable sur webhooks, cron, retries, notifications</td><td>Ne délègue pas — un workflow branche, il ne décide pas</td><td class="verdict v-yes">Plomberie</td></tr>
+          <tr><td class="name">LiteLLM</td><td>Routeur de modèles</td><td>Rend tous les modèles interchangeables par config, local comme cloud</td><td>Un service de plus, mais léger et sans état</td><td class="verdict v-yes">Indispensable</td></tr>
+          <tr><td class="name">llama-swap</td><td>Chargement à chaud mono-GPU</td><td>Résout la contrainte §01 côté texte, natif GGUF</td><td>Démarrage à froid en dizaines de secondes</td><td class="verdict v-yes">Indispensable</td></tr>
+          <tr><td class="name">LangGraph</td><td>Graphe d'état explicite</td><td>Reprise après incident, checkpointer Postgres, AG-UI supporté</td><td>Abstraction LangChain ; du code à écrire et maintenir</td><td class="verdict v-mid">Si contrôle total</td></tr>
+          <tr><td class="name">Pydantic AI</td><td>Agents typés, schémas garantis</td><td>Sorties structurées validées par construction ; AG-UI supporté</td><td>Écosystème plus jeune</td><td class="verdict v-yes">Sous-agents</td></tr>
+          <tr><td class="name">DeepSeek Harness</td><td>Micro-noyau à plugins</td><td>Le patron d'exécution découplée vaut d'être copié</td><td>Preview 0.1, PR externes fermées, schémas mouvants</td><td class="verdict v-mid">À piller, pas à adopter</td></tr>
+          <tr><td class="name">CrewAI</td><td>Rôles et équipages</td><td>Maquettage très rapide de la répartition des rôles</td><td>Abstractions rigides en production, observabilité limitée</td><td class="verdict v-mid">Prototype</td></tr>
+          <tr><td class="name">AutoGen</td><td>Conversation multi-agents</td><td>—</td><td>En maintenance, fusionné dans Microsoft Agent Framework</td><td class="verdict v-no">Éviter</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="texte">
+    <span class="sec-num">05 — Couche 2</span>
+    <h2><span class="chip c-text">Texte</span> Des modèles non censurés qui appellent quand même leurs outils</h2>
+    <div class="col">
+      <p class="lede">Tu as raison sur les deux points : les modèles non censurés font partie du système, et cette exigence ne doit pas amputer tes options. La recherche montre que le conflit est beaucoup moins grave qu'il n'en a l'air — mais pas pour la raison qu'on croit.</p>
+
+      <h3>Ce que l'abliteration coûte réellement</h3>
+      <p>Une étude comparative (16 modèles instruits de 7 à 14B × 4 outils d'abliteration, évalués sur MMLU, GSM8K, HellaSwag) donne des résultats nets :</p>
+      <ul>
+        <li><strong>Connaissances générales et sens commun : quasi intacts.</strong> Dégradation de 0,12 à 0,78 point, dans le bruit.</li>
+        <li><strong>Raisonnement multi-étapes : c'est là que ça casse.</strong> GSM8K va de +1,5 point à <strong>−18,81 points</strong> selon la méthode et l'architecture — soit un effondrement relatif de 26,5 % dans le pire cas (Yi-1.5-9B sous une abliteration optimisée bayésienne). C'est le meilleur substitut disponible pour « construction précise d'arguments d'appel d'outil ».</li>
+        <li><strong>La méthode compte énormément.</strong> Les méthodes en une passe préservant la norme (DECCP : −0,13 pt ; ErisForge : −0,28 pt sur GSM8K) préservent bien mieux les capacités que les approches par optimisation lourde, qui suppriment plus complètement les refus mais au prix d'une variance de capacité bien supérieure. <em>Plus l'abliteration est agressive, plus le risque est élevé.</em></li>
+        <li><strong>L'architecture compte aussi.</strong> Mistral-7B est resté stable sous les quatre outils ; Yi-1.5-9B était fragile. Donc « abliterated » n'est pas une étiquette monolithique : il faut tester ton couple modèle+méthode.</li>
+      </ul>
+
+      <div class="callout crit">
+        <span class="tag">Le vrai coupable</span>
+        <p>Aucune étude ne mesure directement le tool-calling avant/après abliteration — c'est une lacune réelle. Mais la « taxe de contrainte » (§02) montre que <strong>même les modèles non abliterés tombent à 0 % d'invocation d'outils</strong> quand on active simultanément un schéma JSON et le tool-calling, à cause du masquage des tokens déclencheurs par l'automate de la grammaire. Autrement dit : ton pipeline de décodage compte plus que la censure de ton modèle. Le correctif publié — <strong>exécution transparente en deux passes</strong> : décider et appeler les outils sans contrainte, puis appliquer le schéma seulement à la passe de sortie finale — restaure 100 % d'invocation avec conformité complète.</p>
+      </div>
+
+      <h3>Classement des trois familles, du plus sûr au plus risqué</h3>
+      <ol>
+        <li><strong>Vrais finetunes non censurés</strong> — lignée TheDrummer/BeaverAI : entraînement continué sur du narratif sans restriction plutôt qu'édition chirurgicale d'une direction dans les poids. Devrait généraliser le suivi d'instructions plus proprement qu'une ablation linéaire ; à noter qu'aucun benchmark de tool-calling publié ne le confirme formellement — c'est une inférence méthodologique, pas une mesure.</li>
+        <li><strong>Abliteration en une passe, préservant la norme</strong> — mesurablement plus sûre que l'optimisation agressive.</li>
+        <li><strong>Abliteration agressive</strong> — le −18,81 pt sur Yi-1.5-9B est le point de vigilance concret.</li>
+      </ol>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Rôle dans le système</th><th>Modèle</th><th>Empreinte 4070</th><th>Censure</th><th>Pourquoi lui</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Orchestrateur<br><small style="color:var(--ink-3)">décide, délègue, appelle des outils</small></td><td>Ornith-1.5-35B-A3B (MIT) ou Qwen3.6-35B-A3B</td><td class="num">~20 Go Q4<br>3B actifs</td><td>Alignée</td><td>Ne génère jamais de contenu sombre — il coordonne. Aucun besoin de le déblinder, donc tool-calling intact.</td></tr>
+          <tr><td class="name">Rédaction longue<br><small style="color:var(--ink-3)">prose, dialogues, scènes</small></td><td>Cydonia-24B-v4.3 ou Magidonia-24B (base Mistral-Small-3.2, Apache&nbsp;2.0)</td><td class="num">Q4_K_M ≈14 Go<br>IQ3 ≈10-11 Go</td><td>Finetune non censuré</td><td>Vrai finetune, pas une ablation. Sortie libre, jamais contrainte par une grammaire.</td></tr>
+          <tr><td class="name">Rédaction — variante MoE</td><td>Orion-26B-A4B-v1 (TheDrummer)</td><td class="num">26B / 4B actifs</td><td>Finetune non censuré</td><td>Le meilleur compromis débit/VRAM du lot pour une 4070 : MoE, experts déportables en RAM.</td></tr>
+          <tr><td class="name">Toujours chargé<br><small style="color:var(--ink-3)">le modèle qu'on ne décharge pas</small></td><td>Rocinante-XL-16B-v1</td><td class="num">Q4-Q5, tient en VRAM</td><td>Finetune non censuré</td><td>Assez petit pour rester résident pendant qu'un autre modèle occupe un autre job.</td></tr>
+          <tr><td class="name">Extraction &amp; structuration<br><small style="color:var(--ink-3)">fiches, tags, JSON</small></td><td>Gemma 4 (4-12B) ou Qwen3.8-27B abliterated en IQ3</td><td class="num">6-9 Go Q4<br>256k contexte</td><td>Selon la tâche</td><td>Passe 2 du décodage en deux passes. Contexte long, licence propre, tient entièrement en VRAM.</td></tr>
+          <tr><td class="name">Passes lourdes<br><small style="color:var(--ink-3)">audit global du canon</small></td><td>DeepSeek-V3.1 / GPT-OSS-120B via Ollama Cloud, GLM-4.7-Flash via Z.ai</td><td class="num">non local</td><td>Alignée</td><td>Voir §12 : ces deux voies ont une politique de non-entraînement explicite.</td></tr>
+          <tr><td class="name">Embeddings</td><td>EmbeddingGemma-300M ou BGE-M3</td><td class="num">&lt;200 Mo quantifié<br>ou ~1,5 Go</td><td>—</td><td>CPU, multilingue FR+EN. BGE-M3 sort dense + sparse + ColBERT en un seul modèle : hybride gratuit.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <h4>Les trois règles opérationnelles</h4>
+      <p><strong>1. Sépare celui qui écrit de celui qui décide.</strong> C'est la conclusion convergente du correctif en deux passes et de la pratique communautaire. Le modèle non censuré produit de la prose libre, sans grammaire, sans schéma. Un second modèle, plus petit et non abliteré, lit cette prose et en extrait le JSON. Aucun des deux ne fait le travail de l'autre, et le problème disparaît.</p>
+      <p><strong>2. Si tu dois contraindre, utilise XGrammar-2.</strong> Publié en 2026 et conçu explicitement pour la génération structurée agentique, il coexiste avec les grammaires d'appel d'outils — c'est-à-dire qu'il traite le bug de token inatteignable que documente la taxe de contrainte. À préférer aux schémas JSON naïfs sur vLLM/SGLang. En llama.cpp, les grammaires GBNF fonctionnent avec n'importe quel GGUF, abliteré compris, puisqu'elles opèrent sur le vocabulaire et non sur les poids.</p>
+      <p><strong>3. Plusieurs modèles, oui — et llama-swap le rend indolore.</strong> Quatre modèles pour quatre rôles n'est pas un luxe, c'est le seul moyen d'avoir à la fois de la prose libre et du tool-calling fiable. Le coût est un échange à chaud de quelques dizaines de secondes entre rôles, ce qui est négligeable devant une session de worldbuilding de vingt minutes.</p>
+      <p><small style="color:var(--ink-3)">Note de fiabilité : les classements de qualité d'écriture existent (EQ-Bench Creative Writing v3 et Longform, avec des colonnes Style, Slop, Repetition, Elo) mais leurs tableaux sont rendus côté client et n'ont pas pu être extraits automatiquement — à consulter directement avant de figer ton choix de modèle rédacteur. Le consensus communautaire place la lignée Cydonia/Magnum/Anubis en tête, mais c'est de l'anecdote, pas une mesure vérifiée.</small></p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="image">
+    <span class="sec-num">06 — Couche 3</span>
+    <h2><span class="chip c-image">Image</span> Concept art, character design, cohérence visuelle</h2>
+    <div class="col">
+      <p class="lede">ComfyUI reste le bon socle — non pour son interface, mais parce que c'est le seul environnement où un workflow est un <em>fichier JSON exécutable par API</em>, donc pilotable par un agent.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Modèle</th><th>VRAM</th><th>Licence</th><th>Force</th><th>Réserve</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Qwen-Image 2.0</td><td class="num">8–12 Go FP8</td><td>Apache 2.0</td><td>2K natif, texte lisible, variante Lightning 4 étapes</td><td>Moins photoréaliste que Krea</td></tr>
+          <tr><td class="name">Krea 2 Turbo</td><td class="num">~12 Go FP8</td><td>Krea Community</td><td>Meilleur photoréalisme de la catégorie, 8 étapes</td><td>Gratuit sous 1 M$ de CA, licence séparée au-delà</td></tr>
+          <tr><td class="name">FLUX.2</td><td class="num">&gt; 12 Go à pleine qualité</td><td>FLUX (non-com. pour dev)</td><td>Multi-référence native — l'outil de cohérence de personnage</td><td>Passe mal en 12 Go à sa meilleure qualité</td></tr>
+          <tr><td class="name">SDXL + écosystème</td><td class="num">6–8 Go</td><td>CreativeML Open RAIL++</td><td>ControlNet, IP-Adapter, LoRA : l'outillage le plus mûr</td><td>Qualité brute datée</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p><strong>Qwen-Image 2.0 comme moteur principal</strong>, parce qu'Apache 2.0 est la seule licence qui ne t'oblige à rien si un asset finit dans un jeu vendu. Krea 2 Turbo en second moteur pour les rendus promotionnels, en assumant le plafond de revenus. SDXL conservé pour les workflows ControlNet des turnarounds.</p>
+      <h4>La cohérence de personnage : trois niveaux</h4>
+      <ol>
+        <li><strong>Fiche de style canonique</strong> — bloc descriptif figé dans le canon, injecté dans chaque prompt. Coût nul, efficacité moyenne, à faire dès le jour un.</li>
+        <li><strong>Conditionnement par référence</strong> — IP-Adapter sur SDXL, multi-référence FLUX.2. Bon rapport effort/résultat pour les variations de tenue et d'expression.</li>
+        <li><strong>LoRA de personnage</strong> — 15 à 30 images validées, ~20 min d'entraînement sur 4070. Le seul niveau qui donne une identité stable. Le pipeline vertueux : générer → l'humain valide 20 images → entraîner la LoRA → le personnage devient un actif réutilisable.</li>
+      </ol>
+      <p>Ce troisième niveau transforme ton système de « générateur d'images » en « bibliothèque d'assets réutilisables ». Prévois-le dans le modèle de données dès le départ : un personnage canonique possède un identifiant de LoRA, pas seulement une description. Le même patron se retrouve en audio (§07) et en texture (§08) — c'est le motif structurant de ton projet.</p>
+      <h4>Le pilotage</h4>
+      <p>L'<strong>API HTTP native de ComfyUI</strong> (<code>/prompt</code>, workflow JSON, WebSocket pour la progression) est verbeuse mais déterministe : l'agent remplit des trous dans un workflow que <em>tu</em> as validé. Un <strong>serveur MCP ComfyUI</strong> existe aussi, qui expose la génération, l'édition du graphe et l'installation de nodes comme des outils. Le second est plus séduisant et plus dangereux : un agent qui réécrit ses propres workflows produit des résultats non reproductibles. MCP en exploration, API + workflows figés en production.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="audio">
+    <span class="sec-num">07 — Couche 4</span>
+    <h2><span class="chip c-audio">Audio</span> Voix, musique, design sonore</h2>
+    <div class="col">
+      <p class="lede">C'est la modalité où le piège de licence est le plus coûteux, parce que le meilleur outil est aussi le seul juridiquement inexploitable.</p>
+      <h4>Voix</h4>
+      <p><strong>Chatterbox (MIT)</strong> par défaut : clonage à partir de ~5 secondes, et surtout un contrôle d'exagération émotionnelle absent chez ses concurrents — pour du dialogue de personnage, c'est exactement le paramètre qui manque ailleurs. <strong>Kokoro-82M (Apache 2.0, ~165 Mo FP16)</strong> tourne sur CPU : le bon moteur pour la narration en volume, assez léger pour vivre ailleurs que sur le GPU. <strong>XTTS v2</strong> reste techniquement le meilleur cloneur multilingue (17 langues) mais sa licence CPML est non commerciale et <em>Coqui a cessé son activité en janvier 2024</em> — il n'existe plus d'entité à qui acheter une licence.</p>
+      <h4>Musique</h4>
+      <p><strong>ACE-Step 1.5 (MIT)</strong> est la trouvaille la plus utile de cette recherche pour ton cas. Au-delà du texte→musique : séparation en stems, repainting sélectif, génération guidée par référence, et surtout des <strong>LoRA personnalisées à partir de quelques morceaux</strong>. Traduction : tu entraînes le thème sonore d'une faction, puis tu le décline par lieu et par situation. C'est le pendant audio exact des LoRA de personnage. Variantes turbo en 6–8 Go, SFT en 16–20 Go, jusqu'à 10 minutes de piste, ~7 Go de poids en bf16.</p>
+      <h4>Design sonore</h4>
+      <p>Le maillon le plus faible de la chaîne open source. La génération d'effets ponctuels reste inégale ; les ambiances en boucle sont mieux servies. Recommandation pragmatique : traite le sound design comme du <em>retrieval</em> avant de le traiter comme de la génération — un agent qui pioche et assemble dans une banque libre produira de meilleurs résultats en 2026 qu'un agent qui génère. Garde le slot d'agent, change son outil quand les modèles rattrapent.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="troisd">
+    <span class="sec-num">08 — Couche 5</span>
+    <h2><span class="chip c-3d">3D</span> La chaîne complète, cible Unreal</h2>
+    <div class="col">
+      <p class="lede">Ton découpage était le bon : premier jet quasi terminé, puis un agent qui modélise dans Blender, puis un agent qui sait faire retopo, UV et normal maps. La recherche valide la structure — et identifie précisément la seule étape qui ne s'automatise pas.</p>
+
+      <h3>Étage 1 — Premier jet</h3>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Outil</th><th>VRAM / accès</th><th>Licence</th><th>Sortie</th><th>Verdict pour toi</th></tr></thead>
+        <tbody>
+          <tr><td class="name">TripoSG</td><td class="num">8 Go — tient sur ta 4070</td><td>Poids ouverts</td><td>GLB, géométrie nette, arêtes franches</td><td class="verdict v-yes">Itération locale</td></tr>
+          <tr><td class="name">Hunyuan3D-2.1 <small style="color:var(--ink-3)">via le fork 2GP</small></td><td class="num">Standard : 10 Go forme + 21 Go texture ≈ 29 Go.<br>Fork 2GP : profils d'offload, plancher ~6 Go</td><td>Poids ouverts</td><td>Maillage + PBR (albedo, métallique, rugosité) via Hunyuan3D-Paint</td><td class="verdict v-mid">Le meilleur local, mais teste le plancher réel</td></tr>
+          <tr><td class="name">TRELLIS.2 (Microsoft)</td><td class="num">≥ 24 Go — hors de portée en local</td><td>MIT (code)</td><td>GLB avec PBR embarqué, opacité, UV via CuMesh</td><td class="verdict v-mid">Cloud uniquement</td></tr>
+          <tr><td class="name">Meshy AI</td><td class="num">Hébergé</td><td>Commercial</td><td>Remesh quad-dominant, PBR, texturing</td><td class="verdict v-yes">Le niveau que tu visais</td></tr>
+          <tr><td class="name">Rodin / Hyper3D</td><td class="num">Hébergé (API fal.ai)</td><td>Commercial</td><td>Se positionne explicitement sur les maillages « prêts à rigger »</td><td class="verdict v-mid">Équivalent Meshy</td></tr>
+          <tr><td class="name">PartCrafter</td><td class="num">Recherche</td><td>Ouvert</td><td>Maillages <em>séparés en parties</em>, pas un bloc fusionné</td><td class="verdict v-mid">À surveiller</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p><strong>Sur la qualité Meshy, la réponse est nuancée et documentée par Meshy lui-même.</strong> Son retopo IA produit une topologie quad-dominante propre et régulière, <em>prête pour les props, les décors et les personnages secondaires</em>. Mais sa propre documentation dit : « ce qu'il ne peut pas faire, ce sont les décisions artistiques — ajouter des boucles là où une épaule pivote ou un genou se plie ». Donc oui, presque terminé pour un prop. Non, pas pour un personnage héros qui va se déformer. Ton intuition était bonne pour un cas et optimiste pour l'autre.</p>
+      <p>Note importante sur les noms : <strong>Hunyuan3D 2.x est ouvert, Hunyuan3D 3.x ne l'est pas</strong> — c'est une gamme hébergée commerciale, sans poids publics. Ne confonds pas les deux en cherchant des poids.</p>
+
+      <h3>Étage 2 — Retopologie : la seule étape non résolue</h3>
+      <div class="callout crit">
+        <span class="tag">À entendre clairement</span>
+        <p>En août 2026, <strong>aucun système ne place de façon fiable et automatique des boucles d'arêtes conscientes de la déformation</strong>, comme le fait un topologiste humain. Tout ce qui est vendu comme « retopologie IA » — Meshy inclus — est un remailleur intelligent : très bon pour des props et du décor, insuffisant seul pour un personnage animé. C'est le seul trou réel de la chaîne que tu décris.</p>
+      </div>
+      <ul>
+        <li><strong>Recherche prometteuse mais pas livrée :</strong> QuadGPT (ICLR 2026) fait de la génération autorégressive native de maillages quad ; MeshAnything V2 génère des maillages « style artiste » depuis des nuages de points. Directions justes, pas des outils.</li>
+        <li><strong>Automatique et disponible :</strong> QuadriFlow (intégré à Blender), DynRemesh 2, remailleurs type Instant Meshes. Bons pour une base quad ou un prop statique, pas pour de l'animé.</li>
+        <li><strong>Ce qui produit vraiment de la topologie d'animation :</strong> RetopoFlow 4 (esquisse : Contours, PolyStrips, Patches, conçu autour des points de déformation), Quad Remesher, ZRemesher, InstaLOD. Tous semi-manuels.</li>
+      </ul>
+      <p>La conséquence pour ton agent : la retopo est une étape <strong>semi-automatisée</strong>. Passe automatique QuadriFlow ou Quad Remesher pour tout ce qui est statique ; pour tout ce qui se déforme, l'agent prépare le terrain (courbes guides, marquage des zones de déformation) et l'humain valide. Un serveur MCP expérimental existe pour piloter RetopoFlow — maturité non vérifiée, à évaluer toi-même.</p>
+
+      <h3>Étage 3 — UV, baking et textures</h3>
+      <p><strong>Les UV n'ont pas d'IA en 2026.</strong> Le domaine reste algorithmique : xatlas, UVAtlas de Microsoft, Smart UV Project de Blender, Ministry of Flat en commercial. Aucun modèle appris n'a atteint la maturité pratique. C'est une bonne nouvelle : les algorithmes classiques sont déterministes et scriptables, donc parfaitement agentifiables.</p>
+      <p><strong>Le baking, en revanche, est mûr et pilotable dès aujourd'hui.</strong> L'API Python de Blender couvre normal, AO, courbure et transfert high-poly vers low-poly ; des addons (SimpleBake, AutoBake Tools) automatisent bevel→normal et cavity→AO. Et les serveurs MCP Blender exposent déjà des outils dédiés : <code>bake_pbr_batch</code>, <code>bake_highpoly_to_lowpoly</code>, <code>bake_curvature</code>. Vérifie en revanche la couverture UV du serveur que tu choisis — elle n'est pas toujours explicite.</p>
+      <p><strong>Textures.</strong> Tu as raison de ne pas les oublier, et elles se répartissent en trois problèmes distincts. Le texturing <em>sur maillage</em> a une bonne solution ouverte : Hunyuan3D-Paint, livré avec le dépôt 2.1, peint des jeux PBR complets sur un maillage fourni. La génération de <em>jeux de cartes PBR depuis une seule image</em> (albedo → rugosité, métallique, normale, hauteur) est fragmentée et majoritairement hébergée : pas de modèle ouvert dominant. Les <em>textures tuilables</em> pour environnements sont dans la même situation, avec une voie DIY viable en 12 Go via des workflows ControlNet-tile sur Stable Diffusion. C'est le point de contact avec ta §06 : l'agent image et l'agent texture partagent le même moteur, pas la même finalité.</p>
+
+      <h3>Étage 4 — Génération de mondes</h3>
+      <p><strong>HY-World 2.0 est bien le projet Tencent dont tu te souvenais</strong>, et c'est le plus pertinent pour toi : il sort des scènes 3D navigables, des maillages, des gaussian splats, des nuages de points, des cartes de profondeur et de normales, plus les paramètres caméra — depuis du texte, une image, des vues multiples ou une vidéo. Sa documentation revendique l'import direct dans Blender, Unreal et Isaac Sim. Son prédécesseur HunyuanWorld-1.0 générait des mondes explorables à base de panoramas 360° sous licence communautaire restrictive ; HunyuanWorld-Voyager est le modèle de diffusion vidéo qui produit des séquences RGBD cohérentes le long d'une trajectoire caméra — une brique, pas un générateur d'assets. <strong>Licence et VRAM exactes de la 2.0 ne sont pas entièrement documentées : à vérifier avant d'en dépendre.</strong></p>
+      <p>Trois concurrents sérieux : <strong>Meta WorldGen</strong> (texte → monde 3D traversable, recherche, pas produit) ; <strong>Matrix-3D</strong> (Skywork/Kuaishou, mondes omnidirectionnels explorables depuis une image ou du texte, passé en open source) ; et surtout <strong>Marble</strong> de World Labs, le plus abouti côté production — service cloud qui exporte un maillage collider GLB, un maillage haute qualité GLB de 600 k à 1 M triangles, et des gaussian splats. Génération jusqu'à une heure côté serveur, export maillage réservé au plan Pro, aucun GPU local requis.</p>
+
+      <h3>Étage 5 — Unreal : pourquoi tu as raison, et ce que ça coûte</h3>
+      <p>Ton argument tient : Unreal est la cible majoritaire du jeu et bien plus puissant pour l'animation et le cinématique. Je maintenais Godot pour la simplicité d'automatisation ; la recherche montre que l'écart d'outillage est réel mais franchissable.</p>
+      <ul>
+        <li><strong>Epic livre un plugin MCP first-party expérimental</strong> pour UE 5.8, gratuit. Côté communauté : <code>chongdashu/unreal-mcp</code>, <code>remiphilippe/mcp-unreal</code> (UE 5.7 : builds et tests headless, édition de Blueprints, manipulation d'acteurs, génération de mesh procédural), <code>runeape-sats/unreal-mcp</code>, <code>GenOrca/unreal-mcp</code>. En commercial, un serveur à 400+ outils sur 60 catégories.</li>
+        <li><strong>Les limites documentées sont sérieuses :</strong> les assets Unreal sont <em>binaires</em>, donc le risque de corruption est supérieur à Blender ; le système de transactions doit être respecté ; certaines fonctionnalités ne sont pas scriptables ; et les opérations longues (build d'éclairage, remaillage) peuvent bloquer un agent sans gestion de tâches en arrière-plan.</li>
+        <li><strong>Format d'échange :</strong> FBX reste dominant, mais l'exporteur glTF de Blender 5.x est désormais une alternative viable et gère le PBR plus proprement. Piège classique à automatiser : l'inversion du canal vert de la normal map entre OpenGL (Blender) et DirectX (Unreal).</li>
+        <li><strong>Nanite ne supprime pas la retopo, il la déplace.</strong> Pour les <em>static meshes</em>, oui : tu peux importer des sculpts qualité film ou de la photogrammétrie directement, la densité n'est plus le problème. Mais les maillages restent triangulaires, il faut toujours des UV non chevauchantes pour les matériaux, et les tangentes ne sont pas stockées par sommet. Pour les <em>skeletal meshes</em>, le support Nanite existe mais Epic ne le déclare pas pleinement prêt pour la production en 5.8 : <strong>pour tout ce qui est riggé, la topologie quad propre avec boucles de déformation reste obligatoire</strong>. Ce qui ramène exactement à l'étage 2.</li>
+        <li><strong>Gaussian splatting dans Unreal :</strong> viable en 2026 via Atlux (Fab, licence perpétuelle, aller-retour COLMAP/Postshot), NanoGaussianSplats pour UE5, et en open source XV3DGS-UEPlugin ou unreal-splat. Utile pour les fonds d'environnement, le décor et les scans — mais un splat n'est ni éditable ni riggable. C'est une voie <em>parallèle</em> à ton pipeline de maillages, pas un remplacement. C'est en revanche le débouché naturel des splats produits par HY-World 2.0 et Marble.</li>
+      </ul>
+
+      <div class="callout">
+        <span class="tag">Le principe qui sauve les agents 3D</span>
+        <p>Toutes les sources convergent : « le travail 3D échoue silencieusement sans yeux ». Un agent qui pilote Blender ou Unreal doit avoir une boucle de retour visuelle — capture de viewport ou rendu, relue par un modèle vision — sinon il exécutera des opérations valides mais fausses sans que rien ne le signale. Ton agent core « Matière » a besoin d'un modèle vision autant que d'un modèle texte.</p>
+      </div>
+
+      <h3>La chaîne recommandée, de bout en bout</h3>
+      <ol>
+        <li>L'agent lore produit une fiche canonique de prop, décor ou personnage</li>
+        <li>L'agent image produit les vues de référence cohérentes (LoRA + ControlNet)</li>
+        <li>TripoSG en local pour itérer vite ; Hunyuan3D-2GP en local ou Meshy/Rodin en hébergé pour la passe qualité avec PBR</li>
+        <li>Agent Blender via MCP : passe quad automatique pour les statiques, préparation semi-manuelle pour les animés, unwrap xatlas/Smart UV, bake normal/AO/courbure — avec retour visuel à chaque étape</li>
+        <li>Texturing : Hunyuan3D-Paint en local, ou Meshy/Rodin en hébergé</li>
+        <li>Export glTF (préféré) ou FBX, import Unreal piloté par MCP : activation de Nanite pour les statiques, création des instances de matériaux, correction du canal vert</li>
+        <li>Environnements : HY-World 2.0 ou Marble, importés en maillage ou en splats via un plugin UE dédié</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="memoire">
+    <span class="sec-num">09 — Couche 6</span>
+    <h2>La mémoire : cinq graphes, deux temps, et un rendu lisible</h2>
+    <div class="col">
+      <p class="lede">Tu as raison : c'est le domaine le plus important et le moins traité. Il se trouve qu'il existe de la recherche récente <em>spécifiquement sur la fiction</em>, et qu'elle mesure un écart énorme avec les solutions génériques.</p>
+
+      <h3>Pourquoi le RAG vectoriel seul échoue, mesuré</h3>
+      <p>Le réflexe « tout dans Qdrant et on fait du RAG » échoue pour une raison précise : le RAG vectoriel retrouve ce qui <em>ressemble</em>, alors que la cohérence exige de retrouver ce qui est <em>relié</em>. Si le personnage A a tué le père du personnage B lors de la bataille C, aucune requête sémantique sur B ne ramènera fiablement A. Il faut une arête.</p>
+      <p>Mais le graphe générique ne suffit pas non plus. Le <strong>Narrative World Model (NWM)</strong>, publié en 2026 et issu d'un système de production de fiction, compare une mémoire narratologique à Graphiti, l'implémentation de référence des graphes temporels pour agents. Sur un jeu de 176 questions multi-sauts : <strong>0,898 contre 0,574</strong> de précision. Sur un corpus public reproductible de 576 questions issues du projet Gutenberg : 0,625 global et 0,709 en multi-sauts, contre 0,516 et 0,582. Et surtout, ils ont vérifié que l'écart persiste quand on ré-extrait Graphiti avec un meilleur modèle (p = 0,89, aucun changement) : <strong>l'écart est structurel, pas dû à la qualité d'extraction</strong>. Autrement dit, une couche narratologique posée sur un moteur temporel générique n'est pas un raffinement optionnel — c'est ce qui fait la différence entre 57 % et 90 %.</p>
+
+      <h3>Les cinq couches</h3>
+      <p>Tu demandais à quoi ressemble un déploiement à plusieurs graphes et à plusieurs niveaux. Voici la structure que je propose, chaque couche justifiée par de la recherche existante ou signalée comme mon propre raisonnement.</p>
+    </div>
+
+    <div class="stack">
+      <div class="layer hl"><span class="lname">1 · Graphe d'ontologie</span><span class="ldesc">Les <em>types</em> et leurs attributs valides : ce qu'un « Royaume » ou une « Prophétie » peut contenir. Petit, changeant rarement. Chaque instance doit valider contre son type. Source : G-KMS (MDPI 2026) — 100 % de validité structurelle et d'exécution, stable à toute température de génération.</span></div>
+      <div class="layer hl"><span class="lname">2 · Graphe d'instances</span><span class="ldesc">Le canon : les personnages, lieux, objets, factions et leurs relations réelles. Bitemporel (voir plus bas). Chaque fait adossé à sa source — quelle scène, quel chapitre l'a produit.</span></div>
+      <div class="layer hl"><span class="lname">3 · Graphe d'événements</span><span class="ldesc">Événements liés temporellement <em>et causalement</em>, séparés du graphe d'entités. Fréquence d'écriture élevée, consolidé périodiquement vers la couche 2. Source : DREAM (Event-aware Memory Graph, inspiré du modèle ABC) et GAM, dont le mécanisme central est justement de ne consolider que sur détection de rupture sémantique.</span></div>
+      <div class="layer hl"><span class="lname">4 · Surcouche épistémique</span><span class="ldesc">Ce que chaque personnage <em>croit</em>, distinct de ce qui est vrai. Pas N graphes dupliqués : un type d'arête indexé par (personnage, fait) → valeur crue, confiance, scène d'apprentissage. Source : Shirvani et al. — deux types d'arêtes sur le même graphe d'états, temporelles (vérité) et épistémiques (croyance, y compris imbriquée : ce que A croit que B croit).</span></div>
+      <div class="layer"><span class="lname">5 · Branches de continuité</span><span class="ldesc">Les « et si » et les timelines alternatives. Aucun antécédent direct trouvé en fiction : ma recommandation est de <em>ne pas</em> modéliser le branchement dans la sémantique des arêtes — c'est un gouffre de complexité — mais au niveau de la base (branche Postgres, ou copie du fichier de graphe).</span></div>
+    </div>
+
+    <div class="col">
+      <h4>La couche 4 mérite qu'on s'y arrête, parce que c'est elle qui fait la fiction</h4>
+      <p>NWM traite l'état épistémique — la focalisation — comme un champ de schéma de première classe, pas un ajout. Et c'est la couche qui rend possible l'ironie dramatique, le narrateur non fiable, l'asymétrie d'information : les trois ressorts qui distinguent une histoire d'un catalogue de faits. Sur le plan mesuré, les travaux de Shirvani montrent que des plans satisfaisant à la fois l'intentionnalité et une <em>fausse</em> croyance sont jugés significativement plus crédibles par des humains (p = 0,011), et que des PNJ agissant en cohérence avec des croyances erronées anticipées ont été jugés crédibles dans 72 cas sur 82 (p &lt; 0,0001).</p>
+      <p>Requête type que ça permet : « que sait le personnage X à la scène N » se résout en filtrant la surcouche sur les arêtes dont l'instant d'apprentissage est antérieur à N. Avec N graphes dupliqués, la même question devient ingérable dès la vingtième figure.</p>
+
+      <h3>Le temps : deux axes, pas un</h3>
+      <p>Graphiti implémente un vrai modèle <strong>bitemporel</strong> : chaque arête porte quatre horodatages — début et fin de validité, plus instant d'observation et instant d'enregistrement. Deux requêtes indépendantes en découlent : « qu'est-ce qui était vrai au jour 40 de l'histoire » (temps de validité) et « que savait le système au chapitre 12 » (temps de transaction).</p>
+      <p>Le point crucial est le traitement des contradictions : quand un fait nouveau entre en conflit avec un ancien, Graphiti <strong>ferme la fenêtre de validité de l'ancien</strong> au lieu de l'écraser. Le fait ancien reste interrogeable comme histoire. Pour un canon, c'est exactement le bon comportement : un roi qui meurt ferme la validité de « vivant » et de « souverain » sans les effacer — ce dont tu as besoin en permanence pour les flashbacks, les préquelles et la vérification de continuité.</p>
+      <p>Un champ manque à Graphiti par défaut, et NWM le montre : <strong>l'ordre de révélation</strong>, distinct de l'ordre des événements. Quand une chose s'est produite, et quand le lecteur ou un autre personnage l'a apprise, sont deux dimensions séparées. À ajouter toi-même. Le schéma minimal d'un fait devient donc : <code>valid_from</code>, <code>valid_to</code> (chronologie interne, tolérant le flou — « avant la guerre »), <code>recorded_at</code> (moment d'écriture réel), <code>source</code> (scène productrice), <code>revealed_at</code> et <code>known_by</code>.</p>
+
+      <h3>L'index sémantique : plusieurs niveaux, comme tu le pressentais</h3>
+      <p>La recherche plate est le niveau zéro. Deux techniques ajoutent des étages de granularité :</p>
+      <ul>
+        <li><strong>RAPTOR</strong> — regroupe et résume récursivement les fragments en un arbre ascendant, de sorte qu'une requête peut recevoir soit un extrait fin, soit un résumé de haut niveau. « Quel est l'état du royaume de X » a besoin d'un résumé ; « qu'a dit Y à la scène 12 » a besoin d'une feuille. Implémenté dans RAGFlow, activable en un réglage.</li>
+        <li><strong>GraphRAG</strong> — détection de communautés (Leiden) sur le graphe d'entités, avec résumés générés par LLM à plusieurs résolutions, interrogeables localement (voisinage d'entité) ou globalement (rollup de communautés). Même idée que RAPTOR, mais native au graphe — c'est ce que Graphiti emprunte pour son sous-graphe de communautés.</li>
+      </ul>
+      <p>La recette pratique pour un corpus de 10 000 à 100 000 fragments sur CPU : hybride BM25 + dense fusionné par rang réciproque, puis un reclassement par cross-encoder sur les 50 à 100 premiers candidats seulement, et les résumés RAPTOR/GraphRAG comme <em>étage séparé</em> construit à la consolidation, pas à chaque requête. À cette échelle, la recherche vectorielle plate est parfaitement traitable en CPU : la hiérarchie t'achète de la pertinence, pas de la vitesse.</p>
+      <p>Côté embeddings multilingues FR+EN sur CPU : <strong>EmbeddingGemma-300M</strong> (768 dimensions tronquables, documenté sous 200 Mo de RAM quantifié) est le plus léger ; <strong>BGE-M3</strong> est plus lourd mais sort dense, sparse et multi-vecteur ColBERT en un seul modèle, ce qui te donne l'hybride sans second système. Aucune des sources ne fournit de score MTEB spécifiquement français — teste sur ton corpus avant de figer.</p>
+
+      <h3>Le moteur de stockage</h3>
+      <p>Deux découvertes changent la donne par rapport à la v1 :</p>
+      <ul>
+        <li><strong>Apache AGE n'est disponible ni sur Supabase ni sur Neon.</strong> Vérifié dans les catalogues d'extensions des deux plateformes. Si tu veux du graphe dans Postgres managé, c'est mort ; il faut auto-héberger Postgres.</li>
+        <li><strong>Kuzu</strong> est le candidat le plus intéressant pour ton profil : base de graphe <em>embarquée</em> (pas de serveur), langage Cypher, stockage colonnaire sur disque, et — le point décisif — <strong>index vectoriel et recherche plein texte intégrés</strong>. Une seule base embarquée peut donc servir de graphe, de magasin vectoriel et d'index de mots-clés, ce qui élimine la synchronisation entre trois systèmes. Aucun benchmark RAM publié pour un 4 vCPU / 8 Go : à mesurer, mais l'architecture embarquée en fait de loin la plus légère des vraies bases de graphe.</li>
+      </ul>
+      <p>Les alternatives : Neo4j (le plus mûr, mais JVM et lourd), FalkorDB (module Redis, matrices creuses, SSPL, plus léger que Neo4j), Postgres + pgvector + AGE en auto-hébergé. SurrealDB n'a pas été évalué en profondeur — à creuser si l'idée du multi-modèle t'attire.</p>
+      <p><strong>Où Supabase et Neon deviennent utiles :</strong> pas comme canon principal — leurs tiers gratuits (500 Mo et 0,5 Go) sont dérisoires face à un graphe plus des embeddings. Mais le <strong>branchement de base</strong> de Neon (copie sur écriture, 10 branches incluses en gratuit) est exactement le mécanisme dont la couche 5 a besoin : forker tout le canon pour explorer une continuité alternative, sans complexifier la sémantique du graphe.</p>
+
+      <h3>La détection de contradictions : trois étages</h3>
+      <p>Un papier de janvier 2026 fournit le résultat le plus rigoureux du dossier. Il montre d'abord que la vérification par paires ne suffit <em>pas</em> : certaines incohérences globales n'émergent qu'à partir de trois faits combinés. Sa méthode — extraction de sous-ensembles insatisfiables minimaux par diviser-pour-régner façon QuickXplain, puis réparation par ensemble couvrant glouton — atteint <strong>0,960 à 0,981 de F1 contre 0,713 à 0,953</strong> pour l'approche naïve « on donne tout au modèle et on demande si c'est cohérent », avec un rappel bien meilleur (0,975–0,995 contre 0,603–0,926). La leçon opérationnelle est directe : ne demande jamais à un LLM « ce canon est-il cohérent ? » — c'est la ligne de base qu'ils battent.</p>
+      <ol>
+        <li><strong>Contraintes dures à l'insertion</strong> — validation de type façon SHACL contre le graphe d'ontologie. Déterministe, quasi gratuit, attrape les erreurs de type et les exclusions mutuelles simples.</li>
+        <li><strong>Règles de domaine</strong> — style Datalog, encodées dans le schéma : un mort n'agit pas, un personnage est en un seul lieu à un instant donné, un objet détruit ne réapparaît pas. Vérifiées à chaque insertion.</li>
+        <li><strong>Audit par oracle LLM</strong> — extraction de sous-ensembles insatisfiables minimaux, <em>scopée</em> à un cluster de faits (un personnage, une fenêtre temporelle), exécutée en tâche de fond et non à chaque écriture. C'est l'étage cher, réservé aux contradictions subtiles qu'aucune règle n'anticipe.</li>
+      </ol>
+
+      <h3>Le rendu humain — ton exigence explicite</h3>
+      <p>Tu dois pouvoir lire, comprendre et analyser l'état du monde pour décider de la suite. Trois surfaces complémentaires, aucune ne remplaçant les autres :</p>
+      <ul>
+        <li><strong>Le codex généré.</strong> Un fichier Markdown par entité canonique, avec un frontmatter YAML qui reflète les propriétés du nœud d'instance, régénéré depuis le canon à chaque consolidation. Obsidian avec Dataview ou Bases rend alors des tableaux dynamiques, des vues de relations et une chronologie <em>sans que tu écrives une interface</em>. Des templates de worldbuilding existent déjà pour ça. C'est la surface de <em>lecture</em>.</li>
+        <li><strong>La vue graphe.</strong> Cytoscape.js pour l'exploration interactive — le plus riche en interaction (clic pour déplier un voisinage, filtre par type ou par époque), confortable jusqu'à quelques milliers de nœuds, ce qui couvre largement un projet solo. Sigma.js (WebGL) si tu dépasses la dizaine de milliers, Cosmograph au-delà de 100 000. C'est la surface d'<em>analyse</em>.</li>
+        <li><strong>Le rapport de session.</strong> Après chaque session d'agents : ce qui a été ajouté, ce qui a été invalidé et pourquoi, les contradictions détectées et non résolues, les décisions en attente de ton arbitrage. C'est la surface de <em>décision</em>, et c'est elle qui manque à la plupart des systèmes.</li>
+      </ul>
+      <p>Ce qui invalide définitivement l'idée d'Obsidian comme source : il n'a ni schéma, ni transaction, ni contrainte d'intégrité, ni bitemporalité — quatre choses dont ce système a absolument besoin. Il reste un excellent rendu, généré, en lecture.</p>
+      <p>Dernière note utile : World Anvil, Kanka et LegendKeeper convergent tous vers le même patron — entités typées, relations typées, articles en texte libre. Ce n'est pas une coïncidence académique, c'est le standard de fait du domaine, et ça valide la séparation ontologie/instance de la couche 1-2. Leurs schémas internes ne sont pas publiés ; LegendKeeper documente en revanche un import depuis d'autres outils, ce qui peut servir de porte d'entrée si tu as déjà du contenu ailleurs.</p>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="ui">
+    <span class="sec-num">10 — Couche 7</span>
+    <h2>Interface : voir les agents se parler, et comprendre après coup</h2>
+    <div class="col">
+      <p class="lede">Ton intention était visuelle — voir les agents converser comme des humains — et tu as raison de la maintenir. Ce n'est pas de l'anthropomorphisme gratuit : c'est le seul format de lecture qui passe à l'échelle de trois niveaux de délégation.</p>
+
+      <h3>Pourquoi le format conversation est le bon choix visuel</h3>
+      <p>Techniquement, tes agents n'ont pas besoin de se parler en langage naturel — ils s'échangent des objets typés, et c'est mieux ainsi pour la fiabilité (§05). Mais pour <em>toi</em>, un flux d'appels JSON imbriqués est illisible passé trois minutes, alors qu'un fil de discussion se lit en diagonale. La bonne architecture est donc : <strong>transport structuré, rendu conversationnel</strong>. Chaque événement typé porte un champ de résumé en clair — une phrase écrite par l'agent lui-même sur ce qu'il vient de faire ou de demander — et c'est ce champ que l'interface affiche comme un message. Le JSON complet reste accessible en dépliant.</p>
+      <p>Cela ne coûte presque rien (un champ de plus dans le schéma de sortie de chaque agent) et ça change tout à l'usage. C'est aussi ce qui rend l'archive relisible six mois plus tard.</p>
+
+      <h3>Ce que la pratique 2026 dit de ne pas faire</h3>
+      <p>Le domaine s'est éloigné de l'interface de chat pure, et pour des raisons précises : elle n'offre pas de piste d'audit, empêche l'intervention en cours de flux, masque le raisonnement, et impose un choix binaire entre autonomie totale et abandon complet de la tâche. Les échecs documentés en production :</p>
+      <ul>
+        <li><strong>L'action autonome sans état visible génère de l'anxiété</strong>, quelle que soit la qualité du résultat.</li>
+        <li><strong>Le contrôle à un seul niveau</strong> — tout approuver ou tout annuler — frustre sur les tâches multi-étapes.</li>
+        <li><strong>Le chat seul ne passe pas à l'échelle</strong> : impossible de naviguer dans un contexte accumulé sur des dizaines d'étapes.</li>
+      </ul>
+      <p>D'où la structure recommandée, qui n'est pas « un chat » mais <strong>un fil de conversation plus un panneau d'activité séparé</strong> :</p>
+    </div>
+
+    <div class="stack">
+      <div class="layer hl"><span class="lname">Fil de conversation</span><span class="ldesc">L'arbre orchestrateur → core → experts, rendu comme des messages. Repliable par branche. C'est ce que tu lis.</span></div>
+      <div class="layer hl"><span class="lname">Panneau d'activité</span><span class="ldesc">Exécutions d'outils en direct : entrées, sorties, chronométrage, statut. Séparé du fil, sinon il le noie.</span></div>
+      <div class="layer hl"><span class="lname">Terminal de job</span><span class="ldesc">xterm.js branché en WebSocket sur les logs d'un job conteneurisé. Sélectionnable depuis le panneau d'activité. Esthétique et lisibilité du terminal, sans shell interactif exposé.</span></div>
+      <div class="layer"><span class="lname">Portes d'approbation</span><span class="ldesc">Interruption structurée sur action à risque, avec aperçu du plan avant exécution. Pas un « oui/non » global : une porte par étape.</span></div>
+      <div class="layer"><span class="lname">Vue canon</span><span class="ldesc">Le graphe et le codex de la §09, en lecture, synchronisés avec la session en cours.</span></div>
+    </div>
+
+    <div class="col">
+      <h4>Terminaux : ce que tu vois, et ce que l'agent peut faire</h4>
+      <p>Le réflexe technique serait ttyd + xterm.js sur un shell — c'est ce que font les tableaux de bord d'agents parallèles à base de tmux et de worktrees. Mais c'est le mauvais découpage : ce que tu veux voir, ce n'est pas un shell, c'est <em>quel job tourne, sur quel modèle, à quel pourcentage, avec quels logs, et pouvoir l'annuler</em>. Chaque exécution d'outil lourd devient un job conteneurisé avec identifiant, entrées, sorties, logs et statut persistés ; les logs remontent en WebSocket dans un panneau xterm.js. Tu gardes l'esthétique du terminal sans donner un pty à un agent.</p>
+      <p>Nuance utile : <strong>Hermes Agent embarque déjà sept backends d'exécution</strong>, dont Docker et SSH. Si tu pars sur lui, une bonne partie de ce mécanisme existe — reste à en router les événements vers ton interface, puisqu'il ne parle pas AG-UI.</p>
+
+      <h4>Les protocoles à connaître</h4>
+      <p><strong>AG-UI</strong> reste le bon format si ton orchestrateur le supporte (LangGraph, Pydantic AI, CrewAI l'implémentent). Il streame une séquence unique et ordonnée d'événements structurés, en maintenant le contexte d'exécution sur de longues sessions sans perdre l'état. <strong>A2UI</strong> (Google) est le complément intéressant pour ton cas : un schéma JSON qui laisse l'agent <em>déclarer</em> des composants d'interface sans exécuter de code, en le restreignant à un catalogue de composants pré-approuvés. Concrètement, ça veut dire qu'un agent lore peut demander l'affichage d'une fiche de personnage éditable sans que tu codes cette vue pour chaque type d'entité.</p>
+      <p>Trois modèles d'UI générative existent, du plus sûr au plus souple : composants statiques contrôlés par toi, spécifications JSON déclaratives (le compromis A2UI), surfaces ouvertes nécessitant un sandbox. Pour un système que tu utiliseras des années, reste sur les deux premiers.</p>
+
+      <h4>La délégation progressive</h4>
+      <p>Un patron qui mérite d'être intégré dès le départ : faire varier le niveau d'approbation requis selon l'historique. Un agent nouvellement configuré demande validation à chaque étape ; un agent dont les propositions sont acceptées sans modification depuis vingt sessions gagne le droit d'agir seul sur cette catégorie de tâche. Ça évite le double écueil de la validation permanente (épuisante) et de l'autonomie totale (angoissante), et ça se code simplement à partir des données que ton système collecte déjà.</p>
+
+      <h3>Langfuse : correction importante par rapport à la v1</h3>
+      <div class="callout crit">
+        <span class="tag">Erreur corrigée</span>
+        <p>Je te disais « Langfuse sur le VPS, à surveiller ». C'est faux, et tu as eu raison de tiquer. <strong>Langfuse v3 exige quatre services</strong> : PostgreSQL, ClickHouse, Redis/Valkey et un stockage objet compatible S3. Et la documentation recommande, par réplique ClickHouse, <strong>2 CPU et 8 Gio de RAM en requête, 16 Gio en limite</strong>, avec un minimum de 3 répliques en production. Sur un VPS de 8 Go partagé avec n8n, Postgres et tes autres backends, ce n'est pas « serré » : c'est impossible.</p>
+      </div>
+      <p>Langfuse va donc sur le <strong>serveur maison</strong> (§12). Ce n'est pas un problème : l'observabilité n'a pas besoin d'être disponible en permanence, seulement quand tu analyses. Un buffer côté orchestrateur accumule les traces quand le serveur maison est éteint et les envoie au réveil. Si tu veux quand même une trace toujours disponible sur le VPS, écris un journal d'événements minimal dans le Postgres que tu as déjà — identifiant de session, agent, outil, durée, coût — et réserve Langfuse à l'analyse fine.</p>
+      <p>Sur ce que ça t'apportera concrètement : le regroupement en sessions (une session de worldbuilding entière relisible d'un bloc), l'arbre d'appels imbriqués avec les prompts et les sorties réels, le coût et la latence par agent — et surtout les jeux de données et évaluations, qui te permettent de figer vingt cas de test et de vérifier qu'un changement de modèle ne casse rien. C'est cette dernière fonction qui compte le plus sur un projet de plusieurs années, et c'est celle que personne n'installe.</p>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section id="archis">
+    <span class="sec-num">11 — Synthèse</span>
+    <h2>Trois architectures, trois paris</h2>
+    <div class="col">
+      <p class="lede">Ta critique était juste : la v1 proposait une architecture et deux repoussoirs. Voici trois options qui visent toutes ton cahier des charges complet. Elles diffèrent par <strong>où tu places ton investissement de long terme</strong> — et donc par ce qui survit quand l'écosystème bouge.</p>
+    </div>
+
+    <div class="archgrid">
+      <article class="arch">
+        <span class="label">Architecture A</span>
+        <h4>Le harnais dirigé</h4>
+        <p class="bet">Pari : sur le harnais</p>
+        <p>Hermes Agent tient toute la hiérarchie : orchestrateur, agents core et sous-agents experts sont des sous-agents Hermes avec routage de modèle par agent. LiteLLM + llama-swap dessous. Le canon vit dans Kuzu ou Postgres, exposé à Hermes par un serveur MCP que tu écris. n8n garde la plomberie. L'interface part de celle d'Hermes, augmentée d'une vue canon et d'un panneau de jobs.</p>
+        <dl>
+          <dt>Effort</dt><dd>3 à 5 semaines jusqu'à un système utilisable</dd>
+          <dt>Force</dt><dd>Tu écris presque uniquement ce qui est spécifique à ton projet : le canon, la file de jobs, les serveurs MCP. La hiérarchie, les terminaux, le cron, la mémoire de travail et MCP sont fournis. MIT, et tu l'as déjà.</dd>
+          <dt>Faiblesse</dt><dd>Pas d'AG-UI : ton interface de transparence dépend de ce qu'Hermes expose. La délégation suit sa logique, pas la tienne — pas de graphe d'état explicite, donc reprise sur incident plus rudimentaire.</dd>
+          <dt>Sortie de secours</dt><dd>Les serveurs MCP et le canon sont indépendants d'Hermes : tu peux basculer sur B ou C sans les réécrire.</dd>
+        </dl>
+      </article>
+
+      <article class="arch">
+        <span class="label">Architecture B</span>
+        <h4>La forge canon-first</h4>
+        <p class="bet">Pari : sur le framework</p>
+        <p>LangGraph orchestre avec état persisté dans Postgres ; les agents core (Lore, Visuel, Sonore, Matière) délèguent à des sous-agents Pydantic AI typés ; agents auditeurs séparés selon AutoWorldBuilder ; file de jobs GPU maison ; AG-UI diffuse tout vers un front unique que tu écris. n8n garde la plomberie.</p>
+        <dl>
+          <dt>Effort</dt><dd>8 à 12 semaines à rythme soutenable</dd>
+          <dt>Force</dt><dd>Contrôle total sur la logique de délégation et le budget de contexte par couche. Reprise sur incident réelle via checkpointer. AG-UI natif : la transparence est un produit du framework, pas une rustine. Les auditeurs sont des nœuds du graphe, pas une convention.</dd>
+          <dt>Faiblesse</dt><dd>Le plus de code à écrire et à maintenir, sur deux frameworks Python plus le front. L'abstraction LangChain en héritage. Six mois de travail avant que le système soit meilleur qu'A.</dd>
+          <dt>Quand la choisir</dt><dd>Si la qualité de la boucle d'audit est ta priorité absolue et que tu acceptes d'être développeur avant d'être créateur pendant un trimestre.</dd>
+        </dl>
+      </article>
+
+      <article class="arch reco">
+        <span class="label">Architecture C · recommandée</span>
+        <h4>L'atelier fédéré</h4>
+        <p class="bet">Pari : sur les interfaces</p>
+        <p>Tout ce qui a de la valeur devient un <strong>serveur MCP</strong> : le canon, la file de jobs GPU, ComfyUI, Blender, Unreal, la bibliothèque d'assets. L'orchestrateur est délibérément mince et remplaçable — Hermes aujourd'hui, dsh ou LangGraph demain. n8n exécute les pipelines déterministes. Le routage de modèles passe par LiteLLM + llama-swap. L'interface consomme un flux d'événements que <em>tu</em> définis, alimenté par l'orchestrateur du moment.</p>
+        <dl>
+          <dt>Effort</dt><dd>4 à 6 semaines pour la première boucle, puis incrémental sans jamais tout réécrire</dd>
+          <dt>Force</dt><dd>Le seul montage où changer de framework coûte des jours et non des mois. Ton investissement va dans le canon et les serveurs MCP, qui sont exactement ce qui ne se périme pas. Le patron d'exécution découplée de dsh s'y applique directement : un job ignore s'il tourne sur ton desktop, dans un conteneur ou sur une GPU louée.</dd>
+          <dt>Faiblesse</dt><dd>Discipline d'interface exigeante : chaque outil doit avoir un contrat propre avant d'être écrit. Une indirection en plus à déboguer. Et MCP n'est pas gratuit en tokens — un serveur trop bavard sature le contexte.</dd>
+          <dt>Pourquoi elle</dt><dd>Trois harnais crédibles sont sortis en douze mois et un quatrième est en preview. Parier sur l'un d'eux, c'est parier contre le rythme observé. Parier sur MCP, c'est parier sur ce que tous adoptent.</dd>
+        </dl>
+      </article>
+    </div>
+
+    <div class="col">
+      <h3>Pourquoi C, en détail</h3>
+      <ul>
+        <li><strong>Le raisonnement de fond.</strong> Ton projet a un horizon de plusieurs années ; l'écosystème des harnais a un horizon de plusieurs semaines. dsh sort des releases tous les deux ou trois jours et annonce des ruptures ; Hermes Agent succède à OpenClaw en quelques mois ; AutoGen est passé en maintenance en un an. La seule couche stable sur cette période, c'est le protocole d'outils — que dsh, Hermes, LangGraph, CrewAI et Claude implémentent tous.</li>
+        <li><strong>C n'exclut pas A.</strong> C'est la nuance importante : l'architecture C <em>commence</em> par Hermes Agent comme orchestrateur. La différence est que dans A, Hermes est la fondation ; dans C, c'est un consommateur remplaçable de tes serveurs MCP. Le travail des six premières semaines est presque identique — c'est la place que tu donnes à l'orchestrateur qui change.</li>
+        <li><strong>C emprunte à B ce qui est mesuré.</strong> Les auditeurs séparés, le budget de contexte par couche, l'ordonnancement par localité sémantique : ce sont des patrons, pas des fonctionnalités de LangGraph. Ils s'implémentent aussi bien dans des agents Hermes que dans un graphe.</li>
+        <li><strong>Le point non négociable des trois.</strong> La file de jobs GPU. Si tu ne construis qu'une chose, construis celle-là. Sans elle, quatre agents en parallèle sur une 4070 ne donnent pas quatre fois plus de créations — ils donnent un dépassement mémoire.</li>
+        <li><strong>Le test d'extensibilité.</strong> Ajouter la vidéo (LTX-2.5, MiniMax-H3) doit revenir à ajouter un type de job et un sous-agent. Dans C, ça revient en plus à ajouter un serveur MCP — et rien dans le canon ni dans l'orchestrateur ne change. Tu as raison de dire que ça ne casse rien : c'est précisément le critère auquel une architecture doit répondre.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section id="repartition">
+    <span class="sec-num">12 — Déploiement</span>
+    <h2>Quatre étages, et le stockage qu'on avait oublié</h2>
+    <div class="col">
+      <p class="lede">Tu avais raison sur toute la ligne : le VPS était surchargé, le stockage absent, le serveur maison ignoré, et deux fournisseurs cloud importants passés sous silence. Section entièrement refaite.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Étage</th><th>Disponibilité</th><th>Ce qui y vit</th><th>Empreinte</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">VPS Hetzner CX33<br><small style="color:var(--ink-3)">4 vCPU · 8 Go · 80 Go</small></td>
+            <td>24/7</td>
+            <td>Postgres (canon + état + <strong>file de jobs</strong>), API de l'orchestrateur, n8n, Caddy, Tailscale, Dockge, l'interface web, journal d'événements minimal</td>
+            <td class="num">~3,5 Go RAM<br>~10 Go disque</td>
+          </tr>
+          <tr>
+            <td class="name">Serveur maison<br><small style="color:var(--ink-3)">intermittent</small></td>
+            <td>Sur demande</td>
+            <td><strong>Bibliothèque complète de poids</strong>, Langfuse + ClickHouse + Redis + MinIO, inférence secondaire CPU (Kokoro, embeddings), sauvegardes</td>
+            <td class="num">16 Go RAM min.<br>500 Go à 1 To disque</td>
+          </tr>
+          <tr>
+            <td class="name">Desktop RTX 4070<br><small style="color:var(--ink-3)">intermittent</small></td>
+            <td>Sur demande</td>
+            <td>Worker GPU : llama-swap, ComfyUI, TripoSG, Hunyuan3D-2GP, ACE-Step, Chatterbox, entraînement de LoRA, Blender, Unreal</td>
+            <td class="num">12 Go VRAM sérialisés<br>Jeu « chaud » ~150 Go</td>
+          </tr>
+          <tr>
+            <td class="name">Cloud</td>
+            <td>24/7</td>
+            <td>Ollama Cloud, NVIDIA build, Z.ai Flash, OpenRouter en mode zéro rétention ; GPU louée pour les rafales ; R2 et Storage Box pour le stockage</td>
+            <td class="num">0 à ~25 €/mois</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <h3>Le stockage, chiffré</h3>
+      <p>La v1 n'en parlait pas du tout. Voici la réalité d'une pile créative complète :</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Composant</th><th>Taille réaliste</th></tr></thead>
+        <tbody>
+          <tr><td class="name">2 LLM de 27–35B en GGUF Q4_K_M</td><td class="num">~20 Go pièce → 40 Go (46 Go en Q5)</td></tr>
+          <tr><td class="name">2 modèles rédacteurs 24B non censurés</td><td class="num">~14 Go pièce → 28 Go</td></tr>
+          <tr><td class="name">Modèle d'embeddings</td><td class="num">0,2 à 8 Go selon le choix</td></tr>
+          <tr><td class="name">Qwen-Image 2.0</td><td class="num">~41 Go en bf16, ~20 Go en fp8</td></tr>
+          <tr><td class="name">Krea 2 / FLUX-Krea</td><td class="num">~24 Go bf16, ~12 Go fp8, 7–9 Go en GGUF</td></tr>
+          <tr><td class="name">SDXL + ControlNets + LoRAs</td><td class="num">10 à 15 Go</td></tr>
+          <tr><td class="name">Chatterbox + Kokoro</td><td class="num">0,5 à 5 Go</td></tr>
+          <tr><td class="name">ACE-Step 1.5</td><td class="num">~7 Go</td></tr>
+          <tr><td class="name">TripoSG + Hunyuan3D-2.1</td><td class="num">~8 Go + ~20 Go</td></tr>
+          <tr><td class="name"><strong>Total working set</strong></td><td class="num"><strong>130 à 180 Go</strong> en quantifié raisonnable</td></tr>
+          <tr><td class="name">Avec variantes, versions et LoRAs accumulées</td><td class="num">250 à 300+ Go — c'est ce qui arrive en pratique</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p><strong>Conséquence directe : le VPS et ses 80 Go ne stockent aucun poids de modèle.</strong> Pas un seul. La paire de LLM n'y tiendrait même pas. Il reste le cerveau ; le muscle et la mémoire vive vont ailleurs.</p>
+      <p>La répartition qui en découle : la <strong>bibliothèque complète</strong> vit sur le serveur maison, monté en NFS ou Samba sur le desktop, qui n'y garde que le jeu chaud. Un seul endroit à sauvegarder. Pour l'archivage hors site, <strong>Cloudflare R2</strong> à 0,015 $/Go/mois avec <em>egress gratuit</em> — l'argument décisif quand tu retéléchargeras les mêmes poids à chaque réinstallation — ou <strong>Hetzner Storage Box BX11</strong>, 1 To à environ 3,20 €/mois en SFTP/rsync, sur le réseau interne Hetzner. Backblaze B2 à 6,95 $/To/mois reste compétitif si tu passes par un CDN partenaire pour l'egress.</p>
+
+      <h3>Bases de données : la réalité des tiers gratuits</h3>
+      <p>Tu voulais utiliser Supabase et Neon. Les chiffres réels :</p>
+      <ul>
+        <li><strong>Supabase gratuit :</strong> 500 Mo de base, 1 Go de fichiers, 5 Go d'egress, 2 projets actifs, et <em>mise en pause après une semaine d'inactivité</em>. Pro à 25 $/mois : 8 Go de base inclus, 100 Go de stockage, plus de pause.</li>
+        <li><strong>Neon gratuit :</strong> 100 heures-CU par mois, 0,5 Go de stockage par projet, <em>autosuspend après 5 minutes d'inactivité</em>, jusqu'à 10 branches par projet.</li>
+        <li><strong>Les deux supportent pgvector. Aucun ne supporte Apache AGE.</strong></li>
+      </ul>
+      <p>Verdict : 500 Mo et 0,5 Go sont dérisoires pour un canon avec embeddings — tu les épuiseras en semaines. <strong>Le canon reste sur le Postgres du VPS</strong> (ou dans un Kuzu embarqué, §09), sauvegardé vers R2. Mais garde Neon pour un usage précis où il excelle : <strong>le branchement de continuité</strong>. Forker tout un canon pour explorer un « et si » revient à créer une branche Neon — copie sur écriture, 10 incluses en gratuit, puis 1,50 $/branche/mois. C'est exactement la couche 5 de la §09, à un coût dérisoire.</p>
+
+      <h3>Le cloud gratuit, corrigé</h3>
+      <p>J'avais omis les deux fournisseurs les plus pertinents pour toi. Correction :</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Fournisseur</th><th>Gratuit</th><th>Modèles</th><th>Entraîne sur tes données ?</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">Ollama Cloud</td>
+            <td class="num">Free : 1 modèle simultané, limites de session et hebdomadaires non chiffrées publiquement. Pro : 20 $/mois, 3 modèles, « 50× le free »</td>
+            <td>Qwen3-Coder-480B, GPT-OSS-120B et 20B, DeepSeek-V3.1-671B</td>
+            <td class="verdict v-yes">Non — politique explicite</td>
+          </tr>
+          <tr>
+            <td class="name">NVIDIA build</td>
+            <td class="num">40 requêtes/minute, sans carte bancaire, pas de plafond mensuel publié</td>
+            <td>80 à 100+ modèles : DeepSeek, Qwen, Llama, Nemotron</td>
+            <td class="verdict v-mid">Non vérifiable — à lire avant usage</td>
+          </tr>
+          <tr>
+            <td class="name">Z.ai</td>
+            <td class="num">3 modèles entièrement gratuits, sans limite de crédit annoncée</td>
+            <td>GLM-4.7-Flash, GLM-4.5-Flash, GLM-4.6V-Flash (vision)</td>
+            <td class="verdict v-mid">Non précisé</td>
+          </tr>
+          <tr>
+            <td class="name">OpenRouter</td>
+            <td class="num">Slots gratuits par modèle, ~20 req/min (non vérifié en première main)</td>
+            <td>Catalogue tournant de modèles ouverts</td>
+            <td class="verdict v-yes">Zéro rétention par défaut, filtrage des fournisseurs conformes</td>
+          </tr>
+          <tr>
+            <td class="name">Groq / Cerebras</td>
+            <td class="num">Groq : 10–30 req/min, 100–2000 req/jour selon modèle. Cerebras : 5 $ de crédit</td>
+            <td>Llama, Qwen, DeepSeek, GPT-OSS</td>
+            <td class="verdict v-no">Modèle économique fondé dessus</td>
+          </tr>
+          <tr>
+            <td class="name">Google AI Studio</td>
+            <td class="num">Limites variables, non publiées en dur</td>
+            <td>Gemini (fermé)</td>
+            <td class="verdict v-no">Le tier gratuit sert historiquement à améliorer les produits</td>
+          </tr>
+          <tr>
+            <td class="name">GitHub Models</td>
+            <td class="num">—</td>
+            <td>—</td>
+            <td class="verdict v-no">Retiré le 30 juillet 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <div class="callout good">
+        <span class="tag">Ta règle de tri, révisée</span>
+        <p><strong>Ollama Cloud est le meilleur choix pour toi</strong> et je serais passé à côté sans ta remarque : sa politique de confidentialité affirme explicitement traiter les prompts et réponses de façon transitoire, ne jamais entraîner dessus, et ne pas les conserver au-delà du temps nécessaire à la requête. C'est le langage le plus net de tout le panel. Il s'intègre au CLI <code>ollama</code> que tu utilises déjà — les modèles cloud se <code>pull</code>, <code>run</code> et <code>ls</code> comme les locaux — et il est compatible OpenAI, donc il se branche derrière LiteLLM sans effort. Le seul point d'ombre est que les limites du tier gratuit ne sont pas chiffrées publiquement : Ollama utilise une unité d'usage pondérée par difficulté, pas un plafond de tokens. Budgète l'éventualité de passer à 20 $/mois.</p>
+      </div>
+      <p><strong>NVIDIA build</strong> est ta seconde voie : 40 requêtes par minute, gratuit, compatible OpenAI, et un catalogue de modèles bien plus gros que ce que ta 4070 exécutera jamais — c'était le point de ta remarque et il est juste. Deux réserves honnêtes : le catalogue est rendu côté client et change souvent, donc vérifie les identifiants de modèles avant de coder ; et je n'ai pas pu confirmer les conditions de rétention du tier gratuit 2026, donc lis-les avant d'y envoyer du canon. Auto-héberger des conteneurs NIM lève la limite de débit mais reste hors de portée en 12 Go pour les modèles qui t'intéressent.</p>
+      <p>La règle devient donc : <strong>rien de propriétaire chez Groq, Cerebras ou Google AI Studio</strong> ; <strong>Ollama Cloud et OpenRouter en mode zéro rétention pour tout le reste</strong>, y compris le canon si tu acceptes leur politique ; NVIDIA build pour le volume non sensible en attendant vérification.</p>
+
+      <h3>Les rafales GPU</h3>
+      <p>Pour ce que ta 4070 ne fait pas — TRELLIS.2 qui réclame 24 Go, une session Hunyuan3D lourde, un lot d'images massif — la location à la seconde est indiscutablement plus saine que d'acheter du matériel : RunPod annonce 0,74 $/h pour une RTX 4090, 0,27 $/h pour une A5000, 0,44 $/h pour une A40 ; Vast.ai tourne autour de 0,39 $/h sur du 4090 interruptible d'après des relevés tiers. Une soirée de quatre heures de génération 3D lourde coûte 1,50 à 3 $. À côté d'un VPS à 9 €/mois, c'est une erreur d'arrondi. Le serveur GPU dédié Hetzner ne se justifie que pour des charges soutenues, ce qui n'est pas ton profil.</p>
+
+      <h3>Le réveil à la demande : un piège précis</h3>
+      <div class="callout crit">
+        <span class="tag">À savoir avant de concevoir</span>
+        <p><strong>Tailscale ne peut pas relayer les paquets magiques Wake-on-LAN.</strong> C'est confirmé par Tailscale lui-même : le WoL est une diffusion de couche 2, Tailscale opère en couche 3, et cela reste vrai même avec le routage de sous-réseaux activé. Ton VPS ne peut donc pas réveiller directement ton desktop via le tailnet.</p>
+      </div>
+      <p>Les trois montages qui fonctionnent, recommandés par Tailscale : un <strong>intermédiaire toujours allumé sur le LAN</strong> — un Raspberry Pi, ou ton serveur maison s'il reste allumé plus souvent que le desktop — qui est à la fois sur le tailnet et dans le domaine de diffusion physique, et qui émet le paquet magique localement sur ordre reçu ; <strong>UpSnap</strong>, une application web auto-hébergée conçue pour ça, exposée via Tailscale Serve, qui donne un point d'entrée HTTP que le VPS appelle ; ou le même montage en conteneurs avec un sidecar Tailscale. Prérequis systématique et cause n°1 des échecs : le WoL doit être activé <em>à la fois</em> dans le BIOS/UEFI et au niveau du pilote réseau.</p>
+
+      <h3>La file de jobs, concrètement</h3>
+      <p>Puisque tes workers vont et viennent, le choix de file compte. Recommandation : <strong>pg-boss ou river, adossés au Postgres que tu fais déjà tourner</strong>. Aucun broker supplémentaire à opérer, et la table de jobs devient ton journal d'audit — utile pour la §10. Redis + RQ ou Celery fonctionnent aussi (les jobs attendent dans la file jusqu'à ce qu'un worker les réclame) ; NATS JetStream est meilleur si tu veux de la persistance durable avec ack explicite et backoff configurable ; Temporal est le choix « correct » pour de l'exécution durable qui survit aux redémarrages, mais surdimensionné pour un projet solo.</p>
+      <p>Les quatre pièges à traiter dès la conception :</p>
+      <ul>
+        <li><strong>Timeouts de visibilité.</strong> Réveil WoL + démarrage + lancement des services prend 60 à 120 secondes. Un timeout par défaut trop court fera croire à la mort du worker et remettra le job en file — voire le dupliquera.</li>
+        <li><strong>Idempotence.</strong> Si un job est réémis parce que le worker semblait mort alors qu'il était juste lent à démarrer, ton gestionnaire doit être idempotent, ou passer par une étape de réclamation avec battement de cœur. Un job GPU exécuté deux fois, c'est vingt minutes perdues.</li>
+        <li><strong>Extinction automatique.</strong> Associe le réveil à un script d'inactivité côté worker — pas de job réclamé depuis N minutes, on suspend — sinon tu remettras la machine en veille à la main chaque soir.</li>
+        <li><strong>ACL Tailscale.</strong> Le chemin VPS → intermédiaire ouvre une surface de déclenchement distant vers ton réseau domestique. Restreins-la explicitement.</li>
+      </ul>
+      <p><strong>Sur le dimensionnement du VPS :</strong> avec Langfuse déplacé et zéro poids stocké, la CX33 tient confortablement. Le palier suivant (CX43, 8 vCPU / 16 Go, autour de 9 €/mois) reste la sortie de secours si tu ajoutes des backends non liés à ce projet — et note que plusieurs sources signalent une hausse tarifaire Hetzner de 20 à 30 % en 2026 à intégrer dans tes prévisions.</p>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section id="roadmap">
+    <span class="sec-num">13 — Exécution</span>
+    <h2>Ordre de construction, étape par étape</h2>
+    <div class="col">
+      <p class="lede">La v1 était trop légère et ne parlait ni d'infrastructure, ni d'installation, ni de stockage. Onze phases, chacune produisant quelque chose d'utilisable seul — sinon le projet meurt en phase 4.</p>
+    </div>
+
+    <div class="phase"><div class="pn">PHASE 0</div><div>
+      <h4>Le socle d'infrastructure</h4>
+      <p>Rien d'intelligent ici, et c'est précisément pour ça qu'il faut le faire d'abord : chacun de ces points bloque une phase ultérieure si on le découvre trop tard.</p>
+      <ul>
+        <li>Maillage Tailscale entre VPS, serveur maison et desktop, avec des ACL restrictives dès le départ</li>
+        <li>Chaîne de réveil : WoL activé dans le BIOS <em>et</em> le pilote réseau du desktop, intermédiaire LAN choisi (Pi ou serveur maison), UpSnap ou équivalent installé et testé de bout en bout depuis le VPS</li>
+        <li>Plan de stockage : partition dédiée sur le serveur maison, arborescence des poids, montage NFS ou Samba vers le desktop, budget disque validé contre les 130–180 Go de la §12</li>
+        <li>Sauvegarde : bucket R2 ou Storage Box, script rclone, une restauration test réellement effectuée</li>
+        <li>Postgres sur le VPS : bases séparées pour le canon, l'état d'orchestration et la file de jobs</li>
+      </ul>
+      <p class="out">Livrable · une machine que le VPS peut réveiller, avec un disque prêt et une sauvegarde vérifiée</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 1</div><div>
+      <h4>Le schéma du canon</h4>
+      <p>Avant tout agent. C'est la décision la plus structurante du projet et elle se prend à froid, sans IA.</p>
+      <ul>
+        <li>Définir les types : Personnage, Lieu, Faction, Événement, Objet, Concept — et leurs attributs obligatoires</li>
+        <li>Définir les types de relations et les contraintes dures (un mort n'agit pas, un personnage est en un seul lieu à la fois)</li>
+        <li>Implémenter les quatre horodatages bitemporels plus l'ordre de révélation (§09)</li>
+        <li>Choisir le moteur : Kuzu embarqué (graphe + vecteurs + plein texte en un) ou Postgres + pgvector + AGE auto-hébergé — et mesurer l'empreinte RAM réelle avant de figer</li>
+        <li>Charger à la main un univers que tu connais déjà bien, sans aucune génération</li>
+      </ul>
+      <p class="out">Livrable · un schéma, un monde de test peuplé manuellement, et les requêtes de continuité qui répondent juste</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 2</div><div>
+      <h4>La passerelle de modèles</h4>
+      <p>Rendre les modèles interchangeables avant d'en dépendre.</p>
+      <ul>
+        <li>llama.cpp ou vLLM sur le desktop, llama-swap devant, LiteLLM devant lui, exposé sur le tailnet</li>
+        <li>Télécharger le jeu initial : un orchestrateur MoE alignée, un rédacteur non censuré, un extracteur, un embeddings</li>
+        <li>Configurer les TTL de déchargement et mesurer les temps de bascule réels entre modèles</li>
+        <li><strong>Tester le tool-calling avant de juger le style</strong> : appels imbriqués, arguments complexes, et surtout valider le montage en deux passes (décision libre, puis extraction contrainte) de la §05</li>
+        <li>Brancher Ollama Cloud et NVIDIA build comme fournisseurs LiteLLM supplémentaires</li>
+      </ul>
+      <p class="out">Livrable · une seule URL qui sert six modèles, locaux et distants, changeables en éditant un YAML</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 3</div><div>
+      <h4>La file de jobs GPU</h4>
+      <p>Avant d'ajouter le moindre agent. C'est le composant qui rend tout le reste possible.</p>
+      <ul>
+        <li>pg-boss ou river sur le Postgres du VPS ; schéma de job avec entrées, sorties, logs, statut, coût</li>
+        <li>Worker sur le desktop qui réclame les jobs, avec battement de cœur et gestionnaires idempotents</li>
+        <li>Déclenchement du réveil quand la file n'est pas vide et que le worker est absent ; extinction sur inactivité</li>
+        <li>Streaming des logs en WebSocket et annulation de job</li>
+        <li>Adopter le patron dsh : un job ne sait pas où il tourne — même contrat pour le desktop, un conteneur ou une GPU louée</li>
+        <li>Test de charge : 20 jobs enchaînés depuis un script, machine éteinte au départ</li>
+      </ul>
+      <p class="out">Livrable · l'ordonnanceur qui transforme un GPU unique en ressource partagée fiable</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 4</div><div>
+      <h4>Le serveur MCP du canon, et le premier agent</h4>
+      <p>Un seul agent lore, en boucle, qui lit et écrit dans le canon. Pas d'orchestrateur, pas de hiérarchie.</p>
+      <ul>
+        <li>Écrire le serveur MCP canon : lire une entité, chercher, proposer un fait, lister les contradictions, ouvrir une branche</li>
+        <li>Soigner l'économie de tokens : un serveur MCP bavard sature le contexte plus vite qu'il ne rend service</li>
+        <li>Brancher Hermes Agent dessus et lui faire produire des fiches de personnages</li>
+        <li>Implémenter les contraintes dures et les règles de domaine (étages 1 et 2 de la §09)</li>
+        <li>Découvrir tes vrais prompts et la qualité réelle de tes modèles locaux</li>
+      </ul>
+      <p class="out">Livrable · des fiches cohérentes, générées, validées et stockées — le système commence à servir</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 5</div><div>
+      <h4>ComfyUI et la deuxième modalité</h4>
+      <p>C'est ici que se joue le vrai test : l'agent image doit produire une illustration fidèle à une fiche écrite par l'agent lore, sans que tu recopies quoi que ce soit.</p>
+      <ul>
+        <li>Installer ComfyUI sur le desktop, poids depuis le serveur maison ; Qwen-Image 2.0 puis SDXL + ControlNet</li>
+        <li>Construire et <em>figer</em> deux ou trois workflows paramétrés — portrait, turnaround, environnement — appelés par l'API, pas réécrits par l'agent</li>
+        <li>Emballer ComfyUI en type de job (§ phase 3), pas en appel direct</li>
+        <li>Agent image alimenté par la fiche canonique, avec la fiche de style injectée</li>
+        <li>Boucle LoRA de personnage : générer, faire valider 20 images par toi, entraîner, enregistrer l'identifiant LoRA <em>dans le canon</em></li>
+      </ul>
+      <p class="out">Livrable · la cohérence inter-modalités démontrée, et le premier personnage devenu un actif réutilisable</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 6</div><div>
+      <h4>La hiérarchie et les auditeurs</h4>
+      <p>Le mécanisme qui fait passer le taux d'acceptation de 42 % à 85 % n'est pas d'ajouter des générateurs, c'est d'ajouter des auditeurs séparés.</p>
+      <ul>
+        <li>Orchestrateur, agents core (Lore, Visuel, Sonore, Matière), sous-agents typés — sous-agents Hermes avec routage de modèle par agent, ou nœuds LangGraph selon l'architecture retenue</li>
+        <li>Agents auditeurs indépendants, avec d'autres prompts et si possible d'autres modèles que les générateurs</li>
+        <li>Budget de contexte par couche : essentiel 20 %, pertinent 35 %, résumé 20 %, collaboration 25 %</li>
+        <li>Ordonnancement par localité sémantique — toute la géographie, puis toutes les factions</li>
+        <li>Audit de canon par extraction de sous-ensembles insatisfiables minimaux, scopé et en tâche de fond (étage 3, §09)</li>
+      </ul>
+      <p class="out">Livrable · une session de worldbuilding autonome de bout en bout, avec un rapport de session lisible</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 7</div><div>
+      <h4>L'interface de transparence</h4>
+      <p>Volontairement tardif : tu ne sais pas quoi afficher tant que tu n'as pas vu le système tourner.</p>
+      <ul>
+        <li>Ajouter un champ « résumé en clair » au schéma de sortie de chaque agent — c'est ce qui rend le fil lisible</li>
+        <li>Fil de conversation, panneau d'activité séparé, terminal xterm.js branché sur les logs de jobs, portes d'approbation par étape</li>
+        <li>Vue canon : graphe Cytoscape.js et génération du vault Obsidian depuis la base</li>
+        <li>Langfuse sur le serveur maison avec ClickHouse, Redis et MinIO ; buffer côté orchestrateur quand la machine est éteinte</li>
+        <li>Créer les premiers jeux de données d'évaluation — 20 cas figés pour détecter les régressions au prochain changement de modèle</li>
+      </ul>
+      <p class="out">Livrable · le poste de pilotage, et la mémoire de ce que le système a fait</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 8</div><div>
+      <h4>Audio</h4>
+      <p>Rapide et gratifiant : peu de nouvelles idées architecturales, beaucoup de résultat perceptible.</p>
+      <ul>
+        <li>Chatterbox sur le desktop, Kokoro sur le serveur maison en CPU pour la narration en volume</li>
+        <li>ACE-Step 1.5 en variante turbo ; boucle LoRA de thème de faction, identifiant stocké dans le canon comme pour les personnages</li>
+        <li>Agent sound design en mode retrieval sur banque libre plutôt qu'en génération</li>
+      </ul>
+      <p class="out">Livrable · voix de personnages, thèmes musicaux par faction, ambiances par lieu</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 9</div><div>
+      <h4>3D : Blender, puis Unreal</h4>
+      <p>La phase la plus longue, et la seule où une étape reste irréductiblement humaine.</p>
+      <ul>
+        <li>TripoSG en local (8 Go) pour l'itération ; Hunyuan3D-2GP pour la passe qualité, avec test empirique du plancher VRAM réel</li>
+        <li>Blender + serveur MCP, avec <strong>boucle de retour visuelle obligatoire</strong> : capture de viewport relue par un modèle vision après chaque opération</li>
+        <li>Agent matière : passe quad automatique pour les statiques, préparation semi-manuelle pour les animés, unwrap xatlas ou Smart UV, bake normal/AO/courbure via <code>bake_pbr_batch</code></li>
+        <li>Texturing par Hunyuan3D-Paint en local, ou Meshy/Rodin en hébergé pour la qualité</li>
+        <li>Unreal : plugin MCP d'Epic ou serveur communautaire ; import glTF, activation de Nanite sur les statiques, instances de matériaux, correction du canal vert des normal maps</li>
+        <li>Environnements : évaluer HY-World 2.0 et Marble ; plugin gaussian splatting UE pour le décor</li>
+      </ul>
+      <p class="out">Livrable · la chaîne complète, du lore à l'asset importé dans Unreal</p>
+    </div></div>
+
+    <div class="phase"><div class="pn">PHASE 10</div><div>
+      <h4>Extensions et durcissement</h4>
+      <p>Le test d'architecture : ajouter une modalité doit être ennuyeux.</p>
+      <ul>
+        <li>Vidéo (LTX-2.5, MiniMax-H3) : un type de job, un sous-agent, un serveur MCP. Si ça demande plus, il y a un défaut à corriger avant.</li>
+        <li>Branches de continuité via Neon pour les timelines alternatives</li>
+        <li>Délégation progressive : desserrer les portes d'approbation là où l'historique le justifie</li>
+        <li>Location GPU à la demande pour les rafales, derrière le même contrat de job</li>
+      </ul>
+      <p class="out">Livrable · un système qui grandit sans être réécrit</p>
+    </div></div>
+  </section>
+
+  <!-- 14 -->
+  <section id="pieges">
+    <span class="sec-num">14 — Retours d'expérience</span>
+    <h2>Pièges à éviter</h2>
+
+    <div class="pitfall"><h4><span>01</span> Construire la hiérarchie avant le canon</h4><p>Un système à trois niveaux d'agents sans schéma strict produit du texte plausible et incohérent, très vite, en grande quantité. Le schéma d'abord, l'ontologie avant les instances.</p></div>
+    <div class="pitfall"><h4><span>02</span> Blâmer l'abliteration pour un problème de décodage</h4><p>Le passage de 100 % à 0 % d'invocation d'outils vient du masquage des tokens déclencheurs par la grammaire JSON, pas de la censure retirée. Sépare la passe de décision de la passe de structuration.</p></div>
+    <div class="pitfall"><h4><span>03</span> Laisser les agents s'auto-évaluer</h4><p>Le biais d'auto-approbation est mesuré. Auditeurs séparés, avec d'autres prompts et si possible d'autres modèles.</p></div>
+    <div class="pitfall"><h4><span>04</span> Considérer le parallélisme comme acquis</h4><p>Un GPU, une charge à la fois. Toute architecture supposant des agents multimodaux concurrents est fausse sur ton matériel.</p></div>
+    <div class="pitfall"><h4><span>05</span> Installer Langfuse sur le VPS</h4><p>Langfuse v3 exige Postgres, ClickHouse, Redis et un stockage S3 — avec 8 à 16 Gio recommandés pour ClickHouse seul. Il va sur le serveur maison.</p></div>
+    <div class="pitfall"><h4><span>06</span> Compter sur Tailscale pour le Wake-on-LAN</h4><p>Impossible par conception : le WoL est en couche 2, Tailscale en couche 3. Il faut un intermédiaire toujours allumé sur le même LAN.</p></div>
+    <div class="pitfall"><h4><span>07</span> Faire d'Obsidian la source de vérité</h4><p>Ni schéma, ni transaction, ni intégrité, ni bitemporalité. Excellente vue de lecture générée, mauvaise base concurrente.</p></div>
+    <div class="pitfall"><h4><span>08</span> Choisir XTTS v2 parce qu'il est le meilleur</h4><p>Licence non commerciale et éditeur disparu en janvier 2024 : impossible de régulariser. Chatterbox, MIT.</p></div>
+    <div class="pitfall"><h4><span>09</span> Confondre Hunyuan3D 2.x et 3.x</h4><p>La 2.x est ouverte avec poids publics ; la 3.x est une gamme hébergée commerciale sans poids. Même famille de noms, produits différents.</p></div>
+    <div class="pitfall"><h4><span>10</span> Croire que Nanite supprime la retopologie</h4><p>Pour les static meshes, oui, largement. Pour les skeletal meshes, non : la topologie quad propre avec boucles de déformation reste obligatoire pour tout ce qui est riggé.</p></div>
+    <div class="pitfall"><h4><span>11</span> Piloter Blender ou Unreal sans yeux</h4><p>« Le travail 3D échoue silencieusement sans retour visuel. » Un agent sans capture de viewport exécutera des opérations valides mais fausses, sans que rien ne le signale.</p></div>
+    <div class="pitfall"><h4><span>12</span> Stocker des poids sur le VPS</h4><p>80 Go ne suffisent même pas pour la paire de LLM. Le VPS est le cerveau, la bibliothèque vit sur le serveur maison.</p></div>
+    <div class="pitfall"><h4><span>13</span> Demander à un LLM « ce canon est-il cohérent ? »</h4><p>C'est la ligne de base que la recherche 2026 bat de 25 points de rappel. Extraction de sous-ensembles insatisfiables minimaux, scopée, en tâche de fond.</p></div>
+    <div class="pitfall"><h4><span>14</span> Sous-estimer les timeouts de la file de jobs</h4><p>Réveil plus démarrage prend 60 à 120 secondes. Un timeout par défaut fera croire à la mort du worker, remettra le job en file, et l'exécutera deux fois.</p></div>
+    <div class="pitfall"><h4><span>15</span> Poursuivre chaque nouveau modèle</h4><p>Il en sortira un meilleur pendant que tu construis — c'est certain et sans importance. La valeur est dans le canon, la file de jobs, les serveurs MCP et la boucle d'audit. Les modèles sont remplaçables ; construis-les comme tels.</p></div>
+  </section>
+
+  <!-- 15 -->
+  <section id="sources">
+    <span class="sec-num">15</span>
+    <h2>Sources</h2>
+    <div class="col"><p class="lede">Recoupées entre publications de recherche, dépôts et documentations officielles, et comparatifs indépendants. Les contenus manifestement générés pour le référencement ont été écartés au profit des sources primaires.</p></div>
+    <ul class="srcs">
+      <li><a href="https://arxiv.org/html/2607.09403v1">AutoWorldBuilder — Multi-Agent LLM Worldbuilding (arXiv)</a></li>
+      <li><a href="https://arxiv.org/html/2607.05577">Narrative World Model — mémoire narratologique pour la fiction longue (arXiv)</a></li>
+      <li><a href="https://www.mdpi.com/2079-8954/14/2/175">G-KMS — pipeline LLM gouverné par schéma pour la narration RPG (MDPI)</a></li>
+      <li><a href="https://aclanthology.org/2026.acl-long.1600/">GAM — mémoire agentique hiérarchique par graphe (ACL 2026)</a></li>
+      <li><a href="https://arxiv.org/abs/2608.05170">DREAM — jeu de rôle dynamique par graphe mémoire événementiel</a></li>
+      <li><a href="https://arxiv.org/abs/2407.04363">AriGraph — graphes de connaissances comme modèles du monde</a></li>
+      <li><a href="https://www.cs.uky.edu/~sgware/reading/papers/shirvani2018combining.pdf">Shirvani et al. — intentionnalité et croyance en planification narrative</a></li>
+      <li><a href="https://arxiv.org/abs/2501.13956">Zep — architecture de graphe temporel pour mémoire d'agent</a></li>
+      <li><a href="https://www.getzep.com/ai-agents/temporal-knowledge-graph/">Zep — modèle bitemporel expliqué</a></li>
+      <li><a href="https://neo4j.com/blog/developer/graphiti-knowledge-graph-memory/">Graphiti — mémoire par graphe de connaissances (Neo4j)</a></li>
+      <li><a href="https://arxiv.org/html/2601.13600">Vérification de cohérence globale avec oracles LLM bruités</a></li>
+      <li><a href="https://arxiv.org/html/2401.18059v1">RAPTOR — arbres de résumés récursifs pour la récupération</a></li>
+      <li><a href="https://github.com/microsoft/graphrag">GraphRAG — Microsoft</a></li>
+      <li><a href="https://github.com/kuzudb/kuzu">Kuzu — base de graphe embarquée avec vecteurs et plein texte</a></li>
+      <li><a href="https://arxiv.org/abs/2502.14802">HippoRAG 2 — de la RAG à la mémoire</a></li>
+      <li><a href="https://arxiv.org/abs/2502.12110">A-MEM — mémoire agentique auto-organisée</a></li>
+      <li><a href="https://mem0.ai/research">Mem0 — recherche et benchmarks</a></li>
+      <li><a href="https://github.com/letta-ai/letta">Letta (ex-MemGPT)</a></li>
+      <li><a href="https://arxiv.org/html/2606.25605">La « taxe de contrainte » — suppression du tool-calling sous contrainte structurée</a></li>
+      <li><a href="https://arxiv.org/html/2512.13655v1">Analyse comparative des méthodes d'abliteration</a></li>
+      <li><a href="https://arxiv.org/html/2601.04426v2">XGrammar-2 — génération structurée rapide et personnalisable</a></li>
+      <li><a href="https://blog.mlc.ai/2026/05/04/xgrammar-2-fast-customizable-structured-generation">XGrammar-2 — annonce MLC</a></li>
+      <li><a href="https://huggingface.co/blog/mlabonne/abliteration">mlabonne — l'abliteration expliquée</a></li>
+      <li><a href="https://huggingface.co/blog/grimjim/norm-preserving-biprojected-abliteration">Abliteration biprojetée préservant la norme</a></li>
+      <li><a href="https://github.com/NousResearch/hermes-agent">Hermes Agent — dépôt officiel (Nous Research)</a></li>
+      <li><a href="https://github.com/NousResearch/hermes-agent/blob/main/website/docs/reference/faq.md">Hermes Agent — FAQ officielle</a></li>
+      <li><a href="https://composio.dev/content/openclaw-vs-hermes-agent">OpenClaw vs Hermes Agent — comparatif</a></li>
+      <li><a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness — dépôt officiel</a></li>
+      <li><a href="https://www.infoq.com/news/2026/08/deep-seek-harness/">DeepSeek Harness — analyse InfoQ</a></li>
+      <li><a href="https://thenewstack.io/deepseek-harness-open-source-plugins/">DeepSeek Harness — The New Stack</a></li>
+      <li><a href="https://winder.ai/ai-agent-harness-comparison/">Comparatif des harnais d'agents 2026 — Winder</a></li>
+      <li><a href="https://docs.ag-ui.com/introduction">AG-UI — documentation du protocole</a></li>
+      <li><a href="https://github.com/ag-ui-protocol/ag-ui">AG-UI — dépôt et liste des intégrations</a></li>
+      <li><a href="https://zylos.ai/research/2026-05-28-agentic-ux-frontend-design-patterns-ai-agents/">Patrons de conception frontend pour agents 2026</a></li>
+      <li><a href="https://www.firecrawl.dev/blog/best-open-source-agent-frameworks">Comparatif des frameworks d'agents open source 2026</a></li>
+      <li><a href="https://github.com/mostlygeek/llama-swap">llama-swap — chargement à chaud multi-modèles</a></li>
+      <li><a href="https://vllm-project.github.io/2025/10/26/sleep-mode.html">vLLM sleep mode — latences mesurées</a></li>
+      <li><a href="https://betterstack.com/community/guides/ai/llama-swap/">Guide llama-swap</a></li>
+      <li><a href="https://huggingface.co/huihui-ai">huihui-ai — dépôts abliterated</a></li>
+      <li><a href="https://huggingface.co/TheDrummer">TheDrummer — finetunes créatifs non censurés</a></li>
+      <li><a href="https://huggingface.co/TheDrummer/Cydonia-24B-v4.3">Cydonia-24B-v4.3 — carte de modèle</a></li>
+      <li><a href="https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B">Ornith-1.5-35B-A3B — carte de modèle</a></li>
+      <li><a href="https://huggingface.co/zai-org/GLM-5.3-Flash">GLM-5.3-Flash — carte de modèle</a></li>
+      <li><a href="https://eqbench.com/creative_writing.html">EQ-Bench Creative Writing</a></li>
+      <li><a href="https://www.earngenix.com/blog/best-local-image-generation-models-2026">Modèles d'image locaux testés sous ComfyUI</a></li>
+      <li><a href="https://localaimaster.com/blog/krea-2-local-guide">Krea 2 en local : VRAM et piège de licence</a></li>
+      <li><a href="https://docs.comfy.org/agent-tools/mcp">Comfy MCP — documentation officielle</a></li>
+      <li><a href="https://localaimaster.com/blog/kokoro-vs-xtts-vs-chatterbox">Kokoro vs XTTS vs Chatterbox</a></li>
+      <li><a href="https://github.com/ace-step/ACE-Step-1.5">ACE-Step 1.5 — dépôt officiel</a></li>
+      <li><a href="https://github.com/VAST-AI-Research/TripoSG">TripoSG — dépôt officiel</a></li>
+      <li><a href="https://github.com/tencent-hunyuan/hunyuan3d-2.1">Hunyuan3D 2.1 — dépôt officiel</a></li>
+      <li><a href="https://github.com/deepbeepmeep/Hunyuan3D-2GP">Hunyuan3D-2GP — fork « GPU-poor »</a></li>
+      <li><a href="https://hunyuan3d.cc/hunyuan3d-versions/">Hunyuan3D — clarification des versions 2.x vs 3.x</a></li>
+      <li><a href="https://github.com/microsoft/TRELLIS.2">TRELLIS.2 — dépôt Microsoft</a></li>
+      <li><a href="https://www.meshy.ai/tutorials/ai-retopology-guide">Meshy — guide de retopologie IA (limites reconnues)</a></li>
+      <li><a href="https://arxiv.org/abs/2509.21420">QuadGPT — génération autorégressive de maillages quad</a></li>
+      <li><a href="https://buaacyw.github.io/meshanything-v2/">MeshAnything V2</a></li>
+      <li><a href="https://www.strayspark.studio/blog/best-blender-retopology-addons-2026">Addons de retopologie Blender 2026</a></li>
+      <li><a href="https://github.com/RFingAdam/mcp-blender">mcp-blender — 218 outils dont bake_pbr_batch</a></li>
+      <li><a href="https://www.strayspark.studio/blog/unreal-vs-blender-vs-godot-mcp-comparison-2026">Unreal vs Blender vs Godot MCP — comparatif</a></li>
+      <li><a href="https://github.com/remiphilippe/mcp-unreal">mcp-unreal — serveur MCP pour UE 5.7</a></li>
+      <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/nanite-virtualized-geometry-in-unreal-engine">Nanite — documentation Epic</a></li>
+      <li><a href="https://www.strayspark.studio/blog/blender-5-to-unreal-engine-57-asset-pipeline-2026">Pipeline Blender 5.x → Unreal 5.7</a></li>
+      <li><a href="https://github.com/Tencent-Hunyuan/HY-World-2.0">HY-World 2.0 — dépôt Tencent</a></li>
+      <li><a href="https://github.com/Tencent-Hunyuan/HunyuanWorld-1.0">HunyuanWorld-1.0</a></li>
+      <li><a href="https://docs.worldlabs.ai/marble/export/mesh">World Labs Marble — export de maillages</a></li>
+      <li><a href="https://arxiv.org/abs/2511.16825">Meta WorldGen — mondes 3D traversables depuis du texte</a></li>
+      <li><a href="https://matrix-3d.github.io/">Matrix-3D — mondes omnidirectionnels explorables</a></li>
+      <li><a href="https://80.lv/articles/all-in-one-plug-in-for-unreal-engine-5-to-gaussian-splatting">Gaussian splatting dans Unreal 5 — plugin Atlux</a></li>
+      <li><a href="https://ollama.com/blog/cloud-models">Ollama Cloud — annonce officielle</a></li>
+      <li><a href="https://ollama.com/pricing">Ollama — tarification</a></li>
+      <li><a href="https://ollama.com/privacy">Ollama — politique de confidentialité (non-entraînement explicite)</a></li>
+      <li><a href="https://build.nvidia.com/">NVIDIA build — catalogue d'API</a></li>
+      <li><a href="https://forums.developer.nvidia.com/t/api-rate-limit-increase-for-nvidia-nim/366043">NVIDIA NIM — limite de 40 req/min confirmée</a></li>
+      <li><a href="https://openrouter.ai/docs/features/privacy-and-logging">OpenRouter — confidentialité et zéro rétention</a></li>
+      <li><a href="https://console.groq.com/docs/rate-limits">Groq — limites de débit</a></li>
+      <li><a href="https://docs.z.ai/guides/overview/pricing">Z.ai — tarification et modèles gratuits</a></li>
+      <li><a href="https://docs.github.com/en/github-models/prototyping-with-ai-models">GitHub Models — avis de retrait</a></li>
+      <li><a href="https://supabase.com/pricing">Supabase — tarification</a></li>
+      <li><a href="https://neon.com/pricing">Neon — tarification et branchement</a></li>
+      <li><a href="https://supabase.com/docs/guides/database/extensions">Supabase — catalogue d'extensions</a></li>
+      <li><a href="https://neon.com/docs/extensions/pg-extensions">Neon — extensions Postgres</a></li>
+      <li><a href="https://developers.cloudflare.com/r2/pricing/">Cloudflare R2 — tarification et egress gratuit</a></li>
+      <li><a href="https://www.backblaze.com/cloud-storage/pricing">Backblaze B2 — tarification</a></li>
+      <li><a href="https://www.hetzner.com/storage/storage-box/bx11/">Hetzner Storage Box BX11</a></li>
+      <li><a href="https://langfuse.com/self-hosting/deployment/infrastructure/clickhouse">Langfuse — exigences ClickHouse en auto-hébergement</a></li>
+      <li><a href="https://tailscale.com/blog/wake-on-lan-tailscale-upsnap">Tailscale — Wake-on-LAN via UpSnap (et pourquoi le relais direct est impossible)</a></li>
+      <li><a href="https://www.runpod.io/pricing">RunPod — tarification GPU à la seconde</a></li>
+      <li><a href="https://www.bentoml.com/blog/a-guide-to-open-source-embedding-models">Modèles d'embeddings open source 2026</a></li>
+      <li><a href="https://linkurious.com/blog/top-javascript-graph-libraries/">Bibliothèques JavaScript de visualisation de graphes</a></li>
+    </ul>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">Révision 2 · 30 août 2026 · sources recoupées à cette date · les modèles cités évoluent, l'architecture non</div>
+</footer>
+
+</body></html>

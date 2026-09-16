@@ -1,0 +1,636 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Le plan de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F;
+  --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B;
+    --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B;
+  --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:60px 0 40px;background:var(--surface)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(36px,6vw,60px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:62px;scroll-margin-top:24px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(25px,3.2vw,34px);line-height:1.13;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:21px;letter-spacing:-.01em;margin:42px 0 10px;text-wrap:balance}
+p{margin:0 0 18px}
+.lede{font-size:19.5px;color:var(--ink-2);margin-bottom:26px}
+a{color:var(--ember);text-underline-offset:2px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+
+/* glossary */
+.gloss{display:grid;gap:0;margin:28px 0;border:1px solid var(--rule);border-radius:6px;background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
+.gloss div{padding:16px 20px;border-bottom:1px solid var(--rule-soft);display:grid;gap:3px 20px}
+@media(min-width:720px){.gloss div{grid-template-columns:200px 1fr;align-items:baseline}}
+.gloss div:last-child{border-bottom:0}
+.gloss dt{font-family:var(--f-display);font-weight:600;font-size:16px;color:var(--ink)}
+.gloss dd{margin:0;font-size:16px;color:var(--ink-2);line-height:1.5}
+
+/* pieces */
+.piece{border-top:1px solid var(--rule-soft);padding:24px 0}
+.piece:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.piece h3{margin:0 0 4px;font-size:22px}
+.piece .role{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin:0 0 12px}
+.piece p{margin:0 0 12px;max-width:68ch}
+.piece p:last-child{margin-bottom:0}
+.piece .note{font-size:15.5px;color:var(--ink-3);border-left:2px solid var(--rule);padding-left:14px;margin-top:14px}
+
+figure{margin:34px 0;padding:0}
+figure svg{display:block;width:100%;max-width:100%;height:auto;color:var(--ink)}
+.dg-accent{stroke:var(--ember)}
+.dg-accent-t{fill:var(--ember)}
+figcaption{font-size:15px;color:var(--ink-3);margin-top:14px;max-width:68ch;line-height:1.5}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:20px 24px;margin:28px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+/* walkthrough */
+.walk{list-style:none;margin:28px 0;padding:0;counter-reset:w;display:flex;flex-direction:column;gap:0}
+.walk li{padding:16px 0 16px 46px;border-bottom:1px solid var(--rule-soft);position:relative;font-size:16.5px;line-height:1.55;color:var(--ink-2)}
+.walk li:last-child{border-bottom:0}
+.walk li::before{counter-increment:w;content:counter(w);position:absolute;left:0;top:17px;font-family:var(--f-mono);font-size:12px;color:var(--ember);width:28px;text-align:right}
+.walk li b{color:var(--ink);font-weight:600}
+.walk li .who{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:3px}
+
+/* machines */
+.mach{display:grid;gap:16px;margin:28px 0}
+@media(min-width:760px){.mach{grid-template-columns:repeat(2,1fr)}}
+.machcard{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:20px 22px;box-shadow:var(--shadow)}
+.machcard h4{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0 0 2px}
+.machcard .avail{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin:0 0 12px}
+.machcard ul{margin:0;padding-left:18px;font-size:15.5px;color:var(--ink-2);gap:6px}
+
+/* milestones */
+.ms{display:grid;grid-template-columns:auto 1fr;gap:0 22px;padding:22px 0;border-top:1px solid var(--rule-soft)}
+.ms:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.ms .n{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--ember);padding-top:6px;white-space:nowrap}
+.ms h4{font-family:var(--f-display);font-weight:600;font-size:19px;margin:0 0 6px}
+.ms p{margin:0 0 10px;font-size:16px;color:var(--ink-2)}
+.ms .done{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+
+/* rules */
+.rule-item{border-top:1px solid var(--rule-soft);padding:20px 0}
+.rule-item:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.rule-item h4{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0 0 6px}
+.rule-item p{margin:0;font-size:16px;color:var(--ink-2)}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:72px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1000px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="kind">Amont</span><span class="sep">/</span><span class="here">Le plan de la Forge</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a class="cur" href="#top"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">La Forge · plan définitif</p>
+    <h1>Le plan de <em>la Forge</em></h1>
+    <p class="standfirst">Une seule architecture, expliquée sans jargon. Ce qui existe, qui fait quoi, où ça tourne, et dans quel ordre le construire.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<!-- 1 -->
+<section id="idee">
+  <span class="sec-num">01</span>
+  <h2>L'idée en une phrase</h2>
+  <div class="col">
+    <p class="lede">Le système est fait d'<strong>un ensemble d'outils partagés</strong>, et il existe <strong>deux façons de s'en servir</strong> : en discutant avec un assistant qui improvise le chemin, ou en lançant une recette écrite d'avance qui fait toujours la même chose.</p>
+    <p>C'est tout. Le reste de ce document précise quels sont ces outils, quelle est la frontière entre les deux façons de faire, et où chaque morceau tourne physiquement.</p>
+    <p>La frontière que tu cherchais tient en une question, et c'est la seule qu'il faut retenir : <strong>« est-ce que ça doit donner le même résultat deux fois ? »</strong> Si oui, c'est une recette écrite. Si non, c'est l'assistant qui improvise.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="mots">
+  <span class="sec-num">02</span>
+  <h2>Les mots que j'emploie</h2>
+  <div class="col">
+    <p class="lede">Sept termes, définis une fois. Tout le document s'y tient.</p>
+  </div>
+  <dl class="gloss">
+    <div><dt>Un modèle</dt><dd>Une IA brute, un fichier de plusieurs gigaoctets qu'on charge en mémoire. Il ne sait rien faire seul : il reçoit du texte, il renvoie du texte. Tu en auras plusieurs, chacun bon à une chose différente.</dd></div>
+    <div><dt>Un agent</dt><dd>Un modèle plus des instructions plus l'autorisation d'utiliser certains outils. C'est ce qui transforme « une IA qui écrit » en « quelqu'un qui fait un travail ».</dd></div>
+    <div><dt>Un outil</dt><dd>Une capacité qu'un agent peut invoquer : lire une fiche de personnage, lancer une génération d'image, chercher une contradiction. Techniquement c'est un petit programme qui tourne en permanence et qui attend qu'on l'appelle.</dd></div>
+    <div><dt>Un serveur d'outils</dt><dd>Un paquet d'outils qui vont ensemble, exposés selon un standard commun (MCP) que tous les assistants modernes savent lire. C'est ce qui fait que le même outil est utilisable depuis ton système, depuis Claude, depuis n8n, sans le réécrire.</dd></div>
+    <div><dt>Une recette</dt><dd>Une suite d'étapes que <em>tu</em> as écrites une fois pour toutes : d'abord ceci, puis cela, puis cela. Aucun modèle ne décide de l'ordre. C'est du code classique, pas de l'IA.</dd></div>
+    <div><dt>Un travail</dt><dd>Une tâche lourde en attente : générer une image, faire un maillage 3D, entraîner un style. Elle est inscrite sur une liste, et une machine la prend quand elle est libre.</dd></div>
+    <div><dt>Le canon</dt><dd>La mémoire de ton monde. Pas un dossier de notes : une base de données structurée où chaque personnage, lieu, faction et événement est une fiche typée, reliée aux autres, datée, et vérifiée. C'est la pièce la plus importante du système.</dd></div>
+  </dl>
+</section>
+
+<!-- 3 -->
+<section id="pieces">
+  <span class="sec-num">03</span>
+  <h2>Les six pièces</h2>
+  <div class="col">
+    <p class="lede">Le système entier tient en six morceaux. Rien d'autre n'est nécessaire pour le comprendre.</p>
+  </div>
+
+  <div class="piece">
+    <h3>1 · Le Canon</h3>
+    <p class="role">La mémoire du monde — la seule source de vérité</p>
+    <p>Une base de données qui contient tout ce qui est vrai dans ton univers. Chaque personnage y est une fiche avec des champs définis à l'avance : nom, apparence, faction, relations, ce qu'il sait, ce qu'il ignore. Chaque fait porte une date de début et une date de fin de validité — quand un roi meurt, on ne l'efface pas, on ferme sa période « vivant ». Ça te permet de toujours pouvoir demander « qu'est-ce qui était vrai avant le chapitre 12 ».</p>
+    <p>Le Canon refuse activement les incohérences. Si un agent propose un fait qui contredit une règle (un mort qui agit, un personnage à deux endroits à la fois), la base le rejette avant même qu'il entre. Ce n'est pas une consigne donnée à l'IA — c'est une contrainte de la base, que personne ne peut contourner.</p>
+    <p class="note">Le Canon est un serveur d'outils. Ça veut dire concrètement que tu pourras interroger ton monde depuis ton système, mais aussi depuis Claude quand tu codes, depuis un workflow n8n, depuis ton téléphone — sans jamais dupliquer les données.</p>
+  </div>
+
+  <div class="piece">
+    <h3>2 · La File des travaux</h3>
+    <p class="role">La liste d'attente qui protège ta carte graphique</p>
+    <p>Tu as une seule carte graphique de 12 Go. Un modèle de texte en occupe 10, un modèle d'image en occupe 10, un modèle 3D en occupe 10. <strong>Ils ne tiennent pas ensemble.</strong> Si trois agents lancent trois générations en même temps, tu n'obtiens pas trois résultats : tu obtiens un plantage.</p>
+    <p>La File résout ça. Personne n'appelle jamais une carte graphique directement. On dépose une demande sur une liste — « génère ce portrait avec ces paramètres » — et un programme sur ton PC prend les demandes une par une, charge le bon modèle, fait le travail, décharge, passe à la suivante.</p>
+    <p>La liste vit sur ton VPS, qui est allumé en permanence. Ton PC, lui, peut être éteint : quand une demande arrive et que la machine dort, le système la réveille. Quand plus rien n'attend depuis vingt minutes, elle se rendort.</p>
+    <p class="note">C'est la pièce que personne ne construit en premier et qui rend tout le reste possible. Sans elle, ton système ne dépassera jamais un agent à la fois.</p>
+  </div>
+
+  <div class="piece">
+    <h3>3 · Les Outils</h3>
+    <p class="role">Les capacités, exposées de façon standard</p>
+    <p>Cinq paquets, chacun tournant comme un petit service indépendant : le <strong>Canon</strong> (lire, chercher, proposer un fait, lister les contradictions), la <strong>File</strong> (déposer un travail, suivre son avancement, l'annuler), les <strong>Images</strong> (lancer une génération, entraîner un style de personnage), la <strong>3D</strong> (générer un objet, piloter Blender, exporter vers Unreal), le <strong>Son</strong> (voix de personnage, musique, ambiance).</p>
+    <p>Ils sont indépendants les uns des autres. Ajouter la vidéo dans six mois, ce sera un sixième paquet — rien d'autre ne bouge.</p>
+  </div>
+
+  <div class="piece">
+    <h3>4 · Les Recettes</h3>
+    <p class="role">Ce qui doit être identique à chaque fois</p>
+    <p>Quatre suites d'étapes que tu écris toi-même, une fois, et qui ne varient jamais :</p>
+    <ul>
+      <li><strong>Fabriquer une image</strong> — le réglage exact que tu as validé, jamais réinventé par une IA</li>
+      <li><strong>Fabriquer un objet 3D</strong> — génération, nettoyage dans Blender, cartes de texture, export vers Unreal, sept étapes dans le même ordre</li>
+      <li><strong>Auditer le canon</strong> — trois relecteurs indépendants passent sur chaque nouveau fait ; ils s'exécutent toujours, ce n'est pas négociable</li>
+      <li><strong>Ranger la mémoire</strong> — regrouper, résumer, réindexer ; lancé automatiquement, jamais oublié</li>
+    </ul>
+    <p>Ce sont des programmes ordinaires. Ils appellent des modèles quand ils en ont besoin, mais c'est le programme qui décide de l'enchaînement, jamais le modèle.</p>
+    <p class="note">Pourquoi les relecteurs sont ici et pas ailleurs : une IA qui relit son propre travail le valide presque toujours, c'est mesuré. Il faut donc que la relecture soit une étape obligatoire du programme, et pas une chose qu'un agent peut choisir de sauter.</p>
+  </div>
+
+  <div class="piece">
+    <h3>5 · L'Assistant</h3>
+    <p class="role">Ton unique interlocuteur</p>
+    <p>C'est à lui que tu parles, et à lui seul. Tu lui dis « invente-moi trois factions rivales pour cette région », il décide quoi faire : consulter le canon, réfléchir, déléguer à des sous-agents spécialisés — un pour le lore, un pour le visuel, un pour le son, un pour la matière — puis rassembler les résultats.</p>
+    <p>Chaque sous-agent utilise le modèle qui lui convient : celui qui écrit les scènes est un modèle sans filtre, celui qui coordonne est un modèle propre et fiable pour appeler des outils. Ils ne font pas le même métier, ils n'ont pas besoin du même cerveau.</p>
+    <p>Quand l'Assistant a besoin de quelque chose de reproductible, il ne le fait pas lui-même : <strong>il déclenche une Recette</strong>. Il demande « fabrique-moi le portrait de ce personnage », et la Recette s'exécute à l'identique.</p>
+    <p class="note">Concrètement, ce sera Hermes Agent au départ — que tu possèdes déjà, et qui sait nativement gérer des sous-agents avec un modèle différent chacun. Mais il est remplaçable : les outils et le canon ne dépendent pas de lui.</p>
+  </div>
+
+  <div class="piece">
+    <h3>6 · Le Tableau de bord</h3>
+    <p class="role">Ce que tu regardes</p>
+    <p>Une seule page web, avec quatre zones. <strong>La conversation</strong> : l'arbre des échanges entre l'Assistant et ses sous-agents, affiché comme un fil de discussion lisible — chaque agent écrit une phrase en clair sur ce qu'il vient de faire, et le détail technique est repliable dessous. <strong>L'activité</strong> : les travaux en cours, leur avancement, leurs logs dans une fenêtre de terminal, avec un bouton pour annuler. <strong>Le monde</strong> : le graphe de ton univers, navigable, plus un carnet en texte régénéré à chaque changement. <strong>Les décisions</strong> : ce qui attend ton arbitrage.</p>
+    <p class="note">Techniquement les agents s'échangent des données structurées, pas des phrases — c'est plus fiable. Mais tu les vois converser, parce que chacun résume son action en français. Transport machine, affichage humain.</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="schema">
+  <span class="sec-num">04</span>
+  <h2>Le schéma</h2>
+
+  <figure>
+    <svg viewBox="0 0 980 620" role="img" aria-label="Schéma de l'architecture : deux façons de piloter le système — les recettes écrites et l'assistant — appellent le même ensemble d'outils partagés, dont le canon et la file des travaux ; la file distribue le travail lourd vers quatre machines ; tout remonte au tableau de bord.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+        </marker>
+        <marker id="ard" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.45"/>
+        </marker>
+      </defs>
+
+      <g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+        <!-- top row -->
+        <rect x="100" y="24" width="200" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.55"/>
+        <text x="200" y="52" text-anchor="middle" font-size="14" opacity="0.75">Horloge &amp; déclencheurs</text>
+
+        <rect x="505" y="24" width="130" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+        <text x="570" y="52" text-anchor="middle" font-size="15" font-weight="600">Toi</text>
+
+        <!-- arrows top -> drivers -->
+        <line x1="200" y1="68" x2="200" y2="114" stroke="currentColor" stroke-width="1.25" opacity="0.55" marker-end="url(#ar)"/>
+        <text x="212" y="97" font-size="11.5" opacity="0.6" font-family="JetBrains Mono, monospace">à heure fixe</text>
+
+        <line x1="570" y1="68" x2="570" y2="114" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="582" y="97" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">tu demandes</text>
+
+        <!-- drivers -->
+        <rect x="60" y="120" width="280" height="84" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="200" y="152" text-anchor="middle" font-size="17" font-weight="600">Les Recettes</text>
+        <text x="200" y="176" text-anchor="middle" font-size="12.5" opacity="0.6">chemin écrit d'avance</text>
+        <text x="200" y="192" text-anchor="middle" font-size="12.5" opacity="0.6">— toujours identique</text>
+
+        <rect x="430" y="120" width="280" height="84" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="570" y="152" text-anchor="middle" font-size="17" font-weight="600">L'Assistant</text>
+        <text x="570" y="176" text-anchor="middle" font-size="12.5" opacity="0.6">chemin choisi sur le moment</text>
+        <text x="570" y="192" text-anchor="middle" font-size="12.5" opacity="0.6">— sous-agents spécialisés</text>
+
+        <!-- assistant triggers recipes -->
+        <line x1="424" y1="162" x2="348" y2="162" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="386" y="152" text-anchor="middle" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">déclenche</text>
+
+        <!-- drivers -> tools -->
+        <line x1="200" y1="204" x2="200" y2="274" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="212" y="245" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">appelle toujours</text>
+        <text x="212" y="260" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">les mêmes</text>
+
+        <line x1="570" y1="204" x2="570" y2="274" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="582" y="245" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">choisit lesquels</text>
+        <text x="582" y="260" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">appeler</text>
+
+        <!-- tools band -->
+        <rect x="40" y="280" width="720" height="124" rx="6" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4" opacity="0.5"/>
+        <text x="52" y="298" font-size="10.5" letter-spacing="1.6" opacity="0.55" font-family="JetBrains Mono, monospace">LES OUTILS PARTAGÉS</text>
+
+        <rect class="dg-accent" x="56" y="308" width="128" height="72" rx="4" fill="none" stroke-width="2.25"/>
+        <text class="dg-accent-t" x="120" y="336" text-anchor="middle" font-size="14.5" font-weight="600">Le Canon</text>
+        <text class="dg-accent-t" x="120" y="356" text-anchor="middle" font-size="11">la mémoire</text>
+        <text class="dg-accent-t" x="120" y="370" text-anchor="middle" font-size="11">du monde</text>
+
+        <rect x="196" y="308" width="128" height="72" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="260" y="336" text-anchor="middle" font-size="14.5" font-weight="600">La File</text>
+        <text x="260" y="356" text-anchor="middle" font-size="11" opacity="0.6">liste d'attente</text>
+        <text x="260" y="370" text-anchor="middle" font-size="11" opacity="0.6">des travaux</text>
+
+        <rect x="336" y="308" width="128" height="72" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="400" y="344" text-anchor="middle" font-size="14.5" font-weight="600">Images</text>
+        <text x="400" y="364" text-anchor="middle" font-size="11" opacity="0.6">concept art, styles</text>
+
+        <rect x="476" y="308" width="128" height="72" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="540" y="344" text-anchor="middle" font-size="14.5" font-weight="600">3D</text>
+        <text x="540" y="364" text-anchor="middle" font-size="11" opacity="0.6">Blender, Unreal</text>
+
+        <rect x="616" y="308" width="128" height="72" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="680" y="344" text-anchor="middle" font-size="14.5" font-weight="600">Son</text>
+        <text x="680" y="364" text-anchor="middle" font-size="11" opacity="0.6">voix, musique</text>
+
+        <!-- file -> machines -->
+        <line x1="260" y1="380" x2="260" y2="462" stroke="currentColor" stroke-width="1.5"/>
+        <text x="272" y="428" font-size="11.5" opacity="0.7" font-family="JetBrains Mono, monospace">distribue le travail lourd</text>
+        <line x1="121" y1="466" x2="679" y2="466" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="121" y1="466" x2="121" y2="494" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="307" y1="466" x2="307" y2="494" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="493" y1="466" x2="493" y2="494" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="679" y1="466" x2="679" y2="494" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- machines -->
+        <rect x="40" y="500" width="162" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.7"/>
+        <text x="121" y="524" text-anchor="middle" font-size="13.5" font-weight="600">VPS</text>
+        <text x="121" y="542" text-anchor="middle" font-size="10.5" opacity="0.6">allumé en permanence</text>
+
+        <rect x="226" y="500" width="162" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.7"/>
+        <text x="307" y="524" text-anchor="middle" font-size="13.5" font-weight="600">PC · RTX 4070</text>
+        <text x="307" y="542" text-anchor="middle" font-size="10.5" opacity="0.6">réveillé à la demande</text>
+
+        <rect x="412" y="500" width="162" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.7"/>
+        <text x="493" y="524" text-anchor="middle" font-size="13.5" font-weight="600">Serveur maison</text>
+        <text x="493" y="542" text-anchor="middle" font-size="10.5" opacity="0.6">réveillé à la demande</text>
+
+        <rect x="598" y="500" width="162" height="58" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.7"/>
+        <text x="679" y="524" text-anchor="middle" font-size="13.5" font-weight="600">Cloud</text>
+        <text x="679" y="542" text-anchor="middle" font-size="10.5" opacity="0.6">pour les gros modèles</text>
+
+        <!-- dashboard -->
+        <rect x="820" y="120" width="140" height="284" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="890" y="248" text-anchor="middle" font-size="16" font-weight="600">Tableau</text>
+        <text x="890" y="270" text-anchor="middle" font-size="16" font-weight="600">de bord</text>
+        <text x="890" y="294" text-anchor="middle" font-size="11" opacity="0.6">ce que tu vois</text>
+
+        <line x1="716" y1="162" x2="814" y2="162" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ard)"/>
+        <line x1="766" y1="342" x2="814" y2="342" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ard)"/>
+        <polyline points="766,529 790,529 790,388 814,388" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ard)"/>
+        <text x="890" y="330" text-anchor="middle" font-size="10.5" opacity="0.5" font-family="JetBrains Mono, monospace">tout remonte</text>
+        <text x="890" y="345" text-anchor="middle" font-size="10.5" opacity="0.5" font-family="JetBrains Mono, monospace">ici</text>
+      </g>
+    </svg>
+    <figcaption>Deux façons de piloter — les Recettes et l'Assistant — appellent le <strong>même</strong> ensemble d'outils. Le Canon est unique et partagé par les deux : c'est ce qui empêche qu'il existe deux versions de ton monde. La File est le seul chemin vers les machines, ce qui garantit qu'une seule charge lourde tourne à la fois sur la carte graphique.</figcaption>
+  </figure>
+</section>
+
+<!-- 5 -->
+<section id="frontiere">
+  <span class="sec-num">05</span>
+  <h2>Où passe exactement la frontière</h2>
+  <div class="col">
+    <p class="lede">Une seule question à poser, à chaque fois : <strong>est-ce que ça doit donner le même résultat deux fois ?</strong></p>
+    <p><strong>Oui → une Recette.</strong> Fabriquer une image avec un réglage validé. Fabriquer un objet 3D. Faire relire un fait par trois relecteurs. Ranger la mémoire. Entraîner le style d'un personnage. Ce sont des choses où la surprise n'est pas un cadeau, c'est un défaut.</p>
+    <p><strong>Non → l'Assistant.</strong> « Invente-moi trois factions rivales. » « Qu'est-ce qui coince dans l'arc de ce personnage ? » « Trouve-moi tous les endroits où j'ai évoqué cette prophétie. » Là, tu veux justement qu'il improvise — deux réponses différentes à la même question, c'est le but.</p>
+
+    <div class="callout crit">
+      <span class="tag">La seule chose qui n'est jamais des deux côtés</span>
+      <p><strong>Le Canon.</strong> Les Recettes et l'Assistant passent tous les deux par le même serveur, avec les mêmes vérifications. Aucune exception, jamais — pas de « je vais lire la base directement depuis ma recette, ce sera plus rapide ». Le jour où tu fais cette exception, tu as deux versions de ton monde qui divergent lentement, et tu ne t'en apercevras que des mois plus tard.</p>
+    </div>
+
+    <p>Et une chose qui n'a l'air de rien mais qui change tout : <strong>les règles vivent dans le Canon, pas dans les consignes données aux IA.</strong> Si tu écris « n'oublie pas de faire relire chaque fait » dans les instructions d'un agent, il l'oubliera. Si le Canon refuse tout fait non relu, personne ne peut l'oublier. À chaque fois que tu tiens à une garantie, mets-la dans le serveur, pas dans le prompt.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="exemple">
+  <span class="sec-num">06</span>
+  <h2>Un exemple, du début à la fin</h2>
+  <div class="col">
+    <p class="lede">Tu écris : <em>« Crée-moi un lieutenant pour la faction des Cendres, avec son portrait. »</em></p>
+  </div>
+
+  <ol class="walk">
+    <li><span class="who">Assistant</span>Il lit la faction dans le <b>Canon</b> : son histoire, ses codes, ses membres connus, ses tensions internes.</li>
+    <li><span class="who">Assistant → sous-agent lore</span>Il délègue l'écriture. Le sous-agent utilise le modèle sans filtre et écrit librement — biographie, voix, blessures, ce que le personnage cache.</li>
+    <li><span class="who">Sous-agent lore</span>Un second modèle, plus petit, relit ce texte libre et en extrait une fiche structurée propre : les champs remplis, rien d'inventé au passage.</li>
+    <li><span class="who">Assistant → Recette « auditer »</span>La fiche part en relecture. <b>Trois relecteurs indépendants</b> la lisent en parallèle : cohérence avec la faction, contradictions avec l'existant, qualité narrative. Ils s'exécutent toujours — c'est une étape du programme.</li>
+    <li><span class="who">Relecteurs</span>L'un signale que la date de naissance rend le personnage plus vieux que le fondateur de la faction. Retour à l'étape 2 avec la critique. Deuxième version, acceptée.</li>
+    <li><span class="who">Canon</span>La fiche est proposée. La base vérifie ses propres règles, ne trouve rien à redire, et l'enregistre — avec la date du jour et la trace de la conversation qui l'a produite.</li>
+    <li><span class="who">Assistant → Recette « image »</span>Il demande le portrait. La Recette dépose un travail sur <b>la File</b> : le réglage validé, plus la description physique tirée de la fiche.</li>
+    <li><span class="who">File → PC</span>Ton PC est éteint. Le système le réveille. Au démarrage, il prend le travail, charge le modèle d'image, génère quatre variantes, décharge, se rendort vingt minutes plus tard.</li>
+    <li><span class="who">Tableau de bord</span>Tu as vu tout ça défiler : les échanges entre agents en français, la critique du relecteur, l'avancement de la génération dans une fenêtre de terminal. Les quatre portraits t'attendent, avec un bouton « celui-ci ».</li>
+    <li><span class="who">Toi</span>Tu en choisis un. Plus tard, quand tu auras vingt images validées de ce personnage, une Recette entraînera son <b>style</b> — et à partir de là, il sera reconnaissable dans n'importe quelle scène, sous n'importe quel angle.</li>
+  </ol>
+
+  <div class="col">
+    <p>Note ce qui s'est passé sans que tu aies rien à faire : le personnage est cohérent avec sa faction parce que le contexte venait du Canon, il a été relu par trois instances qui ne pouvaient pas être sautées, une contradiction de date a été attrapée avant l'enregistrement, et la génération d'image n'a jamais risqué de saturer ta carte graphique.</p>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="machines">
+  <span class="sec-num">07</span>
+  <h2>Où tourne quoi</h2>
+  <div class="col">
+    <p class="lede">Quatre endroits, avec une logique simple : ce qui doit répondre en permanence va sur le VPS, ce qui est gourmand va sur les machines qu'on réveille, ce qui est trop gros pour ta carte va dans le cloud.</p>
+  </div>
+
+  <div class="mach">
+    <div class="machcard">
+      <h4>Le VPS</h4>
+      <p class="avail">Allumé 24h/24 · 4 cœurs, 8 Go</p>
+      <ul>
+        <li>Le Canon (la base de données du monde)</li>
+        <li>La File des travaux</li>
+        <li>L'Assistant et son API</li>
+        <li>n8n, pour les déclenchements automatiques</li>
+        <li>Le Tableau de bord</li>
+      </ul>
+      <p style="font-size:15px;color:var(--ink-3);margin:14px 0 0">Il ne stocke <strong>aucun modèle</strong>. Ses 80 Go ne suffiraient même pas pour deux d'entre eux.</p>
+    </div>
+
+    <div class="machcard">
+      <h4>Le PC avec la RTX 4070</h4>
+      <p class="avail">Réveillé à la demande</p>
+      <ul>
+        <li>Tout le calcul lourd, un travail à la fois</li>
+        <li>Les modèles de texte, chargés et déchargés selon le besoin</li>
+        <li>La génération d'images et l'entraînement des styles</li>
+        <li>La 3D, Blender, Unreal</li>
+        <li>Les voix et la musique</li>
+      </ul>
+      <p style="font-size:15px;color:var(--ink-3);margin:14px 0 0">Il ne garde en local que les modèles utilisés souvent, environ 150 Go.</p>
+    </div>
+
+    <div class="machcard">
+      <h4>Le serveur maison</h4>
+      <p class="avail">Réveillé à la demande</p>
+      <ul>
+        <li>La bibliothèque complète des modèles — compte 250 à 300 Go à terme</li>
+        <li>Les archives de tout ce que les agents ont fait, pour comprendre après coup</li>
+        <li>La narration en volume, qui n'a pas besoin de carte graphique</li>
+        <li>Les sauvegardes</li>
+      </ul>
+      <p style="font-size:15px;color:var(--ink-3);margin:14px 0 0">Le PC lit ses modèles ici par le réseau. Un seul endroit à sauvegarder.</p>
+    </div>
+
+    <div class="machcard">
+      <h4>Le cloud</h4>
+      <p class="avail">Ponctuel · 0 à 25 € par mois</p>
+      <ul>
+        <li>Les très gros modèles pour les relectures globales du canon</li>
+        <li>Location d'une carte graphique puissante à l'heure, pour les rares travaux 3D hors de portée</li>
+        <li>La sauvegarde hors site</li>
+      </ul>
+      <p style="font-size:15px;color:var(--ink-3);margin:14px 0 0">Le service Ollama que tu possèdes déjà annonce explicitement ne rien conserver ni entraîner sur ce que tu envoies. C'est la voie à privilégier.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="callout">
+      <span class="tag">Un détail technique qui coûte cher si on l'ignore</span>
+      <p>Le VPS ne peut pas réveiller ton PC directement — le réseau privé que tu utilises ne sait pas transmettre le signal de réveil. Il faut un petit appareil toujours allumé chez toi (un Raspberry Pi, ou ton serveur maison s'il reste allumé plus souvent) qui reçoit l'ordre du VPS et émet le signal localement. À prévoir dès le premier jour, sinon toute la logique de réveil est à refaire.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="ordre">
+  <span class="sec-num">08</span>
+  <h2>Dans quel ordre le construire</h2>
+  <div class="col">
+    <p class="lede">Cinq étapes. Chacune donne quelque chose d'utilisable seul — c'est la seule protection contre l'abandon à mi-chemin.</p>
+  </div>
+
+  <div class="ms"><div class="n">ÉTAPE 1</div><div>
+    <h4>Les fondations, sans aucune IA</h4>
+    <p>Le réseau entre tes trois machines, la chaîne de réveil testée de bout en bout, l'espace disque organisé, une sauvegarde dont tu as vérifié qu'elle se restaure. Puis le schéma du Canon : décider ce qu'est un personnage, un lieu, une faction, et comment ils se relient. Charge à la main un univers que tu connais déjà, sans rien générer.</p>
+    <p class="done">Tu obtiens · une base solide et un monde de test dans lequel tu peux déjà chercher</p>
+  </div></div>
+
+  <div class="ms"><div class="n">ÉTAPE 2</div><div>
+    <h4>Les modèles et la File</h4>
+    <p>Installer les modèles et le mécanisme qui les charge et décharge à la demande. Vérifier surtout qu'ils savent appeler des outils de façon fiable — c'est plus important que leur style à ce stade. Puis construire la File, et la tester en lui envoyant vingt travaux d'affilée alors que le PC est éteint.</p>
+    <p class="done">Tu obtiens · une carte graphique qui devient une ressource partagée fiable au lieu d'un goulot</p>
+  </div></div>
+
+  <div class="ms"><div class="n">ÉTAPE 3</div><div>
+    <h4>Le Canon devient un outil, et le premier agent l'utilise</h4>
+    <p>Exposer le Canon comme serveur d'outils, avec ses règles de refus. Brancher l'Assistant dessus et lui faire produire des fiches de personnages. Pas encore de hiérarchie, pas encore de relecteurs — un seul agent, en boucle, pour découvrir tes vrais besoins.</p>
+    <p class="done">Tu obtiens · le système commence réellement à te servir</p>
+  </div></div>
+
+  <div class="ms"><div class="n">ÉTAPE 4</div><div>
+    <h4>L'image, et la preuve que tout tient ensemble</h4>
+    <p>Installer la génération d'images, figer deux ou trois réglages, en faire une Recette. Le test qui compte : l'agent image doit produire une illustration fidèle à une fiche écrite par l'agent lore, <strong>sans que tu recopies quoi que ce soit</strong>. Puis la boucle des styles de personnage. Enfin, ajouter les sous-agents et les trois relecteurs.</p>
+    <p class="done">Tu obtiens · un monde cohérent en texte et en image, et des personnages devenus réutilisables</p>
+  </div></div>
+
+  <div class="ms"><div class="n">ÉTAPE 5</div><div>
+    <h4>Le Tableau de bord, puis le son, puis la 3D</h4>
+    <p>Le tableau de bord vient volontairement tard : tu ne sais pas quoi afficher tant que tu n'as pas vu le système tourner. Ensuite le son, rapide et gratifiant. Enfin la 3D, la plus longue — et la seule où une étape restera manuelle : le nettoyage d'un maillage destiné à être animé n'est pas automatisable en 2026, aucun outil ne le fait correctement.</p>
+    <p class="done">Tu obtiens · la chaîne complète, du lore à l'objet importé dans Unreal</p>
+  </div></div>
+</section>
+
+<!-- 9 -->
+<section id="regles">
+  <span class="sec-num">09</span>
+  <h2>Les cinq règles à ne jamais casser</h2>
+  <div class="col">
+    <p class="lede">Si tu ne devais retenir que cette section, elle suffirait à éviter les erreurs les plus coûteuses.</p>
+  </div>
+
+  <div class="rule-item">
+    <h4>Un seul Canon, sans exception</h4>
+    <p>Tout ce qui lit ou écrit dans le monde passe par le même serveur, avec les mêmes vérifications. Pas de copie locale, pas d'accès direct « juste pour cette fois ».</p>
+  </div>
+  <div class="rule-item">
+    <h4>Rien ne touche la carte graphique en direct</h4>
+    <p>Tout passe par la File. Une seule charge lourde à la fois, toujours. C'est la règle qui empêche les plantages inexplicables.</p>
+  </div>
+  <div class="rule-item">
+    <h4>Les garanties vivent dans les outils, pas dans les consignes</h4>
+    <p>Une règle écrite dans un prompt est une règle qu'un modèle finira par ignorer. Une règle codée dans le Canon est une règle que personne ne peut contourner.</p>
+  </div>
+  <div class="rule-item">
+    <h4>Celui qui écrit n'est pas celui qui décide</h4>
+    <p>Le modèle sans filtre produit de la prose libre. Un autre, plus petit et plus fiable, en extrait les données structurées. Mélanger les deux rôles casse les appels d'outils — c'est mesuré, pas théorique.</p>
+  </div>
+  <div class="rule-item">
+    <h4>Une IA ne relit jamais son propre travail</h4>
+    <p>Elle se valide presque toujours. Les relecteurs doivent être des instances séparées, avec d'autres consignes et si possible d'autres modèles — et leur passage doit être une étape obligatoire, jamais un choix.</p>
+  </div>
+
+  <div class="col">
+    <div class="callout good">
+      <span class="tag">Et une dernière chose</span>
+      <p>Il sortira un meilleur modèle pendant que tu construis. C'est certain, et c'est sans importance. Ta valeur est dans le Canon, la File, les outils et la boucle de relecture — tout ce qui ne se périme pas. Les modèles se remplacent en éditant un fichier de configuration. Construis-les comme tels, et ignore le bruit.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Plan définitif · La Forge · 30 août 2026</div>
+</footer>
+
+</body></html>

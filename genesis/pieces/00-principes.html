@@ -1,0 +1,413 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Principes de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:56px 0 38px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 16px}
+.crumb b{color:var(--ember);font-weight:600}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:58px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;margin:42px 0 6px;letter-spacing:-.01em}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+
+.famille{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:44px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.inv{display:grid;gap:4px 20px;padding:20px 0;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:820px){.inv{grid-template-columns:40px 1fr}}
+.inv .n{font-family:var(--f-mono);font-size:12px;color:var(--ember);padding-top:5px;font-variant-numeric:tabular-nums}
+.inv .r{font-family:var(--f-display);font-weight:600;font-size:19px;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+.inv dl{margin:0;display:flex;flex-direction:column;gap:7px}
+.inv dt{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:inline}
+.inv dd{margin:0;font-size:16px;color:var(--ink-2);line-height:1.5}
+.inv dd b{color:var(--ink);font-weight:600}
+.inv .pair{display:grid;gap:2px 14px}
+@media(min-width:600px){.inv .pair{grid-template-columns:104px 1fr}}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.tablewrap{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600}
+td.where{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1000px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">00 — Principes & règles</span>
+    <span class="spacer"></span>
+    <span class="pn"><a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9" title="Stack technique">01 →</a></span>
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a class="cur" href="#top"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · pièce <b>00</b> · fondations</p>
+    <h1>Principes &amp; <em>règles de base</em></h1>
+    <p class="standfirst">Seize invariants qui arbitrent toutes les décisions suivantes, le récapitulatif de ce qui est déjà tranché, et la liste nommée de ce qui reste ouvert.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="role">
+  <span class="sec-num">Ce que décide cette pièce</span>
+  <h2>Une constitution, pas une liste de bonnes intentions</h2>
+  <div class="col">
+    <p class="lede">Les vingt pièces qui suivent vont se contredire. C'est normal : chacune optimise pour son propre sujet, et la pièce 11 voudra une exception que la pièce 03 interdit. Ce document est l'arbitre.</p>
+    <p>Un invariant se reconnaît à ceci : <strong>on peut nommer précisément ce qu'il évite, et vérifier mécaniquement s'il est respecté.</strong> « Faire du code propre » n'est pas un invariant. « Aucun agent ne voit plus de dix outils » en est un — on compte.</p>
+    <p>Chacun des seize ci-dessous porte donc deux mentions : <em>ce qu'il évite</em>, qui est la panne concrète qu'il empêche, et <em>comment on vérifie</em>, qui doit être une opération, pas un jugement.</p>
+  </div>
+</section>
+
+<section id="invariants">
+  <span class="sec-num">Les invariants</span>
+  <h2>Seize règles</h2>
+
+  <p class="famille">A · Vérité et cohérence</p>
+
+  <div class="inv"><span class="n">01</span><div>
+    <p class="r">Il n'existe qu'une source de vérité, et c'est le Canon.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Deux versions du monde qui divergent lentement, sans que rien ne le signale, jusqu'au jour où une scène contredit une scène écrite six mois plus tôt.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Aucun composant n'ouvre de connexion directe à la base. <b>Une seule</b> voie d'accès existe, et tout passe par elle — recettes comprises, y compris « juste pour lire », y compris « ce serait plus rapide ».</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">02</span><div>
+    <p class="r">Une garantie vit dans un outil, jamais dans une consigne.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Une règle écrite dans les instructions d'un agent finit toujours par être ignorée — au bout de vingt tours, sous pression de contexte, ou après un changement de modèle.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Pour chaque garantie du système, on doit pouvoir désigner le <b>code qui refuse</b> quand elle est violée. S'il n'y a qu'une phrase dans un prompt, la garantie n'existe pas.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">03</span><div>
+    <p class="r">Un fait n'est jamais écrasé ; sa validité est fermée.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Perdre l'état antérieur du monde. Un roi qui meurt doit rester interrogeable comme vivant avant sa mort, sinon les flashbacks, les préquelles et la vérification de continuité deviennent impossibles.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Le Canon n'expose <b>aucune opération de suppression ni de mise à jour destructive</b> sur un fait. Seulement : ajouter, et fermer une période de validité.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">04</span><div>
+    <p class="r">Tout ce qui est produit est rattaché à une entité du Canon.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Le dossier de six mille images sans nom dont on ne sait plus laquelle correspond à quel personnage — l'échec classique qui transforme une bibliothèque d'assets en décharge.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Aucun travail ne peut être déposé sans identifiant d'entité liée. C'est un champ obligatoire, pas une bonne pratique.</dd></div>
+    </dl>
+  </div></div>
+
+  <p class="famille">B · Séparation des rôles</p>
+
+  <div class="inv"><span class="n">05</span><div>
+    <p class="r">Celui qui écrit n'est pas celui qui décide.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>L'effondrement mesuré du taux d'appel d'outils quand un même modèle doit produire de la prose libre et du JSON contraint dans la même passe. Et le besoin de censurer le modèle qui coordonne.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Le modèle qui produit du texte narratif n'a <b>aucun outil</b> et <b>aucune grammaire</b>. Un second modèle lit sa sortie et en extrait la structure. Deux appels, deux modèles, jamais un seul.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">06</span><div>
+    <p class="r">Une IA ne relit jamais son propre travail.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Le biais d'auto-approbation : un modèle valide presque toujours ce qu'il vient de produire. Le taux d'acceptation passe de 42 % à 85 % quand la relecture est faite par des instances séparées.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Les relecteurs sont des <b>instances distinctes</b>, avec d'autres instructions et si possible d'autres modèles. Leur passage est une étape de recette, jamais une décision d'agent.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">07</span><div>
+    <p class="r">Ce qui doit être reproductible est écrit. Ce qui doit être exploratoire est délégué.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Un pipeline d'assets qui produit un résultat différent à chaque exécution, et à l'inverse un assistant si contraint qu'il ne sert plus à explorer.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Pour chaque enchaînement du système, la question se pose une fois : <b>« doit-il donner le même résultat deux fois ? »</b> Oui → recette écrite. Non → délégation. Pas de troisième cas.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">08</span><div>
+    <p class="r">Un agent qui manipule du visuel doit voir.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Le travail 3D échoue silencieusement : un agent sans retour visuel exécute des opérations valides mais fausses, et rien ne le signale avant l'import dans le moteur.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Toute recette qui modifie une géométrie ou une image inclut une <b>capture relue par un modèle de vision</b> après chaque étape structurante. Pas de capture, pas d'étape suivante.</dd></div>
+    </dl>
+  </div></div>
+
+  <p class="famille">C · Ressources</p>
+
+  <div class="inv"><span class="n">09</span><div>
+    <p class="r">Rien ne touche la carte graphique en direct.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Trois agents qui lancent trois charges de dix gigaoctets sur une carte qui en a douze. Le résultat n'est pas trois fois plus de créations, c'est un dépassement mémoire.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Une seule voie mène aux machines de calcul : la File. Aucun composant n'a d'accès direct à un moteur d'inférence, y compris pour un travail « rapide ».</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">10</span><div>
+    <p class="r">Aucun agent ne voit plus de dix outils.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Mesuré : trente-neuf outils chargés occupent 62 % de la fenêtre d'un modèle local et ramènent l'agent à neuf appels avant saturation. Cloisonné, il en fait seize.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>On compte. Si un rôle en réclame plus de dix, ce n'est pas la règle qu'il faut assouplir, c'est le rôle qui est mal découpé.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">11</span><div>
+    <p class="r">Toute option coûteuse est désactivée par défaut.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Une fiche d'entité qui renvoie 1 200 unités de contexte alors que 300 suffisaient, multiplié par seize appels.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Relations, provenance, historique de validité : tous en <b>faux par défaut</b>. On les demande explicitement, on ne les subit pas.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">12</span><div>
+    <p class="r">Un fil de sous-agent est jetable.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>L'accumulation des résultats d'outils qui sature la fenêtre — le vrai plafond du système, bien avant les définitions d'outils.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Un sous-agent reçoit une tâche, fait ses appels, rend un <b>résultat compact</b>, et son historique est abandonné. L'orchestrateur ne conserve jamais les explorations, seulement les conclusions.</dd></div>
+    </dl>
+  </div></div>
+
+  <p class="famille">D · Souveraineté</p>
+
+  <div class="inv"><span class="n">13</span><div>
+    <p class="r">Rien de propriétaire ne part vers un service qui s'entraîne dessus.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Que ton univers original serve à entraîner un modèle tiers. Les tiers gratuits les plus rapides financent précisément leur gratuité comme ça.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Chaque fournisseur distant est classé <b>avant</b> d'être branché : politique de non-entraînement explicite, ou usage limité au contenu non propriétaire. La classification est écrite dans la configuration, pas dans une note.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">14</span><div>
+    <p class="r">Les modèles sont remplaçables. Le Canon, les outils et les recettes ne le sont pas.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Bâtir de la valeur sur ce qui se périme en six mois. Il sortira un meilleur modèle pendant la construction — c'est certain et sans importance.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Changer de modèle pour un rôle donné doit être une <b>modification de configuration</b>, sans toucher au code. Si ce n'est pas le cas, la couche de routage est mal faite.</dd></div>
+    </dl>
+  </div></div>
+
+  <p class="famille">E · Méthode</p>
+
+  <div class="inv"><span class="n">15</span><div>
+    <p class="r">On mesure avant d'optimiser, et on remesure à chaque ajout.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>Optimiser le mauvais poste. L'exemple est déjà arrivé dans ce projet : les définitions d'outils semblaient être le problème ; ce sont les résultats d'appels.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Un script de mesure existe et tourne en une seconde. Toute affirmation chiffrée du dossier doit pouvoir être reproduite par une commande.</dd></div>
+    </dl>
+  </div></div>
+
+  <div class="inv"><span class="n">16</span><div>
+    <p class="r">Une pièce du dossier ferme ses points, ou les nomme et les affecte.</p>
+    <dl>
+      <div class="pair"><dt>Ce qu'il évite</dt><dd>La dette silencieuse : un choix non fait qui se découvre au moment de coder, quand il coûte dix fois plus cher.</dd></div>
+      <div class="pair"><dt>Vérification</dt><dd>Chaque pièce se termine par une section <b>« points laissés ouverts »</b>, chacun affecté à une pièce ultérieure nommée. Une section vide est un résultat valide ; une section absente ne l'est pas.</dd></div>
+    </dl>
+  </div></div>
+</section>
+
+<section id="tranche">
+  <span class="sec-num">Acquis</span>
+  <h2>Ce qui est déjà tranché</h2>
+  <div class="col">
+    <p class="lede">Ces décisions sont fermées. Les pièces suivantes s'appuient dessus sans les rediscuter — sauf amendement explicite selon la procédure en fin de page.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Décision</th><th>Détail</th><th>Sera précisé en</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Forme générale</td><td>Un ensemble d'outils partagés, deux façons de les piloter : recettes écrites et assistant délégant. Une seule couche de données.</td><td class="where">pièce 02</td></tr>
+        <tr><td class="name">Le Canon est un serveur</td><td>Accessible par un protocole standard, donc joignable depuis d'autres outils que le système lui-même. Non négociable.</td><td class="where">pièces 03, 05</td></tr>
+        <tr><td class="name">Orchestrateur de départ</td><td>Hermes Agent — déjà en possession, licence permissive, sous-agents avec routage de modèle par agent, protocole d'outils natif. Explicitement remplaçable.</td><td class="where">pièce 09</td></tr>
+        <tr><td class="name">Cible moteur de jeu</td><td>Unreal Engine, pas Godot. Format d'échange préféré : glTF.</td><td class="where">pièces 12, 15</td></tr>
+        <tr><td class="name">Modèles non censurés</td><td>Font partie du système, pour le rôle rédaction uniquement. L'orchestrateur et les extracteurs restent sur des modèles alignés.</td><td class="where">pièce 14</td></tr>
+        <tr><td class="name">Quatre étages de calcul</td><td>VPS permanent, PC avec carte graphique intermittent, serveur maison intermittent, cloud d'appoint. Aucun poids de modèle sur le VPS.</td><td class="where">pièce 16</td></tr>
+        <tr><td class="name">Sérialisation du travail lourd</td><td>Une file de travaux, un seul calcul lourd à la fois, réveil des machines à la demande.</td><td class="where">pièce 04</td></tr>
+        <tr><td class="name">Boucle d'audit</td><td>Relecteurs séparés obligatoires sur tout fait entrant au Canon.</td><td class="where">pièces 08, 10</td></tr>
+        <tr><td class="name">Le rendu humain</td><td>Trois surfaces : un codex généré en lecture, une vue graphe, un rapport de session. Le codex est généré, jamais source.</td><td class="where">pièce 18</td></tr>
+        <tr><td class="name">Réutilisables par entraînement</td><td>Le même motif s'applique aux personnages (styles d'image) et aux factions ou lieux (thèmes musicaux) : l'identifiant vit dans le Canon.</td><td class="where">pièces 11, 13</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="ouverts">
+  <span class="sec-num">Dette</span>
+  <h2>Points laissés ouverts par cette pièce</h2>
+  <div class="col">
+    <p class="lede">Quatre questions que les principes soulèvent sans les résoudre, chacune affectée.</p>
+    <ol>
+      <li><strong>Où vit exactement la règle « une seule source de vérité ».</strong> L'invariant 01 dit qu'une seule voie d'accès existe, mais il ne dit pas si c'est un serveur réseau ou une bibliothèque partagée en processus. Le compromis se joue entre la joignabilité depuis l'extérieur et la latence des recettes. → <strong>pièce 03</strong>.</li>
+      <li><strong>Ce qu'est « un résultat compact » (invariant 12).</strong> Il faut un plafond chiffré, pas une intention. → <strong>pièce 08</strong>, avec recalcul en <strong>pièce 19</strong>.</li>
+      <li><strong>Le seuil de dix outils est-il par agent ou par rôle.</strong> Un même rôle instancié deux fois avec des permissions différentes n'est pas traité par l'invariant 10. → <strong>pièce 08</strong>.</li>
+      <li><strong>Le classement des fournisseurs distants (invariant 13)</strong> doit devenir une liste nommée avec, pour chacun, ce qu'on l'autorise à voir. → <strong>pièce 14</strong>.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="amender">
+  <span class="sec-num">Procédure</span>
+  <h2>Comment on amende une règle</h2>
+  <div class="col">
+    <p class="lede">Les invariants vont gêner. C'est leur fonction — un invariant qui n'a jamais bloqué personne ne protège de rien.</p>
+    <p>Quand une pièce ultérieure se heurte à un invariant, l'ordre des réponses est le suivant, et il n'est pas négociable :</p>
+    <ol>
+      <li><strong>Changer la conception.</strong> Neuf fois sur dix, l'invariant a raison et c'est le découpage qui est mauvais. Un rôle qui réclame quinze outils est un rôle qui en cache deux.</li>
+      <li><strong>Constater que l'invariant est mal formulé</strong> et le reformuler — sans en changer l'intention. Cela arrive quand une règle a été écrite trop tôt, avec un cas d'usage en tête et un seul.</li>
+      <li><strong>Amender pour de bon</strong>, en dernier recours. L'amendement est écrit ici, daté, avec le cas qui l'a provoqué et ce qu'on accepte de perdre. Un invariant amendé sans que la perte soit nommée est un invariant abandonné.</li>
+    </ol>
+
+    <div class="callout crit">
+      <span class="tag">Ce qui n'est jamais un motif d'amendement</span>
+      <p>« Ce serait plus rapide à coder », « on le fera proprement plus tard », « juste pour ce cas ». Les trois formulations qui produisent exactement la panne que l'invariant existait pour empêcher. Si le raccourci est vraiment nécessaire, il devient un amendement écrit — pas une exception tacite.</p>
+    </div>
+
+    <h3>Registre des amendements</h3>
+    <p style="color:var(--ink-3)">Aucun à ce jour.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · pièce 00 · posée le 30 août 2026 · renvois renumérotés le 2 septembre</div>
+</footer>
+
+</body></html>

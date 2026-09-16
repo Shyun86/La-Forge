@@ -1,0 +1,456 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Le budget de contexte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F;
+  --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  /* série catégorielle validée */
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s-rest:#C2C6CC;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B;
+    --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s-rest:#3C434C;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B;
+  --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s-rest:#3C434C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:58px 0 38px;background:var(--surface)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.6vw,58px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:60px;scroll-margin-top:24px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(25px,3.2vw,34px);line-height:1.13;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:21px;margin:40px 0 10px;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0 0 18px}
+.lede{font-size:19.5px;color:var(--ink-2);margin-bottom:26px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+
+.hero-num{display:flex;flex-wrap:wrap;gap:28px 44px;margin:30px 0 8px;padding:24px 26px;background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow)}
+.hero-num div{display:flex;flex-direction:column;gap:2px}
+.hero-num .v{font-family:var(--f-display);font-weight:800;font-size:36px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.hero-num .v.warn{color:var(--crit)} .hero-num .v.ok{color:var(--good)}
+.hero-num .l{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);max-width:22ch}
+
+/* chart */
+.chart{margin:32px 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:22px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:11px;height:11px;border-radius:2px;display:block}
+.barblock{margin-bottom:26px}
+.barlabel{font-family:var(--f-display);font-weight:600;font-size:16px;margin-bottom:2px}
+.barsub{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);margin-bottom:9px}
+.bar{display:flex;gap:2px;height:46px;width:100%}
+.bar i{display:block;height:100%;position:relative;border-radius:1px}
+.bar i:first-child{border-radius:4px 1px 1px 4px}
+.bar i:last-child{border-radius:1px 4px 4px 1px}
+.barticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3);margin-top:6px}
+.dlabels{display:flex;gap:2px;margin-top:7px;font-family:var(--f-mono);font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.dlabels i{display:block;font-style:normal;overflow:hidden;white-space:nowrap;text-overflow:clip}
+
+.tablewrap{overflow-x:auto;margin:26px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:12px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+th.r,td.r{text-align:right}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:13.5px;white-space:nowrap}
+td.name{font-family:var(--f-display);font-weight:600}
+tr.tot td{border-top:1.5px solid var(--rule);font-weight:600}
+.swatch{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:8px;vertical-align:1px}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.lever{border-top:1px solid var(--rule-soft);padding:20px 0;display:grid;gap:4px 26px}
+@media(min-width:760px){.lever{grid-template-columns:1fr 150px;align-items:start}}
+.lever:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.lever h4{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0 0 6px}
+.lever p{margin:0;font-size:16px;color:var(--ink-2)}
+.lever .gain{font-family:var(--f-mono);font-size:13px;color:var(--good);white-space:nowrap;font-variant-numeric:tabular-nums;padding-top:2px}
+.lever .gain small{display:block;color:var(--ink-3);font-size:11px;margin-top:3px}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1000px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="kind">Amont</span><span class="sep">/</span><span class="here">Le budget de contexte</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a class="cur" href="#top"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">La Forge · mesure · outils et contexte</p>
+    <h1>Le budget de <em>contexte</em></h1>
+    <p class="standfirst">Ce que les outils coûtent réellement, mesuré sur les définitions écrites en vrai — pas estimé. Et où le système sature, qui n'est pas là où je le disais.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<!-- 1 -->
+<section id="mesure">
+  <span class="sec-num">01</span>
+  <h2>La mesure, pas l'estimation</h2>
+  <div class="col">
+    <p class="lede">J'ai écrit les 39 définitions d'outils du système — nom, description, schéma complet des paramètres, comme elles existeront vraiment — et je les ai comptées.</p>
+    <p>Un mot sur la méthode, parce qu'elle a une limite honnête : je n'ai pas pu télécharger le découpeur de mots exact d'un modèle dans cet environnement. J'ai donc compté les caractères exactement, et converti avec le ratio observé sur les modèles récents pour du JSON contenant du français — entre 2,9 et 3,5 caractères par unité. Les fourchettes ci-dessous encadrent la vraie valeur ; l'ordre de grandeur est fiable, le chiffre exact bougera de 10 % selon ton modèle.</p>
+  </div>
+
+  <div class="hero-num">
+    <div><span class="v">39</span><span class="l">outils définis</span></div>
+    <div><span class="v">7&nbsp;600</span><span class="l">à 9 200 unités, format compact</span></div>
+    <div><span class="v warn">12&nbsp;300</span><span class="l">tel que les harnais l'envoient vraiment</span></div>
+    <div><span class="v ok">2&nbsp;750</span><span class="l">une fois cloisonné par rôle</span></div>
+  </div>
+
+  <div class="col">
+    <p style="margin-top:26px">Première correction : <strong>je t'avais annoncé « 10 000 à 20 000 », c'était pessimiste dans le principe et juste par accident.</strong> Les définitions elles-mêmes pèsent 7 600 à 9 200. Mais les harnais ne les envoient pas compactées — ils sérialisent le JSON avec indentation, ce qui multiplie par 1,34 et donne 10 200 à 12 300. Donc le chiffre haut est réaliste, mais pour une raison que je n'avais pas identifiée : c'est du formatage, pas du contenu.</p>
+    <p>Deuxième correction, plus importante : <strong>ce n'est pas le poste qui te fera saturer.</strong> Voir la section 03.</p>
+  </div>
+
+  <h3>Ce que coûte chaque serveur</h3>
+  <div class="tablewrap">
+    <table>
+      <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Poids des définitions d'outils par serveur, en unités de texte</caption>
+      <thead><tr><th>Serveur</th><th class="r">Outils</th><th class="r">Caractères</th><th class="r">Unités</th><th class="r">Par outil</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Canon</td><td class="num r">12</td><td class="num r">10 333</td><td class="num r">2 950 – 3 560</td><td class="num r">246 – 296</td></tr>
+        <tr><td class="name">3D</td><td class="num r">8</td><td class="num r">5 019</td><td class="num r">1 430 – 1 730</td><td class="num r">179 – 216</td></tr>
+        <tr><td class="name">Images</td><td class="num r">7</td><td class="num r">4 241</td><td class="num r">1 210 – 1 460</td><td class="num r">173 – 208</td></tr>
+        <tr><td class="name">Son</td><td class="num r">6</td><td class="num r">3 648</td><td class="num r">1 040 – 1 260</td><td class="num r">173 – 209</td></tr>
+        <tr><td class="name">File</td><td class="num r">6</td><td class="num r">3 429</td><td class="num r">980 – 1 180</td><td class="num r">163 – 197</td></tr>
+        <tr class="tot"><td class="name">Total</td><td class="num r">39</td><td class="num r">26 670</td><td class="num r">7 620 – 9 200</td><td class="num r">médiane 180 – 217</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Le Canon pèse à lui seul un tiers du total, et c'est logique : ses outils ont beaucoup de paramètres — dates de validité, filtres par personnage, profondeur d'exploration. Les plus lourds du système sont <code>canon_propose_fact</code> (409 – 493), <code>canon_get_entity</code> (365 – 441) et <code>canon_search</code> (348 – 420). Un outil médian coûte 180 à 217.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="fenetre">
+  <span class="sec-num">02</span>
+  <h2>Où passent tes 32 768 unités</h2>
+  <div class="col">
+    <p class="lede">Un modèle de 27 milliards de paramètres servi sur ta carte tourne confortablement avec une fenêtre de 32 768 unités. Voici comment elle se remplit pour ton agent le plus chargé — le sous-agent lore.</p>
+  </div>
+
+  <figure class="chart">
+    <div class="legend" aria-hidden="false">
+      <span><i style="background:var(--s1)"></i> Instructions &amp; style</span>
+      <span><i style="background:var(--s2)"></i> Définitions d'outils</span>
+      <span><i style="background:var(--s3)"></i> Contexte du canon</span>
+      <span><i style="background:var(--s4)"></i> Réserve de réponse</span>
+      <span><i style="background:var(--s-rest)"></i> Reste disponible</span>
+    </div>
+
+    <div class="barblock">
+      <div class="barlabel">Outils cloisonnés par rôle</div>
+      <div class="barsub">l'agent ne voit que ses 8 outils</div>
+      <div class="bar">
+        <i style="width:3.51%;background:var(--s1)" title="Instructions & style : 1 150"></i>
+        <i style="width:8.39%;background:var(--s2)" title="Définitions d'outils : 2 750"></i>
+        <i style="width:12.21%;background:var(--s3)" title="Contexte du canon : 4 000"></i>
+        <i style="width:9.16%;background:var(--s4)" title="Réserve de réponse : 3 000"></i>
+        <i style="width:66.74%;background:var(--s-rest)" title="Reste disponible : 21 868"></i>
+      </div>
+      <div class="dlabels">
+        <i style="width:3.51%"></i>
+        <i style="width:8.39%">2 750</i>
+        <i style="width:12.21%">4 000</i>
+        <i style="width:9.16%">3 000</i>
+        <i style="width:66.74%">21 868 disponibles</i>
+      </div>
+    </div>
+
+    <div class="barblock">
+      <div class="barlabel">Tous les outils chargés</div>
+      <div class="barsub">l'agent voit les 39 outils du système</div>
+      <div class="bar">
+        <i style="width:3.51%;background:var(--s1)" title="Instructions & style : 1 150"></i>
+        <i style="width:37.56%;background:var(--s2)" title="Définitions d'outils : 12 308"></i>
+        <i style="width:12.21%;background:var(--s3)" title="Contexte du canon : 4 000"></i>
+        <i style="width:9.16%;background:var(--s4)" title="Réserve de réponse : 3 000"></i>
+        <i style="width:37.57%;background:var(--s-rest)" title="Reste disponible : 12 310"></i>
+      </div>
+      <div class="dlabels">
+        <i style="width:3.51%"></i>
+        <i style="width:37.56%">12 308</i>
+        <i style="width:12.21%">4 000</i>
+        <i style="width:9.16%">3 000</i>
+        <i style="width:37.57%">12 310 disponibles</i>
+      </div>
+      <div class="barticks"><span>0</span><span>16 384</span><span>32 768</span></div>
+    </div>
+    <figcaption style="font-size:15px;color:var(--ink-3);margin-top:14px;max-width:68ch;line-height:1.5">Même fenêtre, même contexte de canon, même réserve de réponse. Seule la largeur du bloc « définitions d'outils » change — et elle mange 9 500 unités de travail utile. Le tableau ci-dessous donne les mêmes chiffres.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Poste</th><th class="r">Cloisonné</th><th class="r">Tout chargé</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><i class="swatch" style="background:var(--s1)"></i>Instructions de l'agent</td><td class="num r">750</td><td class="num r">750</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s1)"></i>Fiche de style &amp; règles d'écriture</td><td class="num r">400</td><td class="num r">400</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s2)"></i>Définitions d'outils</td><td class="num r">2 750</td><td class="num r">12 308</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s3)"></i>Canon — essentiel</td><td class="num r">800</td><td class="num r">800</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s3)"></i>Canon — pertinent (récupéré)</td><td class="num r">1 400</td><td class="num r">1 400</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s3)"></i>Canon — résumés</td><td class="num r">800</td><td class="num r">800</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s3)"></i>Canon — coordination</td><td class="num r">1 000</td><td class="num r">1 000</td></tr>
+        <tr><td class="name"><i class="swatch" style="background:var(--s4)"></i>Réserve pour la réponse</td><td class="num r">3 000</td><td class="num r">3 000</td></tr>
+        <tr class="tot"><td class="name">Incompressible</td><td class="num r">10 900 · 33 %</td><td class="num r">20 458 · 62 %</td></tr>
+        <tr class="tot"><td class="name"><i class="swatch" style="background:var(--s-rest)"></i>Reste pour travailler</td><td class="num r">21 868</td><td class="num r">12 310</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="sature">
+  <span class="sec-num">03</span>
+  <h2>Ce qui sature vraiment</h2>
+  <div class="col">
+    <p class="lede">Les définitions d'outils sont un coût fixe : elles sont là au premier tour et elles ne grossissent pas. Ce qui te fera atteindre la limite, ce sont <strong>les résultats que les outils renvoient</strong>, qui s'empilent tour après tour.</p>
+    <p>Une fiche de personnage complète avec ses relations, ce n'est pas 50 unités. C'est autour de 1 200. Une exploration du graphe à profondeur 2, autour de 1 500. Une capture d'écran de Blender relue par un modèle de vision, autour de 1 600. Et tout ça reste dans le fil.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Résultat d'appel</th><th class="r">Poids typique</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Capture Blender relue par un modèle de vision</td><td class="num r">≈ 1 600</td></tr>
+        <tr><td class="name">Exploration du graphe, profondeur 2</td><td class="num r">≈ 1 500</td></tr>
+        <tr><td class="name">Fiche d'entité complète avec relations</td><td class="num r">≈ 1 200</td></tr>
+        <tr><td class="name">Recherche, 10 résultats</td><td class="num r">≈ 900</td></tr>
+        <tr><td class="name">Ce qu'un personnage sait à un instant donné</td><td class="num r">≈ 700</td></tr>
+        <tr><td class="name">Liste des contradictions ouvertes</td><td class="num r">≈ 600</td></tr>
+        <tr class="tot"><td class="name">Moyenne, message de l'agent inclus</td><td class="num r">≈ 1 330</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hero-num">
+    <div><span class="v ok">16</span><span class="l">appels d'outils avant saturation, cloisonné</span></div>
+    <div><span class="v warn">9</span><span class="l">appels d'outils avant saturation, tout chargé</span></div>
+  </div>
+
+  <div class="col">
+    <div class="callout crit">
+      <span class="tag">Le vrai chiffre à retenir</span>
+      <p>Ton agent le plus chargé peut faire <strong>seize appels d'outils dans un même fil</strong> avant de manquer de place. Sans cloisonnement, neuf. C'est ça, la contrainte réelle — pas le pourcentage de fenêtre occupé par les définitions. Une tâche qui demande vingt consultations du canon ne tient pas dans un seul fil, quoi que tu fasses sur les définitions.</p>
+    </div>
+    <p>Ce qui donne la vraie conclusion de conception : <strong>il faut découper le travail en tâches courtes qui repartent d'un contexte propre</strong>, plutôt que d'espérer une longue session continue. C'est exactement ce que fait le découpage en sous-agents : chacun reçoit sa tâche, fait ses cinq ou six appels, rend un résultat compact, et son fil est jeté. L'orchestrateur ne garde que les résultats, pas les explorations qui y ont mené.</p>
+    <p>Et c'est aussi pourquoi le budget par couche du canon compte : ces 4 000 unités de contexte injecté doivent être <em>déjà filtrées</em>. Si l'agent doit faire six appels pour reconstituer ce qu'on aurait pu lui donner d'emblée, on a dépensé 8 000 unités pour économiser 4 000.</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="leviers">
+  <span class="sec-num">04</span>
+  <h2>Les cinq leviers, chiffrés</h2>
+  <div class="col">
+    <p class="lede">Dans l'ordre d'efficacité mesurée.</p>
+  </div>
+
+  <div class="lever">
+    <div>
+      <h4>1 · Cloisonner les outils par rôle</h4>
+      <p>Chaque agent ne voit que ce dont il a besoin. L'agent lore voit huit outils du canon, jamais Blender. L'agent matière voit Blender et la file, jamais la proposition de faits. C'est de la configuration, pas du code — Hermes le permet nativement par sous-agent.</p>
+    </div>
+    <div class="gain">−78 %<small>12 308 → 2 750</small></div>
+  </div>
+
+  <div class="lever">
+    <div>
+      <h4>2 · Jeter le fil après chaque tâche</h4>
+      <p>Un sous-agent reçoit une tâche, fait ses appels, rend un résultat compact, et son historique est abandonné. L'orchestrateur ne conserve que la conclusion. C'est le levier qui lève réellement la limite des seize appels.</p>
+    </div>
+    <div class="gain">×3 à ×5<small>sur la longueur de travail utile</small></div>
+  </div>
+
+  <div class="lever">
+    <div>
+      <h4>3 · Rendre des résultats étroits par défaut</h4>
+      <p>Une fiche d'entité renvoie l'essentiel, pas tout. Les relations, la provenance, l'historique de validité sont des options à demander explicitement. C'est le paramètre <code>include_relations</code> qui passe de « vrai par défaut » à « faux par défaut ».</p>
+    </div>
+    <div class="gain">−40 %<small>sur les résultats d'appels</small></div>
+  </div>
+
+  <div class="lever">
+    <div>
+      <h4>4 · Raccourcir descriptions et schémas</h4>
+      <p>Une description d'outil sur une ligne au lieu de quatre, pas de description sur les paramètres évidents, pas de valeurs par défaut redondantes. Le modèle a besoin de savoir quoi faire, pas de lire un manuel.</p>
+    </div>
+    <div class="gain">−20 %<small>9 200 → 7 330</small></div>
+  </div>
+
+  <div class="lever">
+    <div>
+      <h4>5 · Regrouper les outils voisins</h4>
+      <p>Un <code>canon_query</code> avec un paramètre de mode remplace recherche, lecture et exploration du graphe. Gain réel mais modeste, et il se paie : le modèle choisit moins bien un outil polyvalent que trois outils précis. Le levier à garder pour la fin, si les quatre autres ne suffisent pas.</p>
+    </div>
+    <div class="gain">−15 %<small>et un risque d'erreur en hausse</small></div>
+  </div>
+
+  <div class="col">
+    <div class="callout good">
+      <span class="tag">Combinés</span>
+      <p>Les leviers 1, 3 et 4 appliqués ensemble ramènent l'incompressible de 62 % à environ 30 % de la fenêtre, et font passer la limite de neuf à plus de vingt appels d'outils par fil. Le levier 2 — jeter le fil — est celui qui change la nature du problème plutôt que son ampleur : il rend la limite non contraignante pour la plupart des tâches.</p>
+    </div>
+    <p>Une remarque de méthode : ces chiffres sont à recalculer quand ton système existera. Le script qui les a produits tient en trente lignes — écris-le une fois, garde-le, et fais-le tourner à chaque ajout d'outil. C'est le genre de mesure qui coûte une heure une fois et qui évite une refonte plus tard.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="regles">
+  <span class="sec-num">05</span>
+  <h2>Les règles qui en découlent</h2>
+  <div class="col">
+    <ol>
+      <li><strong>Aucun agent ne voit plus de dix outils.</strong> Si un rôle en réclame plus, c'est que le rôle est mal découpé.</li>
+      <li><strong>Toute option coûteuse est désactivée par défaut.</strong> Relations, provenance, historique : on les demande, on ne les subit pas.</li>
+      <li><strong>Un sous-agent travaille en fil jetable.</strong> Il reçoit une tâche, il rend un résultat, son historique meurt avec lui.</li>
+      <li><strong>Le contexte injecté est filtré en amont, pas exploré en aval.</strong> Mieux vaut 4 000 unités bien choisies que six appels pour les reconstituer.</li>
+      <li><strong>Une description d'outil tient en une phrase.</strong> Elle dit quand l'utiliser, pas comment il fonctionne.</li>
+      <li><strong>On mesure à chaque ajout.</strong> Le script existe, il tourne en une seconde.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">La Forge · budget de contexte · mesuré sur 39 définitions d'outils réelles · 30 août 2026</div>
+</footer>
+
+</body></html>

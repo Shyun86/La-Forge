@@ -1,0 +1,858 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Le Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:56px 0 38px;background:var(--surface)}
+.crumb{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.crumb b{color:var(--ember);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--good);border:1px solid var(--good);
+  padding:4px 10px;border-radius:4px;margin:0 0 20px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:60ch}
+section{padding-top:58px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;margin:40px 0 8px;letter-spacing:-.01em;text-wrap:balance}
+h4{font-family:var(--f-display);font-weight:600;font-size:16.5px;margin:26px 0 6px}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.tablewrap{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+td{padding:12px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.name{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+td.v{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+tr.grp td{background:var(--surface-2);font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);padding:8px 14px;font-weight:600}
+
+.sev{display:inline-block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.s-refus{color:var(--crit)} .s-signal{color:var(--ember)} .s-struct{color:var(--good)}
+
+.etage{border:1px solid var(--rule);border-left:3px solid var(--ember);border-radius:0 5px 5px 0;
+  background:var(--surface);padding:20px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.etage .lvl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:6px}
+.etage h4{margin:0 0 8px;font-size:18px}
+.etage p{font-size:16px;color:var(--ink-2);margin:0 0 12px}
+.etage p:last-child{margin-bottom:0}
+.etage.e1{border-left-color:var(--good)} .etage.e1 .lvl{color:var(--good)}
+.etage.e2{border-left-color:var(--crit)} .etage.e2 .lvl{color:var(--crit)}
+
+pre{font-family:var(--f-mono);font-size:12.5px;line-height:1.6;background:var(--surface);border:1px solid var(--rule);
+  border-radius:5px;padding:16px 18px;overflow-x:auto;color:var(--ink-2);margin:20px 0}
+pre b{color:var(--ember);font-weight:600}
+pre i{color:var(--ink-3);font-style:normal}
+
+.outil{display:grid;gap:3px 18px;padding:14px 0;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:780px){.outil{grid-template-columns:230px 1fr}}
+.outil .n{font-family:var(--f-mono);font-size:12.5px;color:var(--ember);font-weight:600;padding-top:2px}
+.outil p{margin:0;font-size:15.5px;color:var(--ink-2);line-height:1.5}
+
+.openq{border-top:1px solid var(--rule-soft);padding:18px 0}
+.openq:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.openq h4{margin:0 0 5px;font-size:17px}
+.openq p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.openq .to{font-family:var(--f-mono);font-size:11.5px;color:var(--ember)}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1040px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">03 — Le Canon</span>
+    <span class="spacer"></span>
+    <span class="pn"><a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3" title="Architecture">← 02</a><a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0" title="La File des travaux">04 →</a></span>
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a class="cur" href="#top"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="crumb">Dossier La Forge · pièce <b>03</b> · le socle</p>
+    <p class="statusbadge">● Pièce fermée</p>
+    <h1>Le <em>Canon</em></h1>
+    <p class="standfirst">La mémoire du monde : ce qui existe, ce qui est vrai, depuis quand, qui le sait, et ce que le système refuse par rapport à ce qu'il se contente de signaler.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="role">
+  <span class="sec-num">Ce que décide cette pièce</span>
+  <h2>La pièce la plus déterminante du dossier</h2>
+  <div class="col">
+    <p class="lede">Tout le reste du système lit le Canon ou écrit dedans. Une erreur ici se paie partout, et longtemps : c'est la seule pièce dont les décisions sont pratiquement irréversibles une fois qu'il y a des données.</p>
+    <p>Six choses sont fixées ici :</p>
+    <ol>
+      <li><strong>Le modèle</strong> — quatre tables, et la règle qui dit ce qui va dans laquelle.</li>
+      <li><strong>Les types d'entités</strong> — une liste fermée, avec la procédure pour en ajouter un.</li>
+      <li><strong>Les deux temps</strong> — quand un fait est vrai, et quand on l'a écrit.</li>
+      <li><strong>Qui sait quoi</strong> — la couche de croyances, facultative par fait, et le lecteur comme porteur.</li>
+      <li><strong>Où passe la ligne du refus</strong> — les trois étages, et pourquoi presque rien n'est à l'étage haut.</li>
+      <li><strong>Les outils exposés</strong> — deux profils, dix outils au plus chacun.</li>
+    </ol>
+
+    <div class="callout crit">
+      <span class="tag">Ce qui est délibérément absent</span>
+      <p>Les <strong>branches</strong> — univers alternatifs, versions « et si » — ne sont pas dans cette pièce, par décision. Le coût est nommé et assumé : les ajouter plus tard demandera une migration, parce qu'une branche est une colonne de plus sur presque toutes les lignes. Le pari est qu'un univers unique et cohérent vaut mieux qu'un mécanisme de variantes jamais utilisé — et que si le besoin apparaît, il apparaîtra avec un cas d'usage précis qui dira quelle forme lui donner. C'est un point ouvert nommé, pas un oubli.</p>
+    </div>
+  </div>
+</section>
+
+<section id="modele">
+  <span class="sec-num">01</span>
+  <h2>Le modèle</h2>
+  <div class="col">
+    <p class="lede">Quatre tables. La difficulté n'est pas de les lister, c'est de savoir ce qui va dans laquelle — et une seule règle suffit.</p>
+  </div>
+
+<!--DGCSS-->
+<style id="dgcss">
+.dg{margin:26px 0}
+.dg svg{display:block;width:100%;height:auto;color:var(--ink)}
+.dg-accent{stroke:var(--ember)}
+.dg-accent-t{fill:var(--ember)}
+.dg-crit{stroke:var(--crit)}
+.dg-crit-t{fill:var(--crit)}
+.dg figcaption{font-size:14.5px;color:var(--ink-3);line-height:1.5;margin-top:14px;
+  border-left:2px solid var(--rule);padding-left:14px;max-width:70ch}
+.dg-scroll{overflow-x:auto}
+.dg-scroll>svg{min-width:680px}
+</style>
+<!--/DGCSS-->
+
+<!--SCHEMA:canon-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 560" role="img" aria-label="Le modèle du Canon : quatre tables. Une entité porte un identifiant et un type pris dans une liste fermée. Un fait porte sur une entité et a deux périodes, celle du monde et celle de l'écriture, plus un statut candidat ou validé. Une relation lie deux entités et porte aussi une validité. Une croyance lie un porteur — un personnage ou le lecteur — à un fait, avec un statut et sa propre validité.">
+<defs>
+  <marker id="cna1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="cna2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <!-- relation : lien par le haut -->
+  <polyline points="160,72 160,32 810,32 810,72" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#cna1)"/>
+  <text x="485" y="26" text-anchor="middle" font-size="10.5" opacity="0.65" font-family="JetBrains Mono, monospace">source et cible</text>
+
+  <!-- ENTITÉ -->
+  <rect x="40" y="72" width="240" height="186" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="56" y="98" font-size="14" font-weight="600" class="dg-accent-t">ENTITÉ</text>
+  <text x="264" y="98" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">ce qui existe</text>
+  <line x1="56" y1="108" x2="264" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="56" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">identifiant</text>
+  <text x="56" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">type</text>
+  <text x="130" y="152" font-size="10" opacity="0.55">liste fermée</text>
+  <text x="56" y="174" font-size="11.5" font-family="JetBrains Mono, monospace">nom</text>
+  <text x="56" y="196" font-size="11.5" font-family="JetBrains Mono, monospace">autres noms</text>
+  <text x="56" y="222" font-size="10" opacity="0.55">aucun champ libre :</text>
+  <text x="56" y="238" font-size="10" opacity="0.55">tout le reste est un fait</text>
+
+  <!-- FAIT -->
+  <rect x="360" y="72" width="280" height="228" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="376" y="98" font-size="14" font-weight="600" class="dg-accent-t">FAIT</text>
+  <text x="624" y="98" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">ce qui est vrai</text>
+  <line x1="376" y1="108" x2="624" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="376" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">sujet</text>
+  <text x="450" y="130" font-size="10" opacity="0.55">une entité</text>
+  <text x="376" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">attribut · valeur</text>
+  <text x="376" y="180" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="470" y="180" font-size="10" opacity="0.55">temps du monde</text>
+  <text x="376" y="202" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">écrit le</text>
+  <text x="470" y="202" font-size="10" opacity="0.55">temps d'écriture</text>
+  <text x="376" y="230" font-size="11.5" font-family="JetBrains Mono, monospace">statut</text>
+  <text x="450" y="230" font-size="10" opacity="0.55">candidat ou validé</text>
+  <text x="376" y="252" font-size="11.5" font-family="JetBrains Mono, monospace">provenance</text>
+  <text x="376" y="280" font-size="10" opacity="0.55">jamais écrasé — on ferme sa validité</text>
+
+  <line x1="286" y1="130" x2="354" y2="130" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="320" y="122" text-anchor="middle" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">sujet</text>
+
+  <!-- RELATION -->
+  <rect x="700" y="72" width="220" height="186" rx="6" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="716" y="98" font-size="14" font-weight="600" class="dg-accent-t">RELATION</text>
+  <line x1="716" y1="108" x2="904" y2="108" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="716" y="130" font-size="11.5" font-family="JetBrains Mono, monospace">source · cible</text>
+  <text x="716" y="152" font-size="11.5" font-family="JetBrains Mono, monospace">type</text>
+  <text x="716" y="180" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="716" y="208" font-size="10" opacity="0.55">une alliance a un début</text>
+  <text x="716" y="224" font-size="10" opacity="0.55">et souvent une fin</text>
+
+  <!-- CROYANCE -->
+  <line x1="500" y1="300" x2="500" y2="356" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="510" y="332" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">porte sur</text>
+
+  <polyline points="160,258 160,420 354,420" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#cna1)"/>
+  <text x="170" y="412" font-size="10" opacity="0.65" font-family="JetBrains Mono, monospace">porteur</text>
+
+  <rect x="360" y="360" width="280" height="164" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="376" y="386" font-size="14" font-weight="600">CROYANCE</text>
+  <text x="624" y="386" text-anchor="end" font-size="9.5" opacity="0.5" font-family="JetBrains Mono, monospace">facultatif</text>
+  <line x1="376" y1="396" x2="624" y2="396" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="376" y="418" font-size="11.5" font-family="JetBrains Mono, monospace">porteur · fait</text>
+  <text x="376" y="440" font-size="11.5" font-family="JetBrains Mono, monospace">statut</text>
+  <text x="376" y="460" font-size="10" opacity="0.55">sait · ignore · croit faux · soupçonne</text>
+  <text x="376" y="484" font-size="11.5" font-family="JetBrains Mono, monospace" class="dg-accent-t">validité</text>
+  <text x="470" y="484" font-size="10" opacity="0.55">on apprend à une date</text>
+  <text x="376" y="510" font-size="10" opacity="0.55">n'existe que sur les faits marqués sensibles</text>
+
+  <rect x="700" y="360" width="220" height="164" rx="6" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.75"/>
+  <text x="716" y="386" font-size="12.5" font-weight="600">Le lecteur</text>
+  <line x1="716" y1="396" x2="904" y2="396" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+  <text x="716" y="418" font-size="11" opacity="0.7">est un porteur comme</text>
+  <text x="716" y="434" font-size="11" opacity="0.7">un autre — sauf que sa</text>
+  <text x="716" y="450" font-size="11" opacity="0.7">validité se compte en</text>
+  <text x="716" y="466" font-size="11" opacity="0.7">chapitres, pas en années</text>
+  <text x="716" y="494" font-size="10" opacity="0.5">d'où : pas de troisième</text>
+  <text x="716" y="510" font-size="10" opacity="0.5">axe temporel à construire</text>
+
+  <line x1="694" y1="442" x2="646" y2="442" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7" marker-end="url(#cna2)"/>
+</g>
+</svg>
+<figcaption><strong>Quatre tables, et une seule est facultative.</strong> Une entité ne porte que son identité — tout ce qui pourrait changer est un <em>fait</em>, ce qui est la raison pour laquelle il n'y a aucun champ libre sur l'entité. Un fait porte deux temps : celui du monde et celui de l'écriture. Une relation est datée elle aussi, parce qu'une alliance commence et finit. La croyance, en pointillés, n'existe que sur les faits que tu marques comme sensibles — et le lecteur y entre comme un porteur de plus, ce qui évite d'inventer un troisième axe de temps.</figcaption>
+</figure>
+<!--/SCHEMA:canon-->
+
+  <div class="col">
+    <h3>La règle qui répartit tout</h3>
+    <p><strong>Une entité ne porte que ce qui ne peut pas changer.</strong> Son identifiant, son type, son nom, ses autres noms. Tout le reste — l'âge, le lieu, le rang, la couleur des yeux, l'allégeance, l'état vivant ou mort — est un <em>fait</em>, parce que tout le reste est susceptible de changer ou d'avoir été vrai à une époque et plus à une autre.</p>
+    <p>C'est pour ça qu'il n'existe <strong>aucun champ libre sur l'entité</strong>. Pas de colonne « description », pas de « notes ». La tentation est forte — c'est tellement plus rapide d'écrire une phrase — et c'est exactement ce qui tue un canon : au bout de six mois, la moitié de la vérité du monde est dans des descriptions en texte libre que rien ne peut interroger, dater ni vérifier.</p>
+    <p>La conséquence pratique à accepter : <strong>écrire dans le canon est plus lent que prendre une note.</strong> C'est le prix, et c'est aussi pourquoi la projection Markdown existe — pour que la <em>lecture</em>, elle, reste immédiate.</p>
+
+    <h3>Un fait n'est jamais écrasé</h3>
+    <p>C'est l'invariant 03, et il gouverne la forme de la table. Il n'existe aucune opération de mise à jour destructive sur un fait : seulement <strong>ajouter</strong>, et <strong>fermer une période de validité</strong>.</p>
+    <p>Quand Kael quitte la capitale, on ne remplace pas « Kael vit à la capitale » par « Kael vit dans le nord ». On ferme la première à l'an 12 et on ajoute la seconde à partir de l'an 12. Les deux coexistent, et « où vivait Kael en l'an 7 » reste une question qui a une réponse.</p>
+
+    <h3>Une relation est datée, comme un fait</h3>
+    <p>C'est le point qu'on oublie le plus souvent, et il coûte cher quand il manque. Une alliance commence et finit. Une filiation, non — mais un mariage, une inimitié, une vassalité, une appartenance à une faction : toutes ont un début et souvent une fin. Une relation sans date rend impossible la question la plus utile du worldbuilding : <em>qui était allié à qui au moment de la bataille ?</em></p>
+  </div>
+</section>
+
+<section id="types">
+  <span class="sec-num">02</span>
+  <h2>Les types d'entités</h2>
+  <div class="col">
+    <p class="lede">Liste fermée. Neuf types, et une procédure pour en ajouter un dixième — qui existe précisément pour que l'ajout soit un geste réfléchi et non un réflexe.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Type</th><th>Ce que c'est</th><th>Le test qui le distingue</th></tr></thead>
+      <tbody>
+        <tr><td class="name">personnage</td><td>Un être qui agit, décide, sait et ignore</td><td>Peut-il porter une croyance ?</td></tr>
+        <tr><td class="name">lieu</td><td>Un endroit, à toute échelle : continent, cité, taverne, salle</td><td>Peut-on y être ?</td></tr>
+        <tr><td class="name">faction</td><td>Un groupe organisé : maison, ordre, guilde, armée, culte</td><td>A-t-il des membres et une volonté propre ?</td></tr>
+        <tr><td class="name">objet</td><td>Une chose singulière et suivie : une épée nommée, une couronne, un manuscrit</td><td>Sa possession change-t-elle de main, et est-ce important ?</td></tr>
+        <tr><td class="name">événement</td><td>Ce qui arrive à une date : bataille, couronnement, cataclysme</td><td>A-t-il un avant et un après ?</td></tr>
+        <tr><td class="name">concept</td><td>Ce qui structure le monde : une magie, une loi, une monnaie, une langue, une religion</td><td>Est-ce une règle du monde plutôt qu'une chose du monde ?</td></tr>
+        <tr><td class="name">espèce</td><td>Un peuple ou une créature, comme catégorie</td><td>Parle-t-on de tous plutôt que d'un ?</td></tr>
+        <tr><td class="name">œuvre</td><td>Ce que le monde contient de créé : une chanson, une prophétie, un traité, une carte</td><td>Existe-t-il <em>dans</em> la fiction, écrit par quelqu'un de la fiction ?</td></tr>
+        <tr><td class="name">période</td><td>Une tranche de temps nommée : un règne, un âge, une guerre longue</td><td>Sert-elle à situer d'autres choses ?</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Deux choix méritent leur justification, parce qu'ils sont contre-intuitifs.</p>
+    <p><strong>Un événement est une entité, pas un fait.</strong> Un fait dit quelque chose <em>sur</em> une entité. Un événement a ses propres attributs — un lieu, des participants, une durée, des conséquences — et d'autres faits parlent de lui. Le traiter comme un fait rendrait impossible de dire « Kael a participé à la bataille des Cendres ».</p>
+    <p><strong>Une œuvre est distincte d'un objet.</strong> Un manuscrit est un objet — on peut le brûler. La prophétie qu'il contient est une œuvre — elle survit à sa destruction, quelqu'un s'en souvient. La distinction paraît byzantine jusqu'au jour où l'intrigue repose dessus, et c'est souvent le cas.</p>
+
+    <h3>La procédure d'ajout</h3>
+    <p>Ajouter un type n'est pas interdit — c'est <strong>volontairement lent</strong>, ce qui n'est pas la même chose. Trois conditions, dans l'ordre :</p>
+    <ol>
+      <li><strong>Nommer trois entités réelles</strong> de ton univers qui ne rentrent dans aucun des neuf. Une seule ne suffit pas : un cas isolé se traite comme un attribut, pas comme un type.</li>
+      <li><strong>Écrire le test qui distingue</strong> le nouveau type de son voisin le plus proche, sur le modèle de la colonne de droite ci-dessus. Si le test ne s'écrit pas, c'est que le type n'existe pas.</li>
+      <li><strong>Inscrire l'ajout au registre</strong> de cette pièce, avec la date et les trois entités.</li>
+    </ol>
+    <p>Techniquement, un type est une ligne dans une table de référence, pas une valeur dans un <code>enum</code> SQL — donc l'ajout ne demande pas de migration. La lenteur est dans la procédure, pas dans la mécanique.</p>
+
+    <div class="callout">
+      <span class="tag">Pourquoi fermée plutôt qu'ouverte</span>
+      <p>Une liste ouverte semble plus libre. Elle produit en réalité, au bout d'un an, quatorze types dont trois se recouvrent — <em>lieu</em>, <em>région</em>, <em>territoire</em> — et plus aucune requête fiable, parce que « liste-moi tous les lieux » ne trouve plus rien. La liste fermée coûte une friction rare et une décision consciente ; l'ouverte coûte la fiabilité de tout ce qui interroge le canon.</p>
+    </div>
+  </div>
+</section>
+
+<section id="temps">
+  <span class="sec-num">03</span>
+  <h2>Les deux temps</h2>
+  <div class="col">
+    <p class="lede">Deux axes, et l'un des deux surprend toujours au premier abord.</p>
+    <p>Le premier est évident : <strong>le temps du monde</strong>, quand un fait est vrai dans ton univers. Le second l'est moins : <strong>le temps d'écriture</strong>, quand tu l'as su.</p>
+  </div>
+
+<!--SCHEMA:temps-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 330" role="img" aria-label="Les deux axes de temps : sur l'axe du monde, une première version dit que Kael vit à la capitale de l'an 3 à toujours, une seconde version la remplace en la limitant à l'an 12 ; sur l'axe d'écriture, la première a été écrite le 2 mars et la seconde le 14 mai, et la première n'est pas effacée.">
+<defs>
+  <marker id="tpa1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="tpa2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <text x="40" y="34" font-size="12.5" font-weight="600" class="dg-accent-t">TEMPS DU MONDE — quand c'est vrai dans ton univers</text>
+
+  <line x1="40" y1="60" x2="920" y2="60" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+  <text x="150" y="52" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">an 3</text>
+  <text x="520" y="52" text-anchor="middle" font-size="10" opacity="0.55" font-family="JetBrains Mono, monospace">an 12</text>
+  <line x1="150" y1="54" x2="150" y2="66" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+  <line x1="520" y1="54" x2="520" y2="66" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+
+  <rect x="150" y="78" width="770" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="5 4" opacity="0.55"/>
+  <text x="164" y="100" font-size="11.5" opacity="0.55">Kael vit à la capitale · an 3 → toujours</text>
+  <text x="906" y="100" text-anchor="end" font-size="10" opacity="0.45" font-family="JetBrains Mono, monospace">version close</text>
+
+  <rect x="150" y="124" width="370" height="34" rx="4" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="164" y="146" font-size="11.5" font-weight="600">Kael vit à la capitale · an 3 → an 12</text>
+  <text x="506" y="146" text-anchor="end" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">en vigueur</text>
+
+  <text x="40" y="210" font-size="12.5" font-weight="600" class="dg-accent-t">TEMPS D'ÉCRITURE — quand tu l'as su</text>
+
+  <line x1="40" y1="240" x2="920" y2="240" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+  <circle cx="300" cy="240" r="5" fill="currentColor"/>
+  <circle cx="660" cy="240" r="5" fill="currentColor"/>
+  <line x1="300" y1="240" x2="300" y2="112" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <line x1="660" y1="240" x2="660" y2="158" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <text x="300" y="264" text-anchor="middle" font-size="11" font-weight="600">2 mars</text>
+  <text x="300" y="282" text-anchor="middle" font-size="10.5" opacity="0.6">le fait est écrit</text>
+  <text x="660" y="264" text-anchor="middle" font-size="11" font-weight="600">14 mai</text>
+  <text x="660" y="282" text-anchor="middle" font-size="10.5" opacity="0.6">on ferme sa validité</text>
+  <text x="660" y="300" text-anchor="middle" font-size="10.5" opacity="0.6">on n'efface rien</text>
+</g>
+</svg>
+<figcaption><strong>La ligne du haut n'est pas supprimée, elle est close.</strong> C'est toute la différence entre « le monde a changé » et « je me suis trompé » : les deux axes permettent de distinguer <em>Kael a quitté la capitale en l'an 12</em> de <em>je croyais qu'il y était resté et j'ai appris le contraire le 14 mai</em>. Sans le second axe, un flashback écrit après coup devient impossible à dater ; sans le premier, on perd la capacité d'interroger le monde à une date donnée.</figcaption>
+</figure>
+<!--/SCHEMA:temps-->
+
+  <div class="col">
+    <p>Le second axe sert à distinguer deux situations que le premier confond :</p>
+    <ul>
+      <li><strong>Le monde a changé.</strong> Kael a quitté la capitale en l'an 12. C'est un fait nouveau, et l'ancien reste vrai pour la période où il l'était.</li>
+      <li><strong>Je me suis trompé.</strong> Je croyais qu'il y était resté, et j'ai appris le contraire en écrivant le chapitre 20. Le fait n'a jamais été vrai.</li>
+    </ul>
+    <p>Sans le second axe, ces deux cas produisent la même donnée et deviennent indiscernables. Avec, on peut demander « qu'est-ce que le canon disait le 2 mars ? » — question qui paraît byzantine jusqu'au jour où une scène écrite en mars contredit un fait corrigé en mai, et où il faut comprendre laquelle des deux a raison.</p>
+
+    <h3>Le temps du monde n'est pas une date réelle</h3>
+    <p>Ton univers a son propre calendrier — an 3 du règne, troisième âge, cycle de la Cendre. Le canon stocke une <strong>position sur une échelle</strong>, et la manière de l'afficher est un attribut du calendrier, pas une propriété du fait.</p>
+    <p>Conséquence pratique : le calendrier est lui-même une entité de type <em>concept</em>, avec ses unités et son origine. Ça permet d'avoir plusieurs calendriers — celui de l'empire et celui des peuples du nord — sans que les faits en dépendent.</p>
+
+    <h3>Le flou est permis, l'absence aussi</h3>
+    <p>Une contrainte qui exigerait une date précise sur chaque fait rendrait le canon inutilisable : la plupart des choses qu'on invente n'ont pas de date, et beaucoup n'en auront jamais. Une validité peut donc être <strong>ouverte des deux côtés</strong> — « c'est vrai, on ne sait pas depuis quand ni jusqu'à quand » — et c'est même le cas par défaut.</p>
+    <p>Le flou volontaire est différent de l'imprécision subie, et c'est une propriété qu'on veut garder : « quelque part au début du troisième âge » est une information, pas un trou.</p>
+  </div>
+</section>
+
+<section id="croyances">
+  <span class="sec-num">04</span>
+  <h2>Qui sait quoi</h2>
+  <div class="col">
+    <p class="lede">Le canon sait dire ce qui est vrai. Cette couche lui apprend à dire qui le sait — et c'est ce qui rend l'audit utilisable au lieu d'insupportable.</p>
+  </div>
+
+  <div class="col">
+    <h3>Le problème, en une scène</h3>
+    <p>Le canon dit : <em>Kael est le fils de la Reine.</em> Le Narrateur écrit une scène où Kael se présente comme un roturier. L'auditeur de cohérence compare, trouve une contradiction, et la signale.</p>
+    <p>Il la signalera à chaque mensonge, chaque secret, chaque révélation différée — c'est-à-dire <strong>sur exactement les scènes qui font qu'une histoire tient</strong>. Un audit qui crie au loup à chaque effet dramatique se fait désactiver en trois jours, et l'invariant 06 tombe avec lui.</p>
+    <p>Avec la couche de croyances, l'auditeur pose une question de plus : <em>Kael sait-il ?</em> Non → pas de contradiction, c'est de l'ironie dramatique. Et là où il y a vraiment incohérence, il la trouve encore.</p>
+
+    <h3>Ce que porte une croyance</h3>
+    <p>Un <strong>porteur</strong> — une entité de type personnage, ou le lecteur. Un <strong>fait</strong>. Un <strong>statut</strong> parmi quatre : <em>sait</em>, <em>ignore</em>, <em>croit faux</em>, <em>soupçonne</em>. Et sa propre <strong>validité</strong>, parce qu'on apprend les choses à une date : Kael ignore jusqu'à l'an 12, sait à partir de l'an 12.</p>
+    <p><em>Croit faux</em> mérite d'être distingué d'<em>ignore</em> : ne pas savoir et croire le contraire ne produisent pas les mêmes scènes, et un personnage qui se trompe activement est un moteur d'intrigue qu'on veut pouvoir interroger.</p>
+
+    <h3>Facultatif par fait, et c'est ce qui rend le coût nul</h3>
+    <p>Un fait porte un drapeau <strong>sensible</strong>. Tant qu'il est à faux — ce qui est le cas par défaut et le restera pour l'immense majorité — la couche n'existe pas pour lui : aucune ligne de croyance, aucun coût de stockage, et surtout <strong>aucun coût de contexte</strong>, parce que les outils de lecture ne renvoient rien à son sujet.</p>
+    <p>Que telle cité soit au nord de telle autre est su de tous, ou sans importance. Que Kael soit le fils de la Reine est le pivot de l'histoire. Seul le second est marqué. C'est l'invariant 11 appliqué là où il compte le plus : <strong>toute option coûteuse est désactivée par défaut.</strong></p>
+
+    <div class="callout good">
+      <span class="tag">Ce que ça règle en plus</span>
+      <p>Le lecteur est un <strong>porteur comme un autre</strong> — une entité particulière dont la validité se compte en positions du Récit plutôt qu'en années du monde. « Que sait Kael à l'an 12 » et « que sait le lecteur au chapitre 20 » deviennent <em>la même requête</em>. Il n'y a donc <strong>pas de troisième axe temporel à construire</strong> : l'ordre de révélation n'est pas un mécanisme de plus, c'est un usage de celui-ci. Un seul concept à comprendre, un seul à tester, et il reste facultatif partout.</p>
+    </div>
+
+    <h3>Ce que ça donne à l'écriture</h3>
+    <p>C'est la conséquence la plus concrète, et la raison pour laquelle cette couche vaut son prix. L'agent qui écrit une scène ne reçoit plus « voici ce qui est vrai », mais <strong>« voici ce que ton personnage sait à ce moment »</strong>. Il ne peut plus faire agir Kael en prince trois chapitres avant la révélation — non parce qu'une consigne le lui interdit, mais parce que l'information ne lui a pas été donnée.</p>
+    <p>C'est l'invariant 02 dans sa forme la plus pure : la garantie ne vit pas dans une consigne qu'on peut oublier, elle vit dans ce que l'outil accepte de renvoyer.</p>
+  </div>
+</section>
+
+<section id="chemin">
+  <span class="sec-num">05</span>
+  <h2>Le chemin d'un fait</h2>
+  <div class="col">
+    <p class="lede">Entre « un agent propose » et « c'est vrai de mon monde », il y a trois étapes — et c'est leur ordre qui permet d'écrire vite sans salir le canon.</p>
+  </div>
+
+<!--SCHEMA:promotion-->
+<figure class="dg dg-scroll">
+<svg viewBox="0 0 960 420" role="img" aria-label="Le chemin d'un fait : un agent propose, le fait entre comme candidat après un contrôle d'intégrité, l'audit le relit par plusieurs relecteurs séparés, puis il est promu en validé — c'est seulement à ce moment que les règles du monde s'appliquent — ou rejeté ; dans les deux cas le rapport de session en garde la trace.">
+<defs>
+  <marker id="pma1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+  </marker>
+  <marker id="pma2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+  </marker>
+</defs>
+<g font-family="Bricolage Grotesque, Helvetica Neue, Arial, sans-serif" fill="currentColor">
+
+  <rect x="34" y="120" width="140" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="104" y="150" text-anchor="middle" font-size="13.5" font-weight="600">un agent</text>
+  <text x="104" y="170" text-anchor="middle" font-size="11" opacity="0.6">propose</text>
+  <text x="104" y="186" text-anchor="middle" font-size="10" opacity="0.5">librement</text>
+
+  <line x1="174" y1="158" x2="222" y2="158" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+  <text x="198" y="118" text-anchor="middle" font-size="10" class="dg-crit-t" font-family="JetBrains Mono, monospace">étage 1</text>
+  <text x="198" y="132" text-anchor="middle" font-size="9.5" class="dg-crit-t" font-family="JetBrains Mono, monospace">intégrité</text>
+  <line x1="198" y1="140" x2="198" y2="150" class="dg-crit" stroke-width="1.5"/>
+
+  <rect x="226" y="120" width="150" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="301" y="150" text-anchor="middle" font-size="13.5" font-weight="600">candidat</text>
+  <text x="301" y="170" text-anchor="middle" font-size="10.5" opacity="0.6">dans le canon,</text>
+  <text x="301" y="186" text-anchor="middle" font-size="10.5" opacity="0.6">pas encore vrai</text>
+
+  <line x1="376" y1="158" x2="416" y2="158" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+
+  <rect x="420" y="106" width="180" height="104" rx="5" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="510" y="134" text-anchor="middle" font-size="13.5" font-weight="600">l'audit</text>
+  <text x="510" y="154" text-anchor="middle" font-size="10.5" opacity="0.6">cohérence · canon</text>
+  <text x="510" y="170" text-anchor="middle" font-size="10.5" opacity="0.6">style · technique</text>
+  <text x="510" y="192" text-anchor="middle" font-size="10" class="dg-accent-t" font-family="JetBrains Mono, monospace">jamais le producteur</text>
+
+  <polyline points="600,140 656,140 656,96" fill="none" stroke="currentColor" stroke-width="1.75" marker-end="url(#pma1)"/>
+  <polyline points="600,176 656,176 656,252" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#pma1)"/>
+
+  <text x="700" y="46" font-size="10" class="dg-crit-t" font-family="JetBrains Mono, monospace">étage 2 — les règles de ton monde</text>
+  <text x="700" y="60" font-size="9.5" opacity="0.55" font-family="JetBrains Mono, monospace">sévérité réglable · refus ou signalement</text>
+  <line x1="694" y1="68" x2="694" y2="82" class="dg-crit" stroke-width="1.5"/>
+
+  <rect x="672" y="88" width="248" height="76" rx="5" fill="none" class="dg-accent" stroke-width="1.75"/>
+  <text x="796" y="118" text-anchor="middle" font-size="13.5" font-weight="600">validé</text>
+  <text x="796" y="138" text-anchor="middle" font-size="10.5" opacity="0.6">c'est vrai de ton monde</text>
+  <text x="796" y="154" text-anchor="middle" font-size="10" opacity="0.5">plus jamais écrasé</text>
+
+  <rect x="672" y="244" width="248" height="76" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="796" y="274" text-anchor="middle" font-size="13.5" font-weight="600">rejeté</text>
+  <text x="796" y="294" text-anchor="middle" font-size="10.5" opacity="0.6">conservé, avec son motif</text>
+  <text x="796" y="310" text-anchor="middle" font-size="10" opacity="0.5">un rejet est une information</text>
+
+  <polyline points="510,210 510,300 656,300" fill="none" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.7"/>
+  <rect x="286" y="300" width="224" height="72" rx="5" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.85"/>
+  <text x="398" y="328" text-anchor="middle" font-size="12.5" font-weight="600">rapport de session</text>
+  <text x="398" y="348" text-anchor="middle" font-size="10.5" opacity="0.6">étage 3 — ce qui est signalé</text>
+  <text x="398" y="364" text-anchor="middle" font-size="10.5" opacity="0.6">et attend ton arbitrage</text>
+  <line x1="510" y1="300" x2="512" y2="300" stroke="currentColor" stroke-width="1.25"/>
+</g>
+</svg>
+<figcaption><strong>Les règles de ton monde ne s'appliquent qu'à la promotion, jamais à la proposition.</strong> C'est ce qui permet à un agent d'écrire vite sans salir le canon : il propose librement, seul le contrôle d'intégrité l'arrête à l'entrée. Le reste — les incohérences de monde — se découvre à l'audit et remonte dans ton rapport de session, où tu tranches. Un fait rejeté est conservé avec son motif : savoir qu'une piste a été écartée, et pourquoi, vaut mieux que de la retrouver six mois plus tard sans le contexte.</figcaption>
+</figure>
+<!--/SCHEMA:promotion-->
+
+  <div class="col">
+    <p>Le point décisif est le suivant : <strong>les règles de ton monde ne s'appliquent qu'à la promotion, jamais à la proposition.</strong></p>
+    <p>Un agent propose librement. Seul le contrôle d'intégrité l'arrête à l'entrée — un fait qui pointe vers une entité inexistante, une date qui finit avant de commencer. Le fait entre alors comme <strong>candidat</strong> : il est dans le canon, visible, interrogeable, mais il n'est pas vrai.</p>
+    <p>C'est l'audit qui le confronte aux règles du monde, et c'est seulement s'il passe qu'il devient <strong>validé</strong>.</p>
+
+    <h3>Pourquoi cet ordre, et pas l'inverse</h3>
+    <p>Imagine l'inverse. Tu écris. Le Narrateur place Kael dans la capitale ; le canon dit qu'il en est parti trois chapitres plus tôt. Si la règle s'appliquait à la proposition, l'écriture serait <strong>bloquée</strong> : arrêt, correction du canon, retour. Dix fois par session, et le système devient un obstacle plutôt qu'un outil.</p>
+    <p>Avec cet ordre, le fait entre comme candidat, l'audit relève le conflit, et il remonte dans ton rapport de session avec les deux issues possibles : soit c'est une erreur et tu corriges la scène, soit Kael est revenu et il manque un voyage. Tu tranches quand tu veux, sans avoir cassé ton élan.</p>
+
+    <h3>Un rejet est conservé</h3>
+    <p>Un fait rejeté n'est pas supprimé : il garde son statut, son motif de rejet et sa provenance. Savoir qu'une piste a été écartée, et pourquoi, vaut mieux que de la retrouver six mois plus tard sans le contexte — et que de la reproposer trois fois.</p>
+  </div>
+</section>
+
+<section id="refus">
+  <span class="sec-num">06</span>
+  <h2>Où passe la ligne du refus</h2>
+  <div class="col">
+    <p class="lede">C'est la décision la plus structurante de cette pièce, parce que c'est la seule qu'on ne peut pas défaire sans migration — et la réponse est que <strong>presque rien ne doit être un refus dur.</strong></p>
+  </div>
+
+  <div class="etage e1">
+    <span class="lvl">Étage 1 · le refus structurel</span>
+    <h4>Ce n'est pas une règle sur ton monde, c'est de l'intégrité de données</h4>
+    <p>Un fait qui référence une entité inexistante. Une période qui se termine avant de commencer. Une entité sans type, ou d'un type hors de la liste. Une croyance dont le porteur n'est pas un personnage.</p>
+    <p>Une violation ici signifie que <strong>la donnée est cassée</strong>, pas que le monde est étrange. Personne ne veut jamais l'exception. Ces contraintes sont dans le schéma SQL, elles sont dures, et elles le restent.</p>
+  </div>
+
+  <div class="etage e2">
+    <span class="lvl">Étage 2 · les règles de ton monde</span>
+    <h4>Elles ont l'air évidentes, et chacune a un contre-exemple</h4>
+    <p>« Un personnage est en un seul lieu à un instant donné » — sauf téléportation, projection, métamorphe, jumeau caché. « Une personne a au plus deux parents biologiques » — sauf magie, chimère, création artificielle. « Une faction a un seul chef à la fois » — sauf duumvirat, régence, schisme.</p>
+    <p>Le jour où ton histoire a besoin de l'exception, une contrainte dure te bloque et il faut une migration pour la retirer. C'est exactement le piège à éviter.</p>
+  </div>
+
+  <div class="etage">
+    <span class="lvl">Étage 3 · le signalement</span>
+    <h4>Le système remarque, rapporte, et tu arbitres</h4>
+    <p>Tout le reste. Deux faits qui se contredisent sans qu'aucune règle nommée soit violée, une chronologie douteuse, une entité orpheline que rien ne mentionne depuis longtemps.</p>
+  </div>
+
+  <div class="col">
+    <h3>Le test qui décide de l'étage</h3>
+    <p>Une règle ne devient un refus dur que si elle passe les trois :</p>
+    <ol>
+      <li><strong>La violer signifie que la donnée est fausse, pas que le monde est bizarre.</strong></li>
+      <li><strong>Aucune scène imaginable ne voudrait l'exception.</strong> Si tu en imagines une, ce n'est pas l'étage 1.</li>
+      <li><strong>Le message de refus peut dire quoi faire à la place.</strong> « Non » est un mur ; « ferme d'abord la validité précédente » est un guide.</li>
+    </ol>
+    <p>Appliqué honnêtement, ce test donne une liste d'étage 1 très courte — essentiellement l'intégrité référentielle et la cohérence des dates — et renvoie <strong>toutes</strong> les règles du monde à l'étage 2.</p>
+
+    <h3>Les règles du monde sont des données, pas du schéma</h3>
+    <p>C'est la décision qui résout la tension. Une règle de l'étage 2 est une <strong>ligne dans une table</strong>, avec une portée, un message et une sévérité :</p>
+
+<pre><b>règle</b>   un_seul_lieu
+<i>portée</i>  attribut « lieu » sur les entités de type personnage
+<i>message</i> « Kael est déjà à la capitale sur cette période.
+        Ferme la validité précédente, ou vérifie la date. »
+<b>sévérité</b> <i>signalement</i>   ← une valeur, pas une migration</pre>
+
+    <p>Ce que ça achète, point par point :</p>
+    <ul>
+      <li><strong>Le mécanisme du refus dur existe dès le premier jour</strong>, donc l'activer plus tard ne coûte pas de migration — c'était le vrai risque.</li>
+      <li><strong>Par défaut, tout est en signalement.</strong> Tu écris sans jamais être bloqué.</li>
+      <li><strong>Tu promeus une règle en refus</strong> quand tu es sûr qu'elle ne souffre aucune exception dans ton univers — et tu peux la redescendre le jour où une histoire demande l'exception.</li>
+      <li><strong>Chaque règle porte son message</strong>, donc un refus explique toujours quoi faire.</li>
+    </ul>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Règle</th><th>Ce qu'elle vérifie</th><th>Sévérité de départ</th></tr></thead>
+        <tbody>
+          <tr class="grp"><td colspan="3">Dans le schéma — non réglable</td></tr>
+          <tr><td class="name">entité existante</td><td>Tout fait, relation ou croyance pointe vers une entité qui existe</td><td><span class="sev s-struct">Structurel</span></td></tr>
+          <tr><td class="name">période cohérente</td><td>Une validité ne se termine pas avant de commencer</td><td><span class="sev s-struct">Structurel</span></td></tr>
+          <tr><td class="name">type connu</td><td>Le type d'une entité est dans la table de référence</td><td><span class="sev s-struct">Structurel</span></td></tr>
+          <tr class="grp"><td colspan="3">Dans la table de règles — réglable à tout moment</td></tr>
+          <tr><td class="name">un seul lieu</td><td>Un personnage n'est pas en deux endroits sur des périodes qui se chevauchent</td><td><span class="sev s-signal">Signalement</span></td></tr>
+          <tr><td class="name">deux parents</td><td>Une personne a au plus deux parents biologiques</td><td><span class="sev s-signal">Signalement</span></td></tr>
+          <tr><td class="name">un seul chef</td><td>Une faction a un chef à la fois</td><td><span class="sev s-signal">Signalement</span></td></tr>
+          <tr><td class="name">mort définitive</td><td>Aucun fait n'est vrai d'un personnage après sa mort</td><td><span class="sev s-signal">Signalement</span></td></tr>
+          <tr><td class="name">présence possible</td><td>Un participant à un événement était vivant et pouvait s'y trouver</td><td><span class="sev s-signal">Signalement</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Aucune règle de la seconde moitié ne démarre en refus. Pas même « mort définitive » — les revenants, les visions, les récits enchâssés et les narrateurs peu fiables existent, et une contrainte dure ici serait la première à sauter.</p>
+
+    <div class="callout">
+      <span class="tag">L'objection qu'il faut traiter</span>
+      <p>L'invariant 02 dit qu'une garantie vit dans un outil, jamais dans une consigne. Tout mettre en signalement, n'est-ce pas y renoncer ? Non — parce que la garantie n'est pas « telle règle est impossible à violer ». Elle est : <strong>aucune contradiction ne passe sans être détectée et remontée.</strong> Ça, c'est du code qui refuse le silence, et c'est vérifiable par un test. Que telle contradiction bloque ou signale est un réglage séparé, et c'est le tien.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contradictions">
+  <span class="sec-num">07</span>
+  <h2>Les contradictions</h2>
+  <div class="col">
+    <p class="lede">Une contradiction n'est pas une erreur à corriger tout de suite. C'est un objet du canon, avec une durée de vie.</p>
+    <p>Quand une règle en signalement est violée, le système crée une <strong>contradiction</strong> : les deux faits en cause, la règle violée, la date de détection, et un statut.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Statut</th><th>Ce qu'il signifie</th></tr></thead>
+      <tbody>
+        <tr><td class="name">ouverte</td><td>Détectée, personne n'a tranché. Elle apparaît dans le rapport de session.</td></tr>
+        <tr><td class="name">résolue</td><td>Un des deux faits a été corrigé ou invalidé. La contradiction reste, avec ce qui l'a résolue.</td></tr>
+        <tr><td class="name">assumée</td><td><strong>Tu déclares que c'en est une et que c'est voulu.</strong> Elle cesse de remonter.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Le troisième statut est celui qui compte. Un narrateur peu fiable, deux versions d'une légende, une source qui ment : ce sont des contradictions <em>délibérées</em>, et un système qui les signalerait indéfiniment finirait ignoré. Les assumer les fait taire, sans les effacer — elles restent interrogeables, et une requête peut demander « montre-moi les contradictions assumées » pour retrouver les endroits où le monde est volontairement trouble.</p>
+    <p>Une contradiction résolue n'est pas non plus supprimée. Savoir qu'un point a été douteux, et comment il a été tranché, évite de le retrancher différemment six mois plus tard.</p>
+  </div>
+</section>
+
+<section id="recherche">
+  <span class="sec-num">08</span>
+  <h2>Retrouver quelque chose</h2>
+  <div class="col">
+    <p class="lede">Trois manières de chercher, et il faut les trois — chacune trouve ce que les deux autres manquent.</p>
+    <ul>
+      <li><strong>Par nom.</strong> « L'entité qui s'appelle Kael. » Exact, avec les autres noms et une tolérance aux fautes de frappe. C'est le cas le plus fréquent et le moins coûteux.</li>
+      <li><strong>Par parcours.</strong> « Les alliés de la maison du Nord au moment de la bataille. » C'est du graphe : on part d'une entité, on suit des relations d'un type donné, sur une profondeur donnée, à une date donnée.</li>
+      <li><strong>Par sens.</strong> « Ce qui, dans le canon, ressemble à une histoire de trahison familiale. » C'est l'index sémantique — la seule manière de retrouver une chose dont on ne connaît ni le nom ni le chemin.</li>
+    </ul>
+
+    <h3>Les parcours sont des fonctions SQL, pas des requêtes écrites à la main</h3>
+    <p>La pièce 01 a écarté l'extension de graphe, en acceptant de perdre la lisibilité des parcours. La compensation est ici : <strong>chaque parcours est encapsulé dans une fonction Postgres</strong>, ce qui rend une API de graphe lisible en SQL standard.</p>
+
+<pre>SELECT * FROM <b>voisins</b>(:entite, ARRAY['allie','vassal'], <i>profondeur</i> 3, <i>à la date</i> :quand);</pre>
+
+    <p>Cinq à huit fonctions de ce genre couvrent tous les parcours dont le système a besoin, elles s'écrivent une fois, et elles se testent.</p>
+
+    <h3>Ce qui est indexé sémantiquement, et ce qui ne l'est pas</h3>
+    <p>On n'indexe pas les faits un par un — un fait isolé est trop court pour porter du sens. On indexe <strong>la fiche générée d'une entité</strong> : son nom, son type, ses faits en vigueur et ses relations, rendus en une petite page de texte, réindexée quand elle change.</p>
+    <p>Cela dimensionne l'index sur le nombre d'entités et non sur le nombre de faits, ce qui le maintient dans les centaines de mégaoctets plutôt que les gigaoctets — le point ouvert que la pièce 01 avait signalé.</p>
+  </div>
+</section>
+
+<section id="projection">
+  <span class="sec-num">09</span>
+  <h2>La projection lisible</h2>
+  <div class="col">
+    <p class="lede">Écrire dans le canon est lent. Le lire doit être immédiat, et sans outil.</p>
+    <p>La pièce 01 a fixé le principe : <strong>source dans Postgres, projection en fichiers Markdown versionnés par git</strong>, régénérée à chaque consolidation. Voici ce que la projection contient.</p>
+    <ul>
+      <li><strong>Un fichier par entité</strong> — sa fiche : identité, faits en vigueur, relations en vigueur, assets liés, et ce qui a changé récemment.</li>
+      <li><strong>Un index par type</strong> — tous les personnages, tous les lieux, avec un renvoi vers chaque fiche.</li>
+      <li><strong>Une chronologie</strong> — les événements dans l'ordre du monde, tous calendriers confondus.</li>
+      <li><strong>Les contradictions ouvertes</strong> — la seule page qu'on veut voir vide.</li>
+    </ul>
+    <p>Ce que ça donne, au-delà du confort : <code>git log</code> sur l'état du monde, et <code>git diff</code> pour répondre à « qu'est-ce qui a changé dans mon univers cette semaine ». Et une propriété de survie — si tout le système disparaît, il reste un dépôt git lisible de l'univers complet.</p>
+    <p><strong>La projection n'est jamais une source.</strong> Modifier un fichier Markdown ne modifie pas le canon, et la régénération suivante écrasera la modification. C'est l'invariant 01 : une seule source de vérité, et ce n'est pas celle-là.</p>
+  </div>
+</section>
+
+<section id="outils">
+  <span class="sec-num">10</span>
+  <h2>Les outils exposés</h2>
+  <div class="col">
+    <p class="lede">Deux profils, dix outils au plus chacun — l'invariant 10 n'est pas une intention, c'est une contrainte qu'on compte.</p>
+    <p>La signature exacte de chacun relève de la pièce 05. Cette pièce fixe <strong>lesquels existent</strong> et <strong>qui les voit</strong>.</p>
+  </div>
+
+  <h3>Profil lecture — <code>/mcp/canon-lecture</code></h3>
+  <div class="col" style="max-width:none">
+    <div class="outil"><span class="n">chercher</span><p>Par nom, par type, ou par sens. Renvoie des identités, pas des fiches complètes.</p></div>
+    <div class="outil"><span class="n">lire une fiche</span><p>Une entité, ses faits en vigueur à une date. Relations, provenance et historique sont <strong>désactivés par défaut</strong> — invariant 11.</p></div>
+    <div class="outil"><span class="n">parcourir</span><p>Les voisins d'une entité, par types de relation, sur une profondeur, à une date.</p></div>
+    <div class="outil"><span class="n">interroger le temps</span><p>Ce qui était vrai à une date donnée, ou ce qui a changé entre deux dates.</p></div>
+    <div class="outil"><span class="n">que sait cette entité</span><p>La couche de croyances. Ne renvoie rien pour les faits non marqués sensibles — donc ne coûte rien la plupart du temps.</p></div>
+    <div class="outil"><span class="n">lister les contradictions</span><p>Ouvertes, résolues ou assumées, filtrées par entité.</p></div>
+  </div>
+
+  <h3>Profil écriture — <code>/mcp/canon</code></h3>
+  <div class="col" style="max-width:none">
+    <p style="font-size:16px;color:var(--ink-2)">Les six outils de lecture, plus les quatre suivants. Dix exactement — et c'est aussi ce qui empêche d'en ajouter un onzième sans découper le rôle.</p>
+    <div class="outil"><span class="n">proposer une entité</span><p>Type obligatoire, pris dans la liste. Entre comme candidate.</p></div>
+    <div class="outil"><span class="n">proposer un fait</span><p>Sujet, attribut, valeur, validité facultative, marquage sensible facultatif. Entre comme candidat.</p></div>
+    <div class="outil"><span class="n">proposer une relation</span><p>Source, cible, type, validité facultative.</p></div>
+    <div class="outil"><span class="n">fermer une validité</span><p>Le seul geste qui ressemble à une modification. Il n'efface rien.</p></div>
+  </div>
+
+  <div class="col">
+    <div class="callout crit">
+      <span class="tag">Ce qui n'existe dans aucun profil</span>
+      <p>Il n'y a <strong>ni suppression, ni mise à jour</strong>. Aucun agent ne peut effacer un fait ni en changer la valeur — ces opérations n'existent pas dans le canon, pas même pour un administrateur en ligne de commande. Corriger une erreur se fait en fermant une validité et en ajoutant le fait juste, ce qui laisse la trace de la correction. C'est l'invariant 03 rendu littéral : la garantie n'est pas qu'on ne supprime pas, c'est qu'<em>on ne peut pas</em>.</p>
+    </div>
+    <p>Et il n'existe pas d'outil « valider un fait ». La promotion n'est pas un geste d'agent : elle est déclenchée par une recette d'audit, ou par toi depuis l'interface. C'est l'invariant 05 — celui qui écrit n'est pas celui qui décide.</p>
+  </div>
+</section>
+
+<section id="pas-decide">
+  <span class="sec-num">11</span>
+  <h2>Ce que cette pièce ne décide pas</h2>
+  <div class="col">
+    <ul>
+      <li><strong>La signature exacte des outils</strong> — paramètres, valeurs par défaut, format de retour, versionnement : <strong>pièce 05</strong>. Cette pièce fixe la liste et les profils.</li>
+      <li><strong>Comment les faits sont extraits de la prose</strong> — la double passe rédacteur / extracteur : <strong>pièce 06</strong>.</li>
+      <li><strong>Qui appelle les auditeurs et dans quel ordre</strong> — la recette d'audit : <strong>pièce 10</strong>.</li>
+      <li><strong>Le modèle d'embeddings</strong> et donc la taille réelle de l'index : <strong>pièce 14</strong>.</li>
+      <li><strong>Comment tout ça s'affiche</strong> — codex, vue graphe, rapport de session : <strong>pièce 18</strong>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="ouverts">
+  <span class="sec-num">12</span>
+  <h2>Points laissés ouverts</h2>
+  <div class="col">
+    <p class="lede">Quatre, chacun affecté.</p>
+  </div>
+
+  <div class="openq">
+    <h4>Les branches, et ce que leur ajout coûterait vraiment</h4>
+    <p>Écartées par décision, pas par oubli. Il reste à mesurer honnêtement le coût de l'ajout ultérieur — une colonne de branche sur les faits, les relations et les croyances, plus un filtre sur chaque requête — pour que le jour où le besoin apparaît, la décision se prenne sur un chiffre plutôt qu'une impression. <span class="to">→ pièce 20</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le vocabulaire des attributs</h4>
+    <p>Les types d'entités sont fermés ; les <em>attributs</em> ne le sont pas. Rien n'empêche aujourd'hui qu'un agent écrive « lieu » et un autre « localisation », et le canon aurait alors deux attributs pour la même chose. Trois voies : une liste fermée par type, un vocabulaire qui s'apprend avec une normalisation à l'entrée, ou une simple alerte de similarité. <span class="to">→ pièce 05</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le seuil de « résultat compact »</h4>
+    <p>Hérité de la pièce 00. Une fiche d'entité doit avoir un plafond chiffré en jetons, et les options désactivées par défaut ne suffisent pas à le garantir sur une entité très fournie. <span class="to">→ pièce 08, recalculé en pièce 19</span></p>
+  </div>
+
+  <div class="openq">
+    <h4>Le rythme de la consolidation</h4>
+    <p>La projection Markdown, la réindexation sémantique et la détection des contradictions n'ont pas la même fréquence idéale. À chaque écriture serait trop coûteux, une fois par jour trop lent pour la détection. <span class="to">→ pièce 10, avec la pièce 16</span></p>
+  </div>
+</section>
+
+<section id="registre">
+  <span class="sec-num">13</span>
+  <h2>Registre</h2>
+  <div class="col">
+    <h3>Types d'entités ajoutés après la pose</h3>
+    <p style="color:var(--ink-3)">Aucun à ce jour. Chaque ajout s'inscrit ici avec sa date et les trois entités qui l'ont motivé.</p>
+    <h3>Règles promues en refus</h3>
+    <p style="color:var(--ink-3)">Aucune à ce jour. Toutes les règles de monde démarrent en signalement.</p>
+    <h3>Révisions de la pièce</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Date</th><th>Ce qui change</th><th>Motif</th></tr></thead>
+        <tbody>
+          <tr><td class="v">4 sept. 2026</td><td class="name">Version initiale</td><td>Pièce posée. Décisions structurantes : liste de types fermée, deux axes de temps, croyances facultatives par fait avec le lecteur comme porteur, règles de monde en données avec sévérité réglable appliquées à la promotion, branches écartées.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · pièce 03 · posée le 4 septembre 2026</div>
+</footer>
+
+</body></html>

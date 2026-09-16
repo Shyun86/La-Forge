@@ -1,0 +1,387 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Le dossier de la Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F; --good:#2F7466; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B; --good:#6FBCAA; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.64;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.col{max-width:68ch}
+.masthead{border-bottom:1px solid var(--rule);padding:64px 0 40px;background:var(--surface)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(36px,6vw,62px);line-height:1.03;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:30px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+section{padding-top:58px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:19px;margin:38px 0 10px;letter-spacing:-.01em}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+li::marker{color:var(--ink-3)}
+
+/* sommaire */
+.toc{margin:30px 0;border:1px solid var(--rule);border-radius:6px;background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
+.grp{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);padding:9px 20px;border-bottom:1px solid var(--rule)}
+.row{display:grid;gap:2px 18px;padding:15px 20px;border-bottom:1px solid var(--rule-soft);align-items:baseline}
+@media(min-width:820px){.row{grid-template-columns:44px 1fr 190px 92px}}
+.row:last-child{border-bottom:0}
+.row .n{font-family:var(--f-mono);font-size:12px;color:var(--ember);font-variant-numeric:tabular-nums}
+.row .t{font-family:var(--f-display);font-weight:600;font-size:17px}
+.row .t small{display:block;font-family:var(--f-body);font-weight:400;font-size:14.5px;color:var(--ink-2);line-height:1.45;margin-top:3px}
+.row .dep{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);line-height:1.5}
+.row .st{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.st.done{color:var(--good)} .st.now{color:var(--ember)} .st.todo{color:var(--ink-3)}
+.row.current{background:linear-gradient(90deg,var(--surface-2),transparent 60%)}
+.row .t a{color:inherit;text-decoration:none;border-bottom:1.5px solid var(--ember)}
+.row .t a:hover,.row .t a:focus-visible{color:var(--ember)}
+
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:19px 23px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:9px}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+.refs{display:grid;gap:14px;margin:26px 0}
+@media(min-width:760px){.refs{grid-template-columns:repeat(2,1fr)}}
+.ref{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;box-shadow:var(--shadow)}
+.ref h4{font-family:var(--f-display);font-weight:600;font-size:17px;margin:0 0 5px}
+.ref p{margin:0;font-size:15px;color:var(--ink-2);line-height:1.5}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1040px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="here">Sommaire</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a class="cur" href="#top"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a href="https://claude.ai/code/artifact/9145bc40-e4ec-4a1d-a246-901eed85c284"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Conception · sommaire du dossier</p>
+    <h1>Le dossier de <em>la Forge</em></h1>
+    <p class="standfirst">Vingt et une pièces à poser, une par une, chacune close avant de passer à la suivante. Cette page est la table des matières : elle dit ce que chaque pièce décide, de quoi elle dépend, et où on en est.</p>
+    <div class="meta">
+      <span>21 pièces</span>
+      <span>5 posées</span>
+      <span>16 à faire</span>
+      <span>ouvert le 30 août 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<section id="regle">
+  <span class="sec-num">Méthode</span>
+  <h2>Comment on travaille</h2>
+  <div class="col">
+    <p class="lede">Une pièce à la fois. On la conçoit entièrement, on la ferme, et les pièces suivantes ne la remettent pas en cause — sauf à l'amender explicitement, en le notant.</p>
+    <p>Chaque pièce répond à trois questions dans cet ordre : <strong>qu'est-ce qu'on décide ici</strong>, <strong>quelles étaient les options et pourquoi celle-là</strong>, <strong>qu'est-ce que ça impose aux autres pièces</strong>. Cette dernière partie est la plus importante : c'est elle qui fait que le dossier tient ensemble plutôt que d'être vingt et un documents indépendants.</p>
+    <p>Une pièce fermée peut contenir des <em>points laissés ouverts</em>, à condition qu'ils soient nommés et affectés à une pièce ultérieure. Un point ouvert non nommé est une dette qui se paiera au moment de coder.</p>
+    <p><strong>Navigation.</strong> Chaque page porte la même barre en haut : le fil d'Ariane à gauche ramène ici, les flèches passent à la pièce précédente ou suivante, et le bouton <em>Sommaire</em> à droite ouvre la liste complète — pièces posées en clair, pièces à venir en gris. Les documents de recherche amont y figurent aussi. Un titre souligné dans le tableau ci-dessous est une pièce déjà posée.</p>
+
+    <div class="callout">
+      <span class="tag">Le glossaire est obligatoire</span>
+      <p>À côté des vingt et une pièces vit un <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><strong>glossaire</strong></a> qui n'en est pas une : il rassemble tous les termes du projet, leur niveau (processus, domaine, outil, concept) et la pièce qui les fixe. La règle est <strong>glossaire obligatoire, pièce facultative</strong> — une pièce peut redéfinir un terme chez elle si elle veut, mais aucune ne peut introduire un nom sans l'ajouter au glossaire. C'est la parade aux deux dérives de nomenclature déjà survenues.</p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">Sur l'ordre</span>
+      <p>L'ordre ci-dessous n'est pas celui de ta liste, et c'est volontaire : il suit les dépendances. Le Canon vient tôt parce que presque tout le référence ; le budget vient tard parce qu'il se calcule sur des outils définis ; l'extensibilité vient en dernier parce que c'est le test de tout le reste. Deux exceptions à la logique de dépendance : les <strong>principes</strong> passent devant tout parce qu'ils servent d'arbitre, et la <strong>stack</strong> vient tôt parce qu'elle fixe le vocabulaire — on ne peut pas écrire « le serveur du Canon » sans savoir dans quoi il est écrit.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sommaire">
+  <span class="sec-num">Sommaire</span>
+  <h2>Les vingt et une pièces</h2>
+
+  <div class="toc">
+    <div class="grp">Fondations — ce qui arbitre et ce qui nomme</div>
+    <div class="row current">
+      <span class="n">00</span>
+      <span class="t"><a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6">Principes &amp; règles de base</a><small>Les invariants qui jugent toutes les décisions suivantes, et le récapitulatif de ce qui est déjà tranché.</small></span>
+      <span class="dep">—</span>
+      <span class="st now">posée</span>
+    </div>
+    <div class="row">
+      <span class="n">01</span>
+      <span class="t"><a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9">Stack technique</a><small>Langages, briques, versions, chacune annotée de sa durabilité. Fixe le vocabulaire de tout le dossier. <em>Pièce corrigeable.</em></small></span>
+      <span class="dep">dépend de 00</span>
+      <span class="st now">posée</span>
+    </div>
+    <div class="row">
+      <span class="n">02</span>
+      <span class="t"><a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3">Architecture</a><small>Les processus, les huit domaines, les frontières d'écriture appliquées par la base, le flux d'événements.</small></span>
+      <span class="dep">dépend de 00, 01</span>
+      <span class="st now">posée</span>
+    </div>
+    <div class="grp">Le socle — ce qui bloque tout le reste</div>
+    <div class="row">
+      <span class="n">03</span>
+      <span class="t"><a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597">Le Canon</a><small>Quatre tables, neuf types d'entités fermés, deux axes de temps, les croyances facultatives, et les trois étages du refus.</small></span>
+      <span class="dep">dépend de 01, 02</span>
+      <span class="st now">posée</span>
+    </div>
+    <div class="row">
+      <span class="n">04</span>
+      <span class="t"><a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0">La File des travaux</a><small>Six états, réclamation exclusive, battement à progression, le bail qui fait du worker le gardien unique du matériel, le réveil et ses trois échecs.</small></span>
+      <span class="dep">dépend de 01, 02</span>
+      <span class="st now">posée</span>
+    </div>
+    <div class="grp">Les matières durables</div>
+    <div class="row">
+      <span class="n">05</span>
+      <span class="t">Le Catalogue<small>Signature exacte de chaque outil, ce qui est optionnel, ce qui est par défaut, comment ils sont versionnés.</small></span>
+      <span class="dep">dépend de 03, 04</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">06</span>
+      <span class="t">Le Récit<small>La prose : structure, versions, extraction des faits vers le canon. Sans elle, l'image n'a rien à représenter.</small></span>
+      <span class="dep">dépend de 03</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">07</span>
+      <span class="t">La Bibliothèque<small>Les assets produits : provenance, empreinte, variantes, validation, rattachement à une entité.</small></span>
+      <span class="dep">dépend de 03, 04</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="grp">Les agents et leur pilotage</div>
+    <div class="row">
+      <span class="n">08</span>
+      <span class="t">Les rôles<small>Qui est un agent, quel modèle, quel profil d'outils, où passe la limite de dix.</small></span>
+      <span class="dep">dépend de 05</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">09</span>
+      <span class="t">L'Assistant<small>L'orchestrateur : Hermes ou son remplaçant, la délégation, la conduite d'une session.</small></span>
+      <span class="dep">dépend de 08</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">10</span>
+      <span class="t">Les recettes<small>Les enchaînements écrits : forme, reprise, déclenchement, catalogue.</small></span>
+      <span class="dep">dépend de 05, 08</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="grp">Les modalités</div>
+    <div class="row">
+      <span class="n">11</span>
+      <span class="t">Images<small>Style, cadrage, référence, variantes, styles entraînés.</small></span>
+      <span class="dep">dépend de 04, 06, 07</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">12</span>
+      <span class="t">3D<small>Maillage, retopologie, UV, cuisson, matériaux, export, Blender et Unreal.</small></span>
+      <span class="dep">dépend de 04, 07, 11</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">13</span>
+      <span class="t">Son<small>Voix, ambiances, effets, thèmes liés à une faction ou un lieu.</small></span>
+      <span class="dep">dépend de 04, 07</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="grp">L'infrastructure</div>
+    <div class="row">
+      <span class="n">14</span>
+      <span class="t">Les modèles<small>Quel modèle pour quel rôle, comment les servir, comment les échanger, la souveraineté.</small></span>
+      <span class="dep">dépend de 08</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">15</span>
+      <span class="t">Outils externes<small>Blender, Unreal, ComfyUI : versions et mode de pilotage.</small></span>
+      <span class="dep">dépend de 12</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">16</span>
+      <span class="t">Emplacements &amp; stockage<small>Les quatre étages de calcul, le stockage objet, les sauvegardes, le réveilleur du réseau local.</small></span>
+      <span class="dep">dépend de 02, 04, 14</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">17</span>
+      <span class="t">Les liaisons<small>Authentification entre processus, rattrapage des événements, formats d'échange.</small></span>
+      <span class="dep">dépend de 02, 16</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="grp">Le rendu et la mesure</div>
+    <div class="row">
+      <span class="n">18</span>
+      <span class="t">L'interface<small>Desktop, web ou application installable — et les trois surfaces de lecture humaine.</small></span>
+      <span class="dep">dépend de 02, 17</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">19</span>
+      <span class="t">Budget &amp; consommation<small>Le coût en contexte et en calcul, recalculé sur les outils réellement définis.</small></span>
+      <span class="dep">dépend de 05, 08, 14</span>
+      <span class="st todo">à faire</span>
+    </div>
+    <div class="row">
+      <span class="n">20</span>
+      <span class="t">Extensibilité &amp; final<small>Ajouter une modalité — la vidéo — sans rien casser. Le test de tout le reste.</small></span>
+      <span class="dep">dépend de tout</span>
+      <span class="st todo">à faire</span>
+    </div>
+  </div>
+</section>
+
+<section id="amont">
+  <span class="sec-num">Amont</span>
+  <h2>Les documents de recherche</h2>
+  <div class="col">
+    <p class="lede">Le dossier de conception s'appuie sur quatre documents antérieurs. Ils ne sont pas normatifs — ils expliquent <em>pourquoi</em>. Le dossier, lui, dit <em>quoi</em>.</p>
+  </div>
+  <div class="refs">
+    <div class="ref"><h4>La Forge — dossier de recherche</h4><p>L'état de l'art, les comparatifs par modalité, les mesures citées. La source des justifications.</p></div>
+    <div class="ref"><h4>Écrire ou déléguer</h4><p>Ce qui sépare un flux écrit d'un flux inféré, et où passe la ligne de coupe.</p></div>
+    <div class="ref"><h4>Le plan de la Forge</h4><p>L'architecture en français simple. Sera repris et figé par la pièce 02.</p></div>
+    <div class="ref"><h4>Le budget de contexte</h4><p>La mesure sur 39 définitions d'outils. Sera recalculé par la pièce 19.</p></div>
+  </div>
+  <div class="col">
+    <div class="callout good">
+      <span class="tag">Règle de préséance</span>
+      <p>En cas de contradiction entre un document de recherche et une pièce du dossier, <strong>la pièce du dossier gagne</strong>. Les documents amont datent du jour où ils ont été écrits ; le dossier est la décision.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Dossier La Forge · sommaire · mis à jour le 13 septembre 2026</div>
+</footer>
+
+</body></html>

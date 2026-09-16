@@ -1,0 +1,459 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Écrire ou déléguer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF0; --surface:#FBFBFC; --surface-2:#E4E6EA;
+  --ink:#171A1F; --ink-2:#3D444E; --ink-3:#6B7480;
+  --rule:#CDD1D7; --rule-soft:#DFE2E6;
+  --ember:#B0700F;
+  --bcol:#3C6494; --ccol:#7A4E8C;
+  --good:#2F7466; --warn:#B0700F; --crit:#A63D32;
+  --shadow:0 1px 2px rgba(23,26,31,.06),0 8px 24px -12px rgba(23,26,31,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+    --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+    --rule:#333A43; --rule-soft:#272D35;
+    --ember:#E5A64B;
+    --bcol:#7EA8D8; --ccol:#B594CC;
+    --good:#6FBCAA; --warn:#E5A64B; --crit:#E08279;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171B; --surface:#1B1F24; --surface-2:#22272E;
+  --ink:#E8EAED; --ink-2:#B6BDC6; --ink-3:#858E99;
+  --rule:#333A43; --rule-soft:#272D35;
+  --ember:#E5A64B;
+  --bcol:#7EA8D8; --ccol:#B594CC;
+  --good:#6FBCAA; --warn:#E5A64B; --crit:#E08279;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.col{max-width:70ch}
+.masthead{border-bottom:1px solid var(--rule);padding:60px 0 38px;background:var(--surface)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(36px,6vw,62px);line-height:1.03;letter-spacing:-.025em;margin:0 0 20px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-2);margin:0;max-width:62ch}
+section{padding-top:60px;scroll-margin-top:24px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(25px,3.2vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+.sec-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:14px}
+h3{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:40px 0 10px;text-wrap:balance}
+h4{font-family:var(--f-display);font-weight:600;font-size:16px;margin:26px 0 6px}
+p{margin:0 0 18px}
+.lede{font-size:19px;color:var(--ink-2);margin-bottom:26px}
+a{color:var(--ember);text-underline-offset:2px}
+code{font-family:var(--f-mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:3px;color:var(--ink)}
+ul,ol{margin:0 0 18px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+li::marker{color:var(--ink-3)}
+.tag-b,.tag-c{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.tag-b{color:var(--bcol)} .tag-c{color:var(--ccol)}
+
+/* thesis block */
+.thesis{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:28px 30px;margin:32px 0;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:18px}
+.thesis .t-line{font-family:var(--f-display);font-weight:600;font-size:clamp(20px,2.6vw,27px);line-height:1.25;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.thesis .t-line b{font-weight:800}
+.thesis .t-b{color:var(--bcol)} .thesis .t-c{color:var(--ccol)}
+.thesis p:last-child{margin:0;color:var(--ink-2);font-size:16px}
+
+/* two-column trace */
+.trace{display:grid;gap:18px;margin:30px 0}
+@media(min-width:860px){.trace{grid-template-columns:1fr 1fr}}
+.tracecol{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:22px;box-shadow:var(--shadow)}
+.tracecol.b{border-top:3px solid var(--bcol)}
+.tracecol.c{border-top:3px solid var(--ccol)}
+.tracecol h4{margin:0 0 4px;font-size:18px}
+.tracecol .sub{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;margin:0 0 18px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:s}
+.steps li{padding:11px 0 11px 34px;border-bottom:1px solid var(--rule-soft);position:relative;font-size:14.5px;line-height:1.45;color:var(--ink-2)}
+.steps li:last-child{border-bottom:0;padding-bottom:0}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:11px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);width:22px;text-align:right}
+.steps li strong{color:var(--ink);font-weight:600}
+.steps li .k{font-family:var(--f-mono);font-size:12.5px;color:var(--ink)}
+.steps li.mark{background:linear-gradient(90deg,var(--surface-2),transparent 70%);margin-left:-8px;padding-left:42px;border-radius:3px}
+
+.tablewrap{overflow-x:auto;margin:26px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px;line-height:1.45}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:12px 14px;color:var(--ink-3);border-bottom:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+th.b{color:var(--bcol)} th.c{color:var(--ccol)}
+td{padding:12px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.crit{font-family:var(--f-display);font-weight:600;white-space:nowrap}
+.callout{border-left:3px solid var(--ember);background:var(--surface);padding:18px 22px;margin:26px 0;border-radius:0 4px 4px 0;box-shadow:var(--shadow)}
+.callout p:last-child{margin-bottom:0}
+.callout .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:8px}
+.callout.crit{border-left-color:var(--crit)} .callout.crit .tag{color:var(--crit)}
+.callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+/* decision questions */
+.q{border-top:1px solid var(--rule-soft);padding:20px 0}
+.q:last-of-type{border-bottom:1px solid var(--rule-soft)}
+.q h4{margin:0 0 8px;font-size:17px}
+.q p{margin:0 0 8px;font-size:15.5px;color:var(--ink-2)}
+.q .answer{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--ink-3)}
+.q .answer b.b{color:var(--bcol)} .q .answer b.c{color:var(--ccol)}
+
+/* cut line */
+.cut{display:flex;flex-direction:column;gap:2px;margin:30px 0;font-family:var(--f-mono);font-size:13px}
+.cutrow{background:var(--surface);border:1px solid var(--rule);padding:14px 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+.cutrow:first-child{border-radius:5px 5px 0 0}
+.cutrow:last-child{border-radius:0 0 5px 5px}
+.cutrow .what{font-weight:600;color:var(--ink);min-width:230px}
+.cutrow .how{font-size:12px;color:var(--ink-3);flex:1;min-width:200px}
+.cutrow.b-side{border-left:3px solid var(--bcol)}
+.cutrow.c-side{border-left:3px solid var(--ccol)}
+footer{border-top:1px solid var(--rule);padding:30px 0 60px;color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;margin-top:70px}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!--NAV-->
+
+<style id="navcss">
+:root{--nav-w:1080px}
+.fnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.03em}
+.fnav-in{max-width:var(--nav-w,1040px);margin:0 auto;padding:0 24px;display:flex;align-items:center;
+  gap:10px;min-height:46px;flex-wrap:wrap}
+.fnav a{color:var(--ink-2);text-decoration:none;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.fnav a:hover,.fnav a:focus-visible{color:var(--ember);background:var(--surface-2)}
+.fnav .home{font-weight:600;color:var(--ink);padding-left:0}
+.fnav .home:hover{background:none}
+.fnav .sep{color:var(--rule);user-select:none}
+.fnav .here{color:var(--ember);font-weight:600;padding:5px 0}
+.fnav .kind{color:var(--ink-3);padding:5px 0}
+.fnav .spacer{flex:1;min-width:8px}
+.fnav .pn{display:flex;gap:4px;align-items:center}
+.fnav .pn .off{color:var(--ink-3);opacity:.45;padding:5px 9px;white-space:nowrap}
+.fnav .fixes{display:flex;gap:2px;align-items:center}
+.fnav .fixes a{border:1px solid transparent}
+.fnav .fixes a:hover{border-color:var(--ember)}
+.fnav .fixes .off{color:var(--ink-3);opacity:.45;padding:5px 9px}
+details.fmenu{position:relative}
+details.fmenu>summary{list-style:none;cursor:pointer;padding:5px 10px;border:1px solid var(--rule);
+  border-radius:4px;color:var(--ink-2);white-space:nowrap;user-select:none}
+details.fmenu>summary::-webkit-details-marker{display:none}
+details.fmenu>summary:hover{color:var(--ember);border-color:var(--ember)}
+details.fmenu[open]>summary{color:var(--ember);border-color:var(--ember);background:var(--surface-2)}
+.fmenu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(92vw,680px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);
+  padding:14px;display:grid;gap:2px;max-height:min(70vh,620px);overflow-y:auto}
+@media(min-width:640px){.fmenu-panel{grid-template-columns:1fr 1fr}}
+.fmenu-panel .grp{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);padding:8px 6px 5px;border-bottom:1px solid var(--rule);margin-bottom:3px;
+  opacity:.85;background:none;font-family:var(--f-mono)}
+.fmenu-panel .grp:not(:first-child){margin-top:10px}
+.fmenu-panel a,.fmenu-panel span.off{display:flex;gap:9px;padding:6px 8px;border-radius:4px;
+  font-size:12.5px;align-items:baseline;text-decoration:none;white-space:normal}
+.fmenu-panel a{color:var(--ink-2)}
+.fmenu-panel a:hover,.fmenu-panel a:focus-visible{background:var(--surface-2);color:var(--ember)}
+.fmenu-panel span.off{color:var(--ink-3);opacity:.5}
+.fmenu-panel .num{color:var(--ember);font-weight:600;min-width:22px;flex:none}
+.fmenu-panel span.off .num{color:var(--ink-3)}
+.fmenu-panel a.cur{background:var(--surface-2);color:var(--ember);font-weight:600}
+@media(max-width:640px){.fnav .pn{display:none}}
+@media(max-width:520px){.fnav .fixes{display:none}}
+</style>
+
+<nav class="fnav" id="top" aria-label="Navigation du dossier">
+  <div class="fnav-in">
+    <a class="home" href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Dossier La Forge</a><span class="sep">/</span><span class="kind">Amont</span><span class="sep">/</span><span class="here">Écrire ou déléguer</span>
+    <span class="spacer"></span>
+    
+    <span class="fixes"><a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2">Sommaire</a><a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3">Glossaire</a><a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d">Schémas</a></span>
+    <details class="fmenu">
+      <summary>Toutes les pièces ▾</summary>
+      <div class="fmenu-panel">
+      <div class="grp">Les 21 pièces du dossier</div>
+      <a href="https://claude.ai/code/artifact/875328e3-7c7e-4455-8b34-e33f6411e8d6"><span class="num">00</span>Principes & règles</a>
+      <a href="https://claude.ai/code/artifact/4c2f6d71-1f24-451b-b2d5-27fcf394b8f9"><span class="num">01</span>Stack technique</a>
+      <a href="https://claude.ai/code/artifact/f318e04b-8c92-4ee5-a51f-67133952aee3"><span class="num">02</span>Architecture</a>
+      <a href="https://claude.ai/code/artifact/e7e413f8-7559-42d1-a56e-c0d77f230597"><span class="num">03</span>Le Canon</a>
+      <a href="https://claude.ai/code/artifact/f61c1dea-fdc2-4edf-bec4-9620464e1cc0"><span class="num">04</span>La File des travaux</a>
+      <span class="off"><span class="num">05</span>Le Catalogue</span>
+      <span class="off"><span class="num">06</span>Le Récit</span>
+      <span class="off"><span class="num">07</span>La Bibliothèque</span>
+      <span class="off"><span class="num">08</span>Les rôles</span>
+      <span class="off"><span class="num">09</span>L'Assistant</span>
+      <span class="off"><span class="num">10</span>Les recettes</span>
+      <span class="off"><span class="num">11</span>Images</span>
+      <span class="off"><span class="num">12</span>3D</span>
+      <span class="off"><span class="num">13</span>Son</span>
+      <span class="off"><span class="num">14</span>Les modèles</span>
+      <span class="off"><span class="num">15</span>Outils externes</span>
+      <span class="off"><span class="num">16</span>Emplacements & stockage</span>
+      <span class="off"><span class="num">17</span>Les liaisons</span>
+      <span class="off"><span class="num">18</span>L'interface</span>
+      <span class="off"><span class="num">19</span>Budget & consommation</span>
+      <span class="off"><span class="num">20</span>Extensibilité & final</span>
+      <div class="grp">Références permanentes</div>
+      <a href="https://claude.ai/code/artifact/58018a5a-16d8-4369-b076-cba5f54d18e2"><span class="num">▤</span>Sommaire du dossier</a>
+      <a href="https://claude.ai/code/artifact/32346ead-8a36-46fb-9715-bf59c0e87cd3"><span class="num">§</span>Glossaire — obligatoire</a>
+      <a href="https://claude.ai/code/artifact/b469a4b3-9ab7-488e-b28e-984e17f1446d"><span class="num">◈</span>Atlas des schémas</a>
+      <div class="grp">Documents amont — recherche</div>
+      <a href="https://claude.ai/code/artifact/7239eea6-ecd0-4191-8f82-0bc1d30f4ca1"><span class="num">·</span>Dossier de recherche</a>
+      <a class="cur" href="#top"><span class="num">·</span>Écrire ou déléguer</a>
+      <a href="https://claude.ai/code/artifact/5e3c070a-93a8-4ef2-bd4d-80633d85d0ba"><span class="num">·</span>Le plan de la Forge</a>
+      <a href="https://claude.ai/code/artifact/26067661-97b6-4373-a778-245c83af0304"><span class="num">·</span>Le budget de contexte</a>
+      </div>
+    </details>
+  </div>
+</nav>
+<!--/NAV-->
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">La Forge · note de décision · architectures B et C</p>
+    <h1>Écrire ou <em>déléguer</em> le contrôle</h1>
+    <p class="standfirst">B et C ne s'opposent pas sur la technologie. Elles s'opposent sur une seule question : qui décide de l'enchaînement des étapes — toi, à l'avance, ou un modèle, à l'exécution. Tout le reste en découle.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+<!-- 1 -->
+<section id="difference">
+  <span class="sec-num">01</span>
+  <h2>La seule vraie différence</h2>
+  <div class="col">
+    <p class="lede">Le dossier présentait B comme « un framework » et C comme « des protocoles ». C'était une description de surface, et elle rend le choix flou. Voici la formulation exacte.</p>
+  </div>
+
+  <div class="thesis">
+    <p class="t-line">En <b class="t-b">B</b>, le flux de contrôle est <b>écrit</b>. Tu dessines le graphe : après l'agent lore vient l'audit, puis la validation, puis la mise en file du portrait. Le modèle remplit les cases ; il ne choisit pas l'ordre.</p>
+    <p class="t-line">En <b class="t-c">C</b>, le flux de contrôle est <b>inféré à l'exécution</b>. Tu exposes des outils avec des contrats propres, et un modèle décide à chaque tour lequel appeler. Tu ne dessines pas le chemin, tu délimites l'espace.</p>
+    <p>Ce n'est pas une nuance d'implémentation. C'est le point dont dépendent le déterminisme, le débogage, le coût en tokens, la reproductibilité de tes assets, et l'endroit où vivent tes garanties de cohérence.</p>
+  </div>
+
+  <div class="col">
+    <p>Corollaire qui surprend souvent : <strong>on peut faire du C avec LangGraph, et du B avec Hermes.</strong> Le choix du framework ne détermine pas l'architecture. C'est pour ça que « B ou C » ne se tranche pas en comparant LangGraph et Hermes Agent — il se tranche en décidant, pour chaque partie du système, si tu veux un chemin écrit ou un espace délimité.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="trace">
+  <span class="sec-num">02</span>
+  <h2>La même demande, exécutée dans les deux</h2>
+  <div class="col">
+    <p class="lede">Prenons une requête ordinaire de ton système : <em>« Crée-moi un lieutenant de la faction 42, avec son portrait. »</em> Voici ce qui se passe réellement, étape par étape.</p>
+  </div>
+
+  <div class="trace">
+    <div class="tracecol b">
+      <h4><span class="tag-b">Architecture B</span></h4>
+      <p class="sub">Un graphe que tu as dessiné</p>
+      <ol class="steps">
+        <li>Nœud <span class="k">plan</span> : l'orchestrateur renvoie un objet typé <span class="k">Plan{type: personnage, faction: 42, besoins: [portrait]}</span>. Validé par schéma, sinon on rejoue.</li>
+        <li>Nœud <span class="k">charger_contexte</span> : <strong>du Python, aucun LLM</strong>. Requête le canon, construit le budget en quatre couches, renvoie ~300 tokens.</li>
+        <li>Nœud <span class="k">rédiger</span> : le modèle non censuré écrit la prose. Sortie libre, aucune grammaire.</li>
+        <li>Nœud <span class="k">extraire</span> : petit modèle + XGrammar → objet <span class="k">Personnage</span> typé. La passe 2 du §05.</li>
+        <li class="mark">Éclatement vers <strong>3 nœuds auditeurs en parallèle</strong>. C'est une arête, pas une décision : ils s'exécutent, toujours.</li>
+        <li>Arête conditionnelle : si un auditeur rejette → retour au nœud <span class="k">rédiger</span> avec la critique. Trois boucles au maximum, compteur dans l'état.</li>
+        <li>Nœud <span class="k">valider_canon</span> : contraintes dures, règles de domaine, fermeture des fenêtres de validité en conflit, insertion.</li>
+        <li>Nœud <span class="k">enfiler_portrait</span> : insère une ligne de job avec l'identifiant du workflow ComfyUI figé et les créneaux remplis.</li>
+        <li class="mark"><strong>Checkpoint après chaque nœud.</strong> Coupure de courant à l'étape 7 : au redémarrage, on reprend à 7.</li>
+      </ol>
+    </div>
+
+    <div class="tracecol c">
+      <h4><span class="tag-c">Architecture C</span></h4>
+      <p class="sub">Un espace d'outils que tu as délimité</p>
+      <ol class="steps">
+        <li>L'orchestrateur reçoit la demande, avec <strong>les schémas de tous ses outils déjà en contexte</strong>.</li>
+        <li>Il appelle <span class="k">canon.chercher(faction=42)</span>. Ou <span class="k">canon.lire_entité</span> d'abord. Ou les deux. <strong>L'ordre varie d'une exécution à l'autre.</strong></li>
+        <li>Il rédige le personnage, puis appelle <span class="k">canon.proposer_fait(...)</span>.</li>
+        <li class="mark"><strong>Le serveur canon refuse</strong> : il renvoie <span class="k">statut: audit_requis</span> et la liste des vérifications attendues. L'invariant est dans le serveur, pas dans le prompt.</li>
+        <li>L'orchestrateur lance trois sous-agents auditeurs. S'il « oublie », c'est le refus du serveur qui l'y ramène au tour suivant.</li>
+        <li>Il appelle <span class="k">canon.valider(id_proposition)</span> : le serveur applique contraintes et règles, et peut encore rejeter.</li>
+        <li>Il appelle <span class="k">jobs.enfiler(type=portrait, workflow=portrait_v3, params={…})</span>.</li>
+        <li class="mark"><strong>Aucun checkpoint.</strong> Coupure de courant : il n'y a pas de processus à reprendre. Mais chaque appel était transactionnel, donc le canon reste cohérent — on relance la demande.</li>
+        <li>Le même serveur canon est joignable depuis Claude Code, n8n, ton téléphone, un autre agent — <strong>en même temps</strong>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="callout">
+      <span class="tag">Ce que la comparaison révèle</span>
+      <p><strong>B rend le processus durable. C rend les données durables.</strong> B sait reprendre au milieu d'un travail interrompu. C n'a rien à reprendre — il a des serveurs transactionnels et des appels qu'on rejoue. Ce sont deux réponses différentes à la même peur, et elles ne se valent pas selon la durée de tes sessions : une session de worldbuilding de trente minutes qui casse à la vingt-cinquième, en C tu la refais.</p>
+    </div>
+    <p>Deuxième révélation, plus subtile : en B, la garantie « les auditeurs tournent toujours » est <em>structurelle</em> — c'est une arête du graphe. En C, la même garantie doit être <strong>poussée dans le serveur</strong> : le canon refuse un fait non audité. C'est faisable et même élégant, mais c'est un renversement à comprendre — en C, tes invariants ne vivent jamais dans le prompt, ils vivent dans les serveurs. Un invariant écrit dans une instruction est un invariant que le modèle finira par ignorer.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="consequences">
+  <span class="sec-num">03</span>
+  <h2>Ce qui en découle, critère par critère</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Critère</th><th class="b">Architecture B — flux écrit</th><th class="c">Architecture C — flux inféré</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="crit">Déterminisme</td>
+          <td>Même entrée, même chemin. Seules les sorties de modèle varient.</td>
+          <td>Le chemin varie d'une exécution à l'autre. Bien pour l'exploration, pénible pour un pipeline d'assets.</td>
+        </tr>
+        <tr>
+          <td class="crit">Débogage</td>
+          <td>Un échec est à un nœud nommé, testable unitairement en Python sans LLM.</td>
+          <td>Un échec est « le modèle n'a pas appelé l'outil ». Tu débogues des descriptions d'outils et des prompts.</td>
+        </tr>
+        <tr>
+          <td class="crit">Coût en tokens</td>
+          <td>Nul. Une fonction Python ne coûte rien tant qu'elle n'est pas appelée.</td>
+          <td><strong>Taxe permanente.</strong> Chaque schéma d'outil occupe le contexte à chaque tour. Voir §04 — c'est le point décisif sur ta machine.</td>
+        </tr>
+        <tr>
+          <td class="crit">Reproductibilité des assets</td>
+          <td>Le workflow ComfyUI figé est appelé par une fonction. Impossible d'en dévier.</td>
+          <td>L'agent dispose d'un outil qui <em>pourrait</em> faire autre chose. Il faut verrouiller côté serveur.</td>
+        </tr>
+        <tr>
+          <td class="crit">Reprise sur incident</td>
+          <td>Checkpoint par nœud dans Postgres. Reprise exacte.</td>
+          <td>Pas de reprise, mais pas de corruption non plus. On relance.</td>
+        </tr>
+        <tr>
+          <td class="crit">Budget de contexte par couche</td>
+          <td>Tu contrôles au token près ce qui entre dans chaque prompt. Le §03 s'implémente littéralement.</td>
+          <td>L'orchestrateur assemble son contexte. Tu l'influences, tu ne le décides pas.</td>
+        </tr>
+        <tr>
+          <td class="crit">Réutilisation depuis d'autres outils</td>
+          <td>Le canon n'est joignable que par ton application.</td>
+          <td><strong>Le canon est joignable depuis n'importe quel client MCP</strong>, simultanément. C'est le gain le plus concret de C.</td>
+        </tr>
+        <tr>
+          <td class="crit">Changer d'orchestrateur</td>
+          <td>Réécrire le graphe. Mais les outils, la couche canon et la file restent du Python réutilisable — le coût est plus faible qu'il n'y paraît.</td>
+          <td>Changer une configuration. Les serveurs ne bougent pas.</td>
+        </tr>
+        <tr>
+          <td class="crit">Courbe d'effort</td>
+          <td>Une falaise, puis un plateau. Six semaines avant que ce soit meilleur qu'un montage simple.</td>
+          <td>Une pente douce qui ne s'arrête jamais : chaque nouvel outil est un serveur, avec son transport, ses versions, ses erreurs.</td>
+        </tr>
+        <tr>
+          <td class="crit">Transparence</td>
+          <td>AG-UI natif : le flux d'événements est un produit du framework.</td>
+          <td>Dépend de l'orchestrateur — et Hermes ne parle pas AG-UI. Ton journal de jobs et d'événements devient la source principale.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="taxe">
+  <span class="sec-num">04</span>
+  <h2>La taxe de contexte : l'argument qui pèse le plus lourd chez toi</h2>
+  <div class="col">
+    <p class="lede">C'est le point que je n'avais pas assez souligné, et il est spécifique à ton matériel.</p>
+    <p>En C, tous les schémas d'outils exposés sont présents dans le contexte à chaque tour, avant que le modèle ait lu le moindre fait de ton canon. Fais le compte de ce que tu comptes exposer : canon (lecture, recherche, proposition, validation, contradictions, branches), file de jobs, ComfyUI, Blender, Unreal, bibliothèque d'assets, LoRA. On arrive vite à quarante outils, et une description d'outil correcte — nom, description, schéma JSON des paramètres, exemples — fait entre 200 et 500 tokens.</p>
+    <p><strong>Ordre de grandeur : 10 000 à 20 000 tokens de définitions d'outils avant la première information utile.</strong> Sur une API à 200k de contexte, c'est un détail. Sur un modèle local de 27B servi en 32k de contexte utile, c'est entre un tiers et deux tiers de ta fenêtre consommés par de la paperasse — et ça entre en collision frontale avec le budget par couche du §03, qui vise 304 tokens par appel.</p>
+    <p>Ce n'est pas rédhibitoire, mais ça demande un travail réel que le dossier sous-estimait :</p>
+    <ul>
+      <li><strong>Cloisonner les outils par rôle.</strong> L'agent lore ne voit que les outils canon. L'agent matière ne voit que Blender et les jobs. Hermes le permet via ses sous-agents, mais il faut le configurer explicitement.</li>
+      <li><strong>Écrire des descriptions courtes et des schémas plats.</strong> Chaque paramètre optionnel que tu ajoutes coûte à chaque tour, pour toujours.</li>
+      <li><strong>Regrouper.</strong> Un outil <code>canon.query</code> avec un paramètre de mode coûte moins cher que six outils distincts — au prix d'un peu de clarté pour le modèle.</li>
+    </ul>
+    <div class="callout crit">
+      <span class="tag">À retenir</span>
+      <p>La taxe de contexte de C est payée en permanence, et elle est proportionnelle à ton ambition — plus ton système grandit, plus elle grossit. En B, ajouter un dixième outil coûte zéro token tant qu'il n'est pas appelé. Sur du cloud, l'écart est cosmétique. Sur une 4070, il est structurant.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="questions">
+  <span class="sec-num">05</span>
+  <h2>Les quatre questions qui tranchent</h2>
+  <div class="col">
+    <p class="lede">Aucune n'est technique. Ce sont des questions sur ce que tu veux faire de ce système.</p>
+  </div>
+
+  <div class="q">
+    <h4>1. Veux-tu atteindre ton monde depuis d'autres outils que ton application ?</h4>
+    <p>Interroger ton canon depuis Claude Code pendant que tu codes, depuis n8n dans un workflow, depuis ton téléphone, depuis un agent que tu n'as pas encore écrit. Si oui, ce n'est pas une commodité : c'est un choix d'architecture, et il impose que le canon soit un serveur MCP.</p>
+    <p class="answer">Oui → <b class="c">le cœur de C est non négociable</b> · Non → B suffit largement</p>
+  </div>
+
+  <div class="q">
+    <h4>2. Tes sessions de travail durent-elles longtemps ?</h4>
+    <p>Une génération de monde complète prend vingt à trente minutes de calcul selon les mesures du §03, et elle enchaîne des passes GPU longues. Si une coupure au bout de vingt-cinq minutes signifie tout refaire, tu le sentiras passer. B reprend au nœud près ; C te fait relancer.</p>
+    <p class="answer">Sessions longues et coûteuses → <b class="b">B</b> · Interactions courtes et conversationnelles → <b class="c">C</b></p>
+  </div>
+
+  <div class="q">
+    <h4>3. Qu'est-ce qui t'inquiète le plus dans un an : que le système soit incohérent, ou qu'il soit obsolète ?</h4>
+    <p>C'est la vraie question de fond. B optimise contre l'incohérence : tu contrôles chaque étape, les auditeurs sont garantis, le budget de contexte est exact. C optimise contre l'obsolescence : trois harnais crédibles sont sortis en douze mois, et C te permet d'en changer en éditant une configuration.</p>
+    <p class="answer">Incohérence → <b class="b">B</b> · Obsolescence → <b class="c">C</b></p>
+  </div>
+
+  <div class="q">
+    <h4>4. Veux-tu passer un trimestre à être développeur avant d'être créateur ?</h4>
+    <p>B demande huit à douze semaines avant de produire quelque chose de meilleur qu'un montage simple. C donne une première boucle utile en quatre à six semaines, puis progresse par ajouts. La question n'est pas laquelle est « meilleure » — c'est laquelle correspond à ta patience réelle, sachant qu'un projet solo qui n'a rien produit après trois mois s'arrête souvent là.</p>
+    <p class="answer">Prêt à investir d'abord → <b class="b">B</b> · Besoin de résultats en chemin → <b class="c">C</b></p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="reco">
+  <span class="sec-num">06</span>
+  <h2>Ma recommandation, et la ligne de coupe exacte</h2>
+  <div class="col">
+    <p class="lede">Une fois la vraie différence posée, le choix n'est plus « B ou C » — c'est « quelles parties de mon système méritent un chemin écrit, et lesquelles méritent un espace délimité ». Les deux réponses sont justes, pour des parties différentes.</p>
+
+    <div class="callout good">
+      <span class="tag">La position à tenir</span>
+      <p><strong>Le canon et la file de jobs sont des serveurs MCP — c'est le pari de C, et il est irréversible dans le bon sens.</strong> Ce sont tes deux actifs de long terme, ceux que tu voudras joindre depuis n'importe où et qui survivront à trois changements de framework. <strong>Les pipelines déterministes et coûteux sont du flux écrit — c'est la force de B</strong>, parce que tu veux le même résultat deux fois et zéro taxe de tokens. <strong>Et l'exploration passe par un orchestrateur MCP</strong>, Hermes aujourd'hui.</p>
+    </div>
+
+    <p>Concrètement, voici où passe la ligne :</p>
+  </div>
+
+  <div class="cut">
+    <div class="cutrow c-side"><span class="what">Le canon</span><span class="how">Serveur MCP · joignable de partout, invariants côté serveur, survit à tout</span></div>
+    <div class="cutrow c-side"><span class="what">La file de jobs GPU</span><span class="how">Serveur MCP · un job ignore où il tourne (le patron dsh du §04)</span></div>
+    <div class="cutrow c-side"><span class="what">Sessions de worldbuilding exploratoires</span><span class="how">Orchestrateur Hermes · c'est là que l'inférence du chemin est un atout</span></div>
+    <div class="cutrow b-side"><span class="what">Génération d'image et de LoRA</span><span class="how">Flux écrit · workflow ComfyUI figé, appelé par du code, jamais réinventé</span></div>
+    <div class="cutrow b-side"><span class="what">Chaîne 3D complète</span><span class="how">Flux écrit · sept étapes ordonnées, boucle de retour visuelle obligatoire</span></div>
+    <div class="cutrow b-side"><span class="what">Boucle d'audit du canon</span><span class="how">Flux écrit · les auditeurs doivent tourner, pas être choisis</span></div>
+    <div class="cutrow b-side"><span class="what">Consolidation périodique de la mémoire</span><span class="how">Flux écrit · déclenché par n8n, aucun modèle ne décide de le sauter</span></div>
+  </div>
+
+  <div class="col">
+    <p>Techniquement, les pipelines écrits n'ont même pas besoin de LangGraph pour commencer : ce sont des fonctions Python enchaînées, appelées par un job. Tu introduis LangGraph le jour où l'une d'elles a besoin d'une reprise fine ou d'une validation humaine au milieu — et ce jour-là, tu ne réécris qu'elle.</p>
+
+    <h3>Si tu veux vraiment trancher en un seul mot</h3>
+    <p><strong>Commence par C.</strong> Trois raisons, dans l'ordre d'importance.</p>
+    <ol>
+      <li><strong>La question 1 est probablement un oui pour toi.</strong> Tu as un VPS, n8n, plusieurs machines, plusieurs outils d'IA. Un canon enfermé dans une seule application ne correspond pas à ta façon de travailler — et si c'est un oui, le débat est clos sur ce point précis.</li>
+      <li><strong>C ne ferme pas la porte à B, l'inverse est moins vrai.</strong> Un pipeline écrit peut appeler un serveur MCP sans difficulté. Une couche canon enfouie dans un graphe LangGraph devra être extraite le jour où tu voudras l'exposer — et ce jour-là, la migration touche aussi ton schéma et tes transactions.</li>
+      <li><strong>Le risque principal d'un projet solo est l'abandon, pas l'imperfection.</strong> Quatre à six semaines pour une première boucle utile contre huit à douze, sur un projet qui a un horizon de plusieurs années, c'est le facteur qui décide si le projet existe.</li>
+    </ol>
+    <p>Et garde la ligne de coupe ci-dessus à l'esprit dès le départ : dès qu'un enchaînement devient coûteux et doit être reproductible à l'identique, sors-le de l'espace d'outils et écris-le. Ce n'est pas trahir C. C'est la façon dont C reste vivable.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="wrap">Note de décision · complément au dossier La Forge · 30 août 2026</div>
+</footer>
+
+</body></html>
